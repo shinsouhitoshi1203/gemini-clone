@@ -5,56 +5,70 @@ import WatchLaterOutlinedIcon from "@mui/icons-material/WatchLaterOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useState } from "react";
+import Button from "../components/button";
 
 function Sidebar() {
 	const [extend, setExtend] = useState(false); /// 1 hien, 2. full , 3. ko xh
 	return (
 		<>
-			<div className={`sidebar ${extend && "sidebar--extend"}`}>
+			<nav className={`sidebar ${extend && "sidebar--extend"}`}>
 				<div
 					className={`sidebar__top ${
 						extend && "sidebar__top--extend"
 					}`}
 				>
-					<button
-						className="button button__main button__bg-tran"
+					<Button
+						type="main"
+						tran={true}
+						size="48 48"
+						caption=""
+						tooltip="Open sidebar"
+						icon={<MenuIcon />}
 						onClick={() => {
 							setExtend((x) => !x);
 						}}
-					>
-						<MenuIcon></MenuIcon>
-					</button>
-					<button className={`button button__fab`}>
-						<AddIcon></AddIcon>
-						{extend && <span className="font-6">New chat</span>}
-					</button>
+					/>
+					<Button
+						type="fab"
+						caption="New chat"
+						tooltip="New chat"
+						icon={<AddIcon />}
+						reqExtend={extend}
+					/>
 				</div>
 				<div
 					className={`sidebar__bottom ${
 						extend && "sidebar__bottom--extend"
 					}`}
 				>
-					<button
-						className="button button__main button__bg-tran"
-						extended={extend ? "true" : null}
-					>
-						<ErrorIcon></ErrorIcon>
-						{extend && <span className="font-6">Report</span>}
-					</button>
-					<button
-						className="button button__main button__bg-tran"
-						extended={extend ? "true" : null}
-					>
-						<WatchLaterOutlinedIcon></WatchLaterOutlinedIcon>
-						{extend && <span className="font-6">Activity</span>}
-					</button>
-					<button
-						className="button button__main button__bg-tran"
-						extended={extend ? "true" : null}
-					>
-						<SettingsOutlinedIcon></SettingsOutlinedIcon>
-						{extend && <span className="font-6">Settings</span>}
-					</button>
+					<Button
+						type="main"
+						tran={true}
+						size="48 +"
+						caption="Report"
+						tooltip="Report"
+						icon={<ErrorIcon />}
+						reqExtend={extend}
+					/>
+					<Button
+						type="main"
+						tran={true}
+						size="48 +"
+						caption="Activity"
+						tooltip="Activity"
+						icon={<WatchLaterOutlinedIcon />}
+						reqExtend={extend}
+					/>
+					<Button
+						type="main"
+						tran={true}
+						size="48 +"
+						caption="Settings"
+						tooltip="Settings"
+						icon={<SettingsOutlinedIcon />}
+						reqExtend={extend}
+					/>
+
 					<div className="sidebar__addition ip">
 						{extend && (
 							<div className="ip__main">
@@ -71,7 +85,7 @@ function Sidebar() {
 						)}
 					</div>
 				</div>
-			</div>
+			</nav>
 		</>
 	);
 }

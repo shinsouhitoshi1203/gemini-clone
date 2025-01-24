@@ -11,6 +11,7 @@ $themeContainer: (
         // input button
         main__hover: rgba(#49454F, 10%),
         fab: #E6E0E9, fab__hover: rgba(#49454F, 20%),
+        select__hover: rgba(#1D192B, 5%),select__focus: rgba(#1D192B, 10%),
     ), 
     "dark": (
         main: #ffffff,
@@ -25,7 +26,8 @@ $themeContainer: (
         // input button
         main__hover: rgba(#c7c7c7, 10%),
         fab: #787182,fab__hover: #948ca1,
-        
+        select__hover: rgba(#c7c7c7, 5%),select__focus: rgba(#c7c7c7, 10%),
+
     )
 );
 

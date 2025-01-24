@@ -1,4 +1,10 @@
 .App {
     display: flex; align-items: stretch;
     min-height: 100vh; 
+    & > * {
+        flex-shrink: 0;
+    }
+    & > .rest {
+        flex-grow: 1;
+    }
 }
