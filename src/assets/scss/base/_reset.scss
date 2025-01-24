@@ -43,6 +43,6 @@ table {
 }
 
 button, input {margin: 0;padding: 0; outline: none; border: none;}
-button {cursor: pointer;}
+button {cursor: pointer; background-color: inherit; font: inherit;}
 
 * {margin: 0;padding: 0;box-sizing: border-box;}

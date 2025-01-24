@@ -1,0 +1,39 @@
+$themeContainer: (
+    "light": (
+        main: #1D192B,
+        secondary: #49454F,
+        third: #625B71,
+        hyperlink: rgba(#015ae0, 50%), hyperlink__hover: rgba(#015ae0, 100%),
+        // art text 
+        sidebar: #F7F2FA,
+        input: #ECE6F0,
+        background: #ffffff,
+        // input button
+        main__hover: rgba(#49454F, 10%),
+        fab: #E6E0E9, fab__hover: rgba(#49454F, 20%),
+    ), 
+    "dark": (
+        main: #ffffff,
+        secondary: #c7c7c7,
+        third: #a3a3a3,
+        hyperlink: rgba(#015ae0, 50%), hyperlink__hover: rgba(#015ae0, 100%),
+
+        // art text 
+        sidebar: #49454F,
+        input: #38353d,
+        background: #1D192B,
+        // input button
+        main__hover: rgba(#c7c7c7, 10%),
+        fab: #787182,fab__hover: #948ca1,
+        
+    )
+);
+
+
+@each $theme-name, $data in $themeContainer {
+    .App[data-theme="#{$theme-name}"] {
+        @each $prop, $value in $data {
+            --#{$prop}: #{$value};
+        }
+    }
+}

@@ -3,7 +3,10 @@ import Sidebar from "./components/Sidebar";
 function App() {
 	return (
 		<>
-			<Sidebar></Sidebar>
+			<div className="App" data-theme="light">
+				<Sidebar></Sidebar>
+				<div className="rest"></div>
+			</div>
 		</>
 	);
 }

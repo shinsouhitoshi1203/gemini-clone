@@ -1,0 +1,6 @@
+@mixin sq($size, $bdrs) {
+    width: $size; height: $size;
+    @if ($bdrs != null) {
+        border-radius: $bdrs;
+    }
+}
