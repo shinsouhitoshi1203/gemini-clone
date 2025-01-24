@@ -37,7 +37,7 @@ function Button(props) {
 	let avatarImg;
 	if (type == "user") {
 		avatarImg = avatar ? (
-			<img src={{ avatar }} alt="Your account" />
+			<img src={avatar} alt="Your account" width={"100%"} />
 		) : (
 			<AccountCircleOutlinedIcon />
 		);

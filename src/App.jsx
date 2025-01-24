@@ -1,5 +1,7 @@
+import { Route, Routes } from "react-router-dom";
 import Sidebar from "./layout/Sidebar";
 import Topbar from "./layout/Topbar";
+import Home from "./pages/home/home";
 
 function App() {
 	return (
@@ -8,8 +10,9 @@ function App() {
 				<Sidebar></Sidebar>
 				<div className="rest">
 					<Topbar />
-					{/* Logic ... updates */}
-					{/* <Main /> */}
+					<Routes>
+						<Route path="/" element={<Home />} />
+					</Routes>
 				</div>
 			</div>
 		</>

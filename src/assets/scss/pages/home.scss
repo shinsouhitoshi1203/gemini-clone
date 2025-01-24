@@ -1,0 +1,7 @@
+.pageHome {
+    display: flex; flex-direction: column; 
+    & > * {flex-shrink: 0;}
+    &__display {
+        flex-grow: 1;
+    }
+}

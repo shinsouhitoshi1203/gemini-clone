@@ -17,7 +17,7 @@ function Topbar() {
 				<Select caption="Gemini" data={[]} />
 				<Button
 					type="user"
-					avatar=""
+					avatar={"./sample/3e19.png"}
 					tooltip="Your account"
 					size=" 32 32 "
 					cls="topbar__avatar"

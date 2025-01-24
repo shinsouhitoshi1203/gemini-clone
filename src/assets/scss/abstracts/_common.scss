@@ -1,0 +1,8 @@
+$max: 1421px;
+%wrapper {
+    max-width: $max; margin-left: auto; margin-right: auto;
+}
+
+.page {
+    &__wrapper {@extend %wrapper;}
+}

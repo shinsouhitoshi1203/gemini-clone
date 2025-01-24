@@ -5,6 +5,14 @@
         flex-shrink: 0;
     }
     & > .rest {
-        flex-grow: 1;
+        flex-grow: 1;display: flex; flex-direction: column;
+        & > * {
+            flex-shrink: 0;
+        }
+        
     }
+}
+
+.router {
+    flex-grow: 1;
 }
