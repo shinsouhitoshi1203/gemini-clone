@@ -11,7 +11,7 @@ function Sidebar() {
 	const [extend, setExtend] = useState(false); /// 1 hien, 2. full , 3. ko xh
 	return (
 		<>
-			<nav className={`sidebar ${extend && "sidebar--extend"}`}>
+			<nav className={`sidebar${extend ? " sidebar--extend" : ""}`}>
 				<div
 					className={`sidebar__top ${
 						extend && "sidebar__top--extend"

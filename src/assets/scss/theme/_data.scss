@@ -1,32 +1,42 @@
+@use "./dark" as d;
+@use "./light" as l;
 $themeContainer: (
     "light": (
-        main: #1D192B,
-        secondary: #49454F,
-        third: #625B71,
-        hyperlink: rgba(#015ae0, 50%), hyperlink__hover: rgba(#015ae0, 100%),
+        main: l.$main,
+        main2: l.$main2, // for main and routers
+        secondary: l.$secondary,
+        third: l.$third,
+        hyperlink: l.$hyperlink, hyperlink__hover: l.$hyperlink__hover, 
         // art text 
         sidebar: #F7F2FA,
+        topbar: l.$main2, topbar__txt: l.$main,
         input: #ECE6F0,
-        background: #ffffff,
+        background: l.$main2,
         // input button
-        main__hover: rgba(#49454F, 10%),
-        fab: #E6E0E9, fab__hover: rgba(#49454F, 20%),
-        select__hover: rgba(#1D192B, 5%),select__focus: rgba(#1D192B, 10%),
+        main__hover: rgba(l.$secondary, 10%),
+
+        fab: #E6E0E9, fab__hover: rgba(l.$secondary, 20%),
+        select__hover: rgba(l.$main, 5%),select__focus: rgba(l.$main, 10%),
+        defaultIcon: l.$secondary,
+
     ), 
     "dark": (
         main: #ffffff,
+        main2:#211F26,
         secondary: #c7c7c7,
         third: #a3a3a3,
-        hyperlink: rgba(#015ae0, 50%), hyperlink__hover: rgba(#015ae0, 100%),
+        hyperlink: d.$hyperlink, hyperlink__hover: d.$hyperlink__hover,
 
         // art text 
         sidebar: #49454F,
+        topbar: d.$main2, topbar__txt: d.$main,
         input: #38353d,
         background: #1D192B,
         // input button
-        main__hover: rgba(#c7c7c7, 10%),
+        main__hover: rgba(d.$secondary, 10%),
         fab: #787182,fab__hover: #948ca1,
-        select__hover: rgba(#c7c7c7, 5%),select__focus: rgba(#c7c7c7, 10%),
+        select__hover: rgba(d.$secondary, 5%),select__focus: rgba(d.$secondary, 10%),
+        defaultIcon: d.$secondary,
 
     )
 );

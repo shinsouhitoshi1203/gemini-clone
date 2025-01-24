@@ -5,6 +5,7 @@
 
 
 .button {
+    transition: background .3s, color .3s;
     &[extended='true'] {
         justify-content: flex-start; padding: 16px;
     }
@@ -22,6 +23,12 @@
             background-color: var(--fab__hover);//rgba(var(--fab), 10%);
         }
         svg {font-size: 24px;}
+    }
+    &__user {
+        svg {font-size: 32px; color: var(--main)}
+        &:hover {
+            background-color: var(--main__hover);
+        }
     }
     &__bg-tran {
         background: transparent;

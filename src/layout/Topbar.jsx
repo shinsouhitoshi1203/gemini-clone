@@ -7,7 +7,7 @@ function Topbar() {
 			<div className="topbar">
 				<Button
 					type="main"
-					icon={<MenuIcon />}
+					icon={<MenuIcon sx={{ width: 24 }} />}
 					caption={""}
 					reqExtend={false}
 					size="30 + "
@@ -15,6 +15,14 @@ function Topbar() {
 					tran={true}
 				/>
 				<Select caption="Gemini" data={[]} />
+				<Button
+					type="user"
+					avatar=""
+					tooltip="Your account"
+					size=" 32 32 "
+					cls="topbar__avatar"
+					tran={true}
+				/>
 			</div>
 		</>
 	);

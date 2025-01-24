@@ -1,3 +1,4 @@
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 function Button(props) {
 	// destructuring
 	const {
@@ -6,6 +7,7 @@ function Button(props) {
 		tooltip,
 		children,
 		icon,
+		avatar,
 		reqExtend,
 		size,
 		style,
@@ -30,6 +32,16 @@ function Button(props) {
 	// detect type of buttons
 	const { tran, cls, ...events } = rest;
 	let identify = `button__${type} ${tran ? "button__bg-tran" : ""} ${cls}`;
+
+	// icon or avatar
+	let avatarImg;
+	if (type == "user") {
+		avatarImg = avatar ? (
+			<img src={{ avatar }} alt="Your account" />
+		) : (
+			<AccountCircleOutlinedIcon />
+		);
+	}
 	return (
 		<>
 			<button
@@ -38,7 +50,7 @@ function Button(props) {
 				extended={reqExtend ? "true" : null}
 				{...events}
 			>
-				{icon}
+				{icon ?? avatarImg}
 				{reqExtend && <span className="font-6">{caption}</span>}
 			</button>
 		</>
