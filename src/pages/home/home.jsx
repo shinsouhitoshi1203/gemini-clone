@@ -1,6 +1,6 @@
-import Input from "../../layout/Main/Input";
-import Welcome from "../../layout/Main/Welcome";
-import "./../../assets/scss/pages/Home.scss";
+import Input from "./Input";
+import Welcome from "./Welcome";
+import "./../../assets/scss/pages/Home/Home.scss";
 function Home() {
 	return (
 		<div className="pageHome router">

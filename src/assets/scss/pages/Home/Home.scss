@@ -1,7 +1,11 @@
+@use "./Welcome";
 .pageHome {
     display: flex; flex-direction: column; 
     & > * {flex-shrink: 0;}
     &__display {
-        flex-grow: 1;
+        flex-grow: 1; padding-top: 10px;
+    }
+    &__input {
+        padding: 10px;
     }
 }
