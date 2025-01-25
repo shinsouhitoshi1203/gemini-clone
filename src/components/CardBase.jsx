@@ -37,7 +37,7 @@ function manageBG(bg, cls) {
 function CardBase({ cls, children, size, style, bg }) {
 	const classList = useRef(manageBG(bg, cls));
 	const styles = useRef({ ...style, ...setSize(bg, size) });
-	useEffect(() => {}, []);
+
 	return (
 		<>
 			<button className={classList.current} style={styles.current}>

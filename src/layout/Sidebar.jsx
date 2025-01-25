@@ -6,9 +6,10 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useState } from "react";
 import Button from "../components/button";
+import useSideBar from "../hooks/useSideBar";
 
 function Sidebar() {
-	const [extend, setExtend] = useState(false); /// 1 hien, 2. full , 3. ko xh
+	const [extend, setExtend] = useSideBar();
 	return (
 		<>
 			<nav className={`sidebar${extend ? " sidebar--extend" : ""}`}>
