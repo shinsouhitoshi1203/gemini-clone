@@ -1,3 +1,4 @@
+@use "./../abstracts" as a;
 @use "./dark" as d;
 @use "./light" as l;
 $themeContainer: (
@@ -18,7 +19,6 @@ $themeContainer: (
         fab: #E6E0E9, fab__hover: rgba(l.$secondary, 20%),
         select__hover: rgba(l.$main, 5%),select__focus: rgba(l.$main, 10%),
         defaultIcon: l.$secondary,
-
     ), 
     "dark": (
         main: #ffffff,
@@ -41,11 +41,4 @@ $themeContainer: (
     )
 );
 
-
-@each $theme-name, $data in $themeContainer {
-    .App[data-theme="#{$theme-name}"] {
-        @each $prop, $value in $data {
-            --#{$prop}: #{$value};
-        }
-    }
-}
+@include a.themed($themeContainer);

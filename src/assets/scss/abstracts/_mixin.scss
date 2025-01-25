@@ -4,3 +4,12 @@
         border-radius: $bdrs;
     }
 }
+@mixin themed($map) {
+    @each $theme-name, $data in $map {
+        .App[data-theme="#{$theme-name}"] {
+            @each $prop, $value in $data {
+                --#{$prop}: #{$value};
+            }
+        }
+    }
+}

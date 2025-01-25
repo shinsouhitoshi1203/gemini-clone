@@ -1,3 +1,41 @@
+@use "./../../abstracts" as a;
+$themeWelcome: (
+    "light": (
+        txtWelcome1: linear-gradient(90deg, #688AE9 0.05%, #C66D7B 22.24%),
+        txtWelcome2: #CAC4D0,
+    ),
+    "dark": (
+        txtWelcome1: linear-gradient(90deg, #688AE9 0.05%, #C66D7B 22.24%),
+        txtWelcome2:#CAC4D0,
+    )
+);
+@include a.themed($themeWelcome);
+
 .welcome {
-    background-color: yellow;
+	&__head {
+		margin-top: 76px;
+		font-size: 5.7rem;
+		font-weight: 400;
+		line-height: 1.12;
+		letter-spacing: -0.25px;
+        span {
+            display: block;
+        }
+        &-asking {
+            color: var(--txtWelcome2);
+        }
+        &-greeting {
+            background: var(--txtWelcome1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+	}
+
+	&__suggestions {
+		margin-top: 44px;
+	}
+	svg {
+		font-size: 18px;
+	}
 }
