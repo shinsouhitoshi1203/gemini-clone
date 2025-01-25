@@ -1,4 +1,21 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { useEffect, useRef } from "react";
+
+function setSize(size) {
+	const styles = {};
+	if (size) {
+		const [w, h, rs] = size.trim().split(" ");
+		styles.width = w;
+		if (h == "+") {
+			styles.minWidth = parseInt(w);
+		} else {
+			styles.width = parseInt(h);
+		}
+		styles.borderRadius = rs ? parseInt(rs) : parseInt(w) / 2;
+		styles.height = parseInt(w);
+	}
+	return styles;
+}
 function Button(props) {
 	// destructuring
 	const {
@@ -15,19 +32,7 @@ function Button(props) {
 	} = props;
 
 	// get the size {w, h, bdrs}
-	const styles = { ...style };
-	if (size) {
-		const [w, h, rs] = size.trim().split(" ");
-		styles.width = w;
-		if (h == "+") {
-			styles.minWidth = parseInt(w);
-			// styles.width = parseInt(w);
-		} else {
-			styles.width = parseInt(h);
-		}
-		styles.borderRadius = rs ? parseInt(rs) : parseInt(w) / 2;
-		styles.height = parseInt(w);
-	}
+	const styles = useRef({ ...style, ...setSize(size) });
 
 	// detect type of buttons
 	const { tran, cls, ...events } = rest;
@@ -45,7 +50,7 @@ function Button(props) {
 	return (
 		<>
 			<button
-				style={styles}
+				style={styles.current}
 				className={`button ${identify} `}
 				extended={reqExtend ? "true" : null}
 				{...events}
