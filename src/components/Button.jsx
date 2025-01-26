@@ -5,7 +5,7 @@ function setSize(size) {
 	const styles = {};
 	if (size) {
 		const [w, h, rs] = size.trim().split(" ");
-		styles.width = w;
+		styles.width = parseInt(w);
 		if (h == "+") {
 			styles.minWidth = parseInt(w);
 		} else {
@@ -47,6 +47,7 @@ function Button(props) {
 			<AccountCircleOutlinedIcon />
 		);
 	}
+	// console.log(styles.current);
 	return (
 		<>
 			<button

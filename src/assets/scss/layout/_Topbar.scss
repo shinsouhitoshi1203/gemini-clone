@@ -5,7 +5,7 @@
     &__avatar {margin-left: auto;}
     &__nav {
         display: none;
-        @media all and (max-width: 700px) {
+        @media all and (max-width: 900px) {
             display: flex;
         }
     }

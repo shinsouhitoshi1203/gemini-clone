@@ -3,12 +3,12 @@
     transition: background .3s, color .3s;
     background: var(--sidebar);
     display: flex; flex-direction: column; justify-content: space-between;
-    @media all and (max-width: 700px) {
+    @media all and (max-width: 900px) {
         display: none;
     }
     &--extend {
         width: max-content;
-        @media all and (max-width: 700px) {
+        @media all and (max-width: 900px) {
             display: flex; position: fixed; top: 0;left: 0; bottom: 0;
         }
     }
