@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 function HyperLink({ href, text, children, cls }) {
 	return (
-		<a href={href} title={text} className={cls}>
+		<Link to={href} title={text} className={cls}>
 			{children ? children : text}
-		</a>
+		</Link>
 	);
 }
 export default HyperLink;

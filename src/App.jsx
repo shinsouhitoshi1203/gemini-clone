@@ -7,7 +7,7 @@ const SideBarControl = createContext();
 
 function App() {
 	const [extend, setExtend] = useState(false); /// 1 hien, 2. full , 3. ko xh
-
+	console.log(import.meta.env.VITE_API);
 	return (
 		<>
 			<SideBarControl.Provider value={[extend, setExtend]}>
