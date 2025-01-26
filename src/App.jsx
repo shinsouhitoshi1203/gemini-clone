@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import Sidebar from "./layout/Sidebar";
 import Topbar from "./layout/Topbar";
-import Home from "./pages/home/home";
+import Home from "./pages/Home/Home";
 import { createContext, useState } from "react";
+import HomeProvider from "./contexts/HomeProvider";
 const SideBarControl = createContext();
 
 function App() {
 	const [extend, setExtend] = useState(false); /// 1 hien, 2. full , 3. ko xh
-	console.log(import.meta.env.VITE_API);
 	return (
 		<>
 			<SideBarControl.Provider value={[extend, setExtend]}>
@@ -16,7 +16,14 @@ function App() {
 					<div className="rest">
 						<Topbar />
 						<Routes>
-							<Route path="/" element={<Home />} />
+							<Route
+								path="/"
+								element={
+									<HomeProvider>
+										<Home />
+									</HomeProvider>
+								}
+							/>
 						</Routes>
 					</div>
 				</div>

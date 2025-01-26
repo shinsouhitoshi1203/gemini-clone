@@ -1,14 +1,26 @@
-import { useCallback, useRef, useState } from "react";
+import {
+	forwardRef,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState
+} from "react";
+import useHome from "../hooks/useHome";
 
 function mergeClass(cls) {
 	return cls + " " + "TextBox";
 }
-function TextBox({ cls, children, right, left, placeholder }) {
+function TextBox({ cls, children, right, left, placeholder, ...rest }) {
 	const id = useRef(window.crypto.randomUUID());
-	const [text, setText] = useState("");
-	const changeText = useCallback((e) => {
-		setText(e.target.text);
-	}, []);
+	const { input, setInput } = useHome();
+	const changeText = useCallback(
+		(e) => {
+			setInput(e.target.value);
+		},
+		[input]
+	);
+
 	return (
 		<div className={mergeClass(cls)}>
 			<label className="TextBox__wrapper" htmlFor={id.current}>
@@ -20,11 +32,14 @@ function TextBox({ cls, children, right, left, placeholder }) {
 					))}
 				<input
 					type="text"
-					value={text}
-					onChange={changeText}
+					value={input}
+					onChange={(e) => {
+						changeText(e);
+					}}
 					className="TextBox__input"
 					placeholder={placeholder}
 					id={id.current}
+					{...rest}
 				/>
 				{right &&
 					right.map((component, i) => (
