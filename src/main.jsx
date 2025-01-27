@@ -11,11 +11,11 @@ const $ = document.querySelector.bind(document);
 const root = ReactDOM.createRoot($("#root"));
 
 root.render(
-	<StrictMode>
-		<GlobalProvider>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</GlobalProvider>
-	</StrictMode>
+	// <StrictMode>
+	<GlobalProvider>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</GlobalProvider>
+	// </StrictMode>
 );

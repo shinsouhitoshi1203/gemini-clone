@@ -4,6 +4,8 @@ import Loading from "./Loading";
 
 function WaitForAnswer() {
 	const { loading, response } = useHome();
-	return <>{loading ? <Loading /> : <DataAnswer msg={response} />}</>;
+	return (
+		<>{loading ? <Loading /> : <DataAnswer msg={response} req={true} />}</>
+	);
 }
 export default WaitForAnswer;
