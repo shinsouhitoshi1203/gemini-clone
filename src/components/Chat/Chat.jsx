@@ -4,8 +4,8 @@ import Ask from "./Ask";
 function Chat({ data }) {
 	return (
 		<div className="ChatBox__Chat">
-			<Ask data={data} />
-			<Answer data={data} />
+			<Ask chatData={data} />
+			<Answer chatData={data} />
 		</div>
 	);
 }

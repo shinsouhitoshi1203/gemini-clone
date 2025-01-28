@@ -1,6 +1,6 @@
 import DataAnswer from "./Answer/DataAnswer";
 import WaitForAnswer from "./Answer/WaitForAnswer";
-function Answer({ data }) {
+function Answer({ chatData }) {
 	return (
 		<>
 			<div className="ChatBox__Chat-Answer">
@@ -8,8 +8,8 @@ function Answer({ data }) {
 					<img src="/gemini.png" alt="" />
 				</div>
 				<div className="ChatBox__message">
-					{data ? (
-						<DataAnswer msg={data.answer} />
+					{chatData ? (
+						<DataAnswer msg={chatData.answer} />
 					) : (
 						<WaitForAnswer />
 					)}

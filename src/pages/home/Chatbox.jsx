@@ -7,7 +7,7 @@ import "./../../assets/scss/pages/Home/_ChatBox.scss";
 import Chat from "../../components/Chat/Chat";
 
 function Chatbox() {
-	const { recent } = useHome();
+	// const { recent } = useHome();
 	return (
 		<div className="ChatBox">
 			<Chat />

@@ -1,8 +1,10 @@
+import { useMemo } from "react";
 import useHome from "../../hooks/useHome";
 import Button from "../Button";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-function Ask({ data }) {
-	const { recent } = useHome();
+function Ask({ chatData }) {
+	const { data } = useHome();
+
 	return (
 		<>
 			<div className="ChatBox__Chat-Ask">
@@ -11,7 +13,7 @@ function Ask({ data }) {
 				</div>
 				<div className="ChatBox__message">
 					<h2 className="ChatBox__question font-6">
-						{data ? data.question : recent}
+						{chatData ? chatData.question : data.recent}
 					</h2>
 					<div className="ChatBox__tts">
 						<Button
