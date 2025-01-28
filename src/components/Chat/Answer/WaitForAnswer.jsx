@@ -3,9 +3,15 @@ import DataAnswer from "./DataAnswer";
 import Loading from "./Loading";
 
 function WaitForAnswer() {
-	const { loading, response } = useHome();
+	const { data } = useHome();
 	return (
-		<>{loading ? <Loading /> : <DataAnswer msg={response} req={true} />}</>
+		<>
+			{data.allowLoading ? (
+				<Loading />
+			) : (
+				<DataAnswer msg={data.response} req={true} />
+			)}
+		</>
 	);
 }
 export default WaitForAnswer;

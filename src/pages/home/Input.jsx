@@ -3,15 +3,21 @@ import HyperLink from "../../components/Hyperlink";
 import TextBox from "../../components/TextBox";
 import MicIcon from "@mui/icons-material/Mic";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import { useCallback, useEffect, useRef } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import useHome from "../../hooks/useHome";
+import { GEMINI_PREPARE, GEMINI_READY } from "../../reducers/chat/actions";
+import createRequest from "../../reducers/createRequest";
 function Input() {
-	const { input, handleSend } = useHome();
+	const { input, setInput, set, send } = useHome();
 	const sendReq = useCallback(
 		async (e) => {
-			if (e.key == "Enter") {
+			if (e.key == "Enter" && input) {
 				try {
-					await handleSend();
+					const tempInput = input;
+					set(createRequest(GEMINI_PREPARE, input));
+					setInput("");
+					const response = await send(tempInput);
+					set(createRequest(GEMINI_READY, response));
 				} catch (error) {}
 			}
 		},
@@ -43,4 +49,4 @@ function Input() {
 		</>
 	);
 }
-export default Input;
+export default memo(Input);

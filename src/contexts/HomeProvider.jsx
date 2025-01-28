@@ -1,37 +1,29 @@
-import { createContext, useMemo, useState } from "react";
+import {
+	createContext,
+	useCallback,
+	useMemo,
+	useReducer,
+	useState
+} from "react";
 import processGPT from "../config/gemini";
+import reducer from "../reducers/chat/reducer";
+import initData from "../reducers/chat/init";
 const HomeContext = createContext();
+
 function HomeProvider({ children }) {
+	const [data, set] = useReducer(reducer, initData);
 	const [input, setInput] = useState("");
-	const [recent, setRecent] = useState("");
-	const [allowChat, setAllowChat] = useState(false);
-	const [response, setResponse] = useState("");
-	const [loading, setLoading] = useState(false);
-	const handleSend = useMemo(() => {
-		return async function () {
-			setRecent(input);
-			setAllowChat(true);
-			setLoading(true);
-			setInput("");
-			setResponse("");
-			const req = await processGPT(input);
-			setLoading(false);
-			setResponse(req);
-		};
-	}, [input]);
+	const send = useCallback(async (payload = "") => {
+		const response = await processGPT(payload);
+		return response;
+	}, []);
 
 	const store = {
 		input,
 		setInput,
-		recent,
-		setRecent,
-		allowChat,
-		setAllowChat,
-		handleSend,
-		response,
-		setResponse,
-		loading,
-		setLoading
+		data,
+		set,
+		send
 	};
 
 	return (

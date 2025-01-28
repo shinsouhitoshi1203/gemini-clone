@@ -9,13 +9,13 @@ import useHome from "../../hooks/useHome";
 import Chatbox from "./Chatbox";
 
 function Home() {
-	const { allowChat } = useHome();
+	const { data } = useHome();
 
 	return (
 		<div className="pageHome router">
 			<div className="pageHome__display">
 				<div className="page__wrapper">
-					{allowChat ? <Chatbox /> : <Welcome />}
+					{data.allowChat ? <Chatbox /> : <Welcome />}
 				</div>
 			</div>
 			<div className="pageHome__input">
