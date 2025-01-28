@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 
 function HyperLink({ href, text, children, cls }) {
@@ -7,4 +8,4 @@ function HyperLink({ href, text, children, cls }) {
 		</Link>
 	);
 }
-export default HyperLink;
+export default memo(HyperLink);

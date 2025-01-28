@@ -29,7 +29,7 @@ async function processGPT(msg) {
         const result = await chatSession.sendMessage(msg);
         return (result.response.text());
     } catch (error) {
-        console.error(error);
+        console.dir(error);
     }
 }
 

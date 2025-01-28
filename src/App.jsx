@@ -2,34 +2,29 @@ import { Route, Routes } from "react-router-dom";
 import Sidebar from "./layout/Sidebar";
 import Topbar from "./layout/Topbar";
 import Home from "./pages/Home/Home";
-import { createContext, useState } from "react";
 import HomeProvider from "./contexts/HomeProvider";
-const SideBarControl = createContext();
+import SideBarProvider from "./contexts/SideBarProvider";
 
 function App() {
-	const [extend, setExtend] = useState(false); /// 1 hien, 2. full , 3. ko xh
 	return (
-		<>
-			<SideBarControl.Provider value={[extend, setExtend]}>
-				<div className="App" data-theme="light">
-					<Sidebar></Sidebar>
-					<div className="rest">
-						<Topbar />
-						<Routes>
-							<Route
-								path="/"
-								element={
-									<HomeProvider>
-										<Home />
-									</HomeProvider>
-								}
-							/>
-						</Routes>
-					</div>
+		<SideBarProvider>
+			<div className="App" data-theme="light">
+				<Sidebar></Sidebar>
+				<div className="rest">
+					<Topbar />
+					<Routes>
+						<Route
+							path="/"
+							element={
+								<HomeProvider>
+									<Home />
+								</HomeProvider>
+							}
+						/>
+					</Routes>
 				</div>
-			</SideBarControl.Provider>
-		</>
+			</div>
+		</SideBarProvider>
 	);
 }
 export default App;
-export { SideBarControl };
