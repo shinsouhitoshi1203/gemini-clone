@@ -1,0 +1,12 @@
+.topbar {
+    display: flex; gap: 6px; padding: 18px 20px; align-items: center;
+    color: var(--topbar__txt); background: var(--topbar);
+    
+    &__avatar {margin-left: auto;}
+    &__nav {
+        display: none;
+        @media all and (max-width: 900px) {
+            display: flex;
+        }
+    }
+}

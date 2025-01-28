@@ -1,0 +1,36 @@
+@use "./../abstracts" as a;
+%button-default {
+    border-radius: 24px; display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+
+
+.button {
+    transition: background .3s, color .3s;
+    &[extended='true'] {
+        justify-content: flex-start; padding: 16px;
+    }
+    &__main {
+        @extend %button-default; 
+        svg {font-size: 24px;}
+        &:hover {
+            background-color: var(--main__hover);//rgba(var(--secondary), 5%);
+        }
+    }
+    &__fab {
+        color: var(--main);
+        background-color: var(--fab); padding: 16px;border-radius: 16px; @extend %button-default; 
+        &:hover {
+            background-color: var(--fab__hover);//rgba(var(--fab), 10%);
+        }
+        svg {font-size: 24px;}
+    }
+    &__user {
+        svg {font-size: 32px; color: var(--main)}
+        &:hover {
+            background-color: var(--main__hover);
+        }
+    }
+    &__bg-tran {
+        background: transparent;
+    }
+}

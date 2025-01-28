@@ -1,0 +1,99 @@
+@use "./../../abstracts" as a;
+$themeWelcome: (
+	"light": (
+		txtWelcome1: linear-gradient(90deg, #688ae9 0.05%, #c66d7b 22.24%),
+		txtWelcome2: #cac4d0
+	),
+	"dark": (
+		txtWelcome1: linear-gradient(90deg, #688ae9 0.05%, #c66d7b 22.24%),
+		txtWelcome2: #cac4d0
+	)
+);
+@include a.themed($themeWelcome);
+
+.welcome {
+    display: grid;align-items: stretch;
+    & > * {width: 100%;
+        word-wrap: break-word;
+        word-break: break-all;}
+	&__head {
+		margin-top: 76px;
+		font-size: 5.7rem;
+		font-weight: 700;
+		line-height: 1.12;
+		letter-spacing: -0.25px;
+		span {
+			display: block;
+		}
+		&-asking {
+			color: var(--txtWelcome2);
+		}
+		&-greeting {
+			background: var(--txtWelcome1);
+			background-clip: text;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+	}
+
+	&__suggestion {
+		margin-top: 44px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		justify-content: center; 
+        &-card {
+            transition: filter .3s, box-shadow .3s, transform .3s;
+            
+            &:hover {
+                filter: brightness(0.96);box-shadow: 0px 3px 0px #ccc; transform: translateY(-3px);
+            }
+            &:active {
+                transform: translateY(0px);box-shadow: 0px 0px 0px #ccc;
+            }
+        }
+		&-card-wrapper {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			height: 100%;
+			& > * {
+				flex-shrink: 0;
+			}
+		}
+		&-text {
+			font-size: 2.2rem;
+			line-height: 1.28;
+			width: 100%;
+			height: 100%;
+			text-align: left; word-break: break-all;
+		}
+		&-grow {
+			overflow: hidden;
+			flex-grow: 1;
+			& > div {
+				width: 100%;
+				height: 100%;
+				display: -webkit-box;
+				-webkit-line-clamp: 6;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+		}
+		&-icon {
+			&-main {
+				@include a.sq(40px, 50%);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-top: 16px;
+				background: #ffffff;
+				margin-left: auto;
+			}
+		}
+	}
+	svg {
+		font-size: 18px;
+		color: #322f35;
+	}
+}

@@ -1,0 +1,44 @@
+@use "./../abstracts" as a;
+@use "./dark" as d;
+@use "./light" as l;
+$themeContainer: (
+    "light": (
+        main: l.$main,
+        main2: l.$main2, // for main and routers
+        secondary: l.$secondary,
+        third: l.$third,
+        hyperlink: l.$hyperlink, hyperlink__hover: l.$hyperlink__hover, 
+        // art text 
+        sidebar: #F7F2FA,
+        topbar: l.$main2, topbar__txt: l.$main,
+        input: #ECE6F0,
+        background: l.$main2,
+        // input button
+        main__hover: rgba(l.$secondary, 10%),
+
+        fab: #E6E0E9, fab__hover: rgba(l.$secondary, 20%),
+        select__hover: rgba(l.$main, 5%),select__focus: rgba(l.$main, 10%),
+        defaultIcon: l.$secondary,
+    ), 
+    "dark": (
+        main: #ffffff,
+        main2:#211F26,
+        secondary: #c7c7c7,
+        third: #a3a3a3,
+        hyperlink: d.$hyperlink, hyperlink__hover: d.$hyperlink__hover,
+
+        // art text 
+        sidebar: #49454F,
+        topbar: d.$main2, topbar__txt: d.$main,
+        input: #38353d,
+        background: #1D192B,
+        // input button
+        main__hover: rgba(d.$secondary, 10%),
+        fab: #787182,fab__hover: #948ca1,
+        select__hover: rgba(d.$secondary, 5%),select__focus: rgba(d.$secondary, 10%),
+        defaultIcon: d.$secondary,
+
+    )
+);
+
+@include a.themed($themeContainer);

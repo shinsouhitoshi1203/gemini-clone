@@ -1,0 +1,33 @@
+@use "./../abstracts" as a;
+@use "./../theme/dark" as d;
+@use "./../theme/light" as l;
+
+
+.App {
+    display: flex; align-items: stretch; 
+    min-height: 100vh; width: 100%;
+    & > * {
+        flex-shrink: 0;
+    }
+    & > .rest {
+        flex-grow: 1;display: flex; flex-direction: column; flex-basis: 10px;
+        & > * {
+            flex-shrink: 0;
+        }
+        
+    }
+}
+// routers color
+$themePage: (
+    "light": (
+        bgRouter: l.$main2,
+    ),
+    "dark": (
+        bgRouter: d.$main2,
+    )
+);
+@include a.themed($themePage);
+.router {
+    flex-grow: 1;
+    background: var(--bgRouter);
+}

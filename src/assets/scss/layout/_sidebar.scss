@@ -1,0 +1,57 @@
+.sidebar {
+    width: 90px; padding: 10px; min-height: 450px;
+    transition: background .3s, color .3s;
+    background: var(--sidebar);
+    display: flex; flex-direction: column; justify-content: space-between;
+    @media all and (max-width: 900px) {
+        display: none;
+    }
+    &--extend {
+        width: max-content;
+        @media all and (max-width: 900px) {
+            display: flex; position: fixed; top: 0;left: 0; bottom: 0;
+        }
+    }
+    &__top, &__bottom {
+        display: flex; flex-direction: column; align-items: center; 
+    }
+    &__top {
+        gap: 40px;
+        &--extend {
+            padding: 0 16px;
+            align-items: flex-start;
+        }
+    }
+    &__bottom {
+        gap: 12px;
+        &--extend {
+            padding: 0 16px;
+            align-items: stretch;
+        }
+    }
+    &__addition {
+        margin-top: 12px; 
+        height: 35px;
+    }
+    svg, button {
+        color: var(--secondary);
+    }
+    
+    // options
+    &--extend {
+        align-items: flex-start;
+    }
+}
+
+.ip {
+    padding-left: 6px; padding-right: 6px;
+    &__main {
+        display: flex; align-items: flex-start; gap: 6px;
+    }
+    &__location {
+        color: var(--main); font-size: 1.4rem;
+    }
+    &__note {
+        color: var(--hyperlink); font-size: 1.2rem; margin-top: 6px;
+    }
+}
