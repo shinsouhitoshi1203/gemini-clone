@@ -4,8 +4,10 @@
     & > * {flex-shrink: 0;}
     &__display {
         flex-grow: 1; padding-top: 10px;flex-basis: 10px; overflow: auto;
+        &::-webkit-scrollbar {display: none;}
     }
     &__input {
+        box-shadow: 0px -25px 20px var(--bgRouter);
         padding: 10px; 
         &-real {
             margin: 5px 0;

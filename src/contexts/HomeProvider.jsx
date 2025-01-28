@@ -6,12 +6,16 @@ function HomeProvider({ children }) {
 	const [recent, setRecent] = useState("");
 	const [allowChat, setAllowChat] = useState(false);
 	const [response, setResponse] = useState("");
+	const [loading, setLoading] = useState(false);
 	const handleSend = useMemo(() => {
 		return async function () {
 			setRecent(input);
 			setAllowChat(true);
+			setLoading(true);
 			setInput("");
+			setResponse("");
 			const req = await processGPT(input);
+			setLoading(false);
 			setResponse(req);
 		};
 	}, [input]);
@@ -25,7 +29,9 @@ function HomeProvider({ children }) {
 		setAllowChat,
 		handleSend,
 		response,
-		setResponse
+		setResponse,
+		loading,
+		setLoading
 	};
 
 	return (

@@ -1,18 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useRef, useState } from "react";
 import useHome from "../../hooks/useHome";
 import requestGPT from "../../code/req";
 import processGPT from "../../config/gemini";
 import Markdown from "react-markdown";
+import "./../../assets/scss/pages/Home/_ChatBox.scss";
+import Chat from "../../components/Chat/Chat";
 
 function Chatbox() {
-	const { recent, response } = useHome();
-
+	const { recent } = useHome();
 	return (
-		<>
-			<div className="list">
-				<Markdown>{response}</Markdown>
-			</div>
-		</>
+		<div className="ChatBox">
+			<Chat />
+		</div>
 	);
 }
 export default Chatbox;

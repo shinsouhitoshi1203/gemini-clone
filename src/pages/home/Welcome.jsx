@@ -1,5 +1,6 @@
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import CardBase from "../../components/CardBase";
+import { memo } from "react";
 const dataSample = [
 	"Generate unit tests for the following C# function",
 	"Help write SQL to generate a report",
@@ -49,4 +50,4 @@ function Welcome() {
 		</>
 	);
 }
-export default Welcome;
+export default memo(Welcome);

@@ -7,8 +7,10 @@ import HomeProvider from "../../contexts/HomeProvider";
 import "./../../assets/scss/pages/Home/Home.scss";
 import useHome from "../../hooks/useHome";
 import Chatbox from "./Chatbox";
+
 function Home() {
 	const { allowChat } = useHome();
+
 	return (
 		<div className="pageHome router">
 			<div className="pageHome__display">
