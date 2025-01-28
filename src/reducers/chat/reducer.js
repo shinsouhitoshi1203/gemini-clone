@@ -2,7 +2,7 @@ import createRequest from "../createRequest";
 import {
 	GEMINI_PREPARE,
 	GEMINI_READY,
-	GEMINI_ERROR,
+	//GEMINI_ERROR,
 	GEMINI_FINISH,
 	// GEMINI_APPEAR_EACH
 } from "./actions";
@@ -15,7 +15,7 @@ function reducer(data, action) {
             if (payload) {
                 return {
                     ...data,
-                    response:payload,
+                    response: payload,
                     allowLoading: false,
                     allowAnimation: true
                 };
