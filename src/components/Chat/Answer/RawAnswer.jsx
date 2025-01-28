@@ -1,9 +1,10 @@
 // raw answer, it is seperated to prevent mass rerendering
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useHome from "../../../hooks/useHome";
 import createRequest from "../../../reducers/createRequest";
 import { GEMINI_FINISH } from "../../../reducers/chat/actions";
 
+import RemarkMathPlugin from "remark-math";
 import Markdown from "markdown-to-jsx";
 // import { MDXEditor } from "@mdxeditor/editor";
 // import { headingsPlugin } from "@mdxeditor/editor";
@@ -27,6 +28,8 @@ function RawAnswer({ needDelay, text }) {
 							ok();
 						}, 60);
 					});
+					// console.log(reset.current);
+
 					if (i == wordList.length - 1)
 						set(createRequest(GEMINI_FINISH));
 					setDisplayText((x) => x + " " + wordList[i]);
@@ -35,11 +38,12 @@ function RawAnswer({ needDelay, text }) {
 			fn();
 		}
 	}, []);
+
 	return (
 		<div className="ChatBox__answer-raw MarkDown">
 			<Markdown
 				children={needDelay ? displayText : text}
-				// plugins={[headingsPlugin()]}
+				plugins={[RemarkMathPlugin]}
 			/>
 		</div>
 	);

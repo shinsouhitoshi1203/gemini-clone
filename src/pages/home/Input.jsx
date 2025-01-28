@@ -2,13 +2,18 @@ import Button from "../../components/Button";
 import HyperLink from "../../components/Hyperlink";
 import TextBox from "../../components/TextBox";
 import MicIcon from "@mui/icons-material/Mic";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { memo, useCallback, useEffect, useRef } from "react";
 import useHome from "../../hooks/useHome";
-import { GEMINI_PREPARE, GEMINI_READY } from "../../reducers/chat/actions";
+import {
+	GEMINI_PREPARE,
+	GEMINI_READY,
+	GEMINI_STOP_RESPONSING
+} from "../../reducers/chat/actions";
 import createRequest from "../../reducers/createRequest";
 function Input() {
-	const { input, setInput, set, send } = useHome();
+	const { input, setInput, set, send, data } = useHome();
 	const sendReq = useCallback(
 		async (e) => {
 			if (e.key == "Enter" && input) {
@@ -39,12 +44,24 @@ function Input() {
 				]}
 				placeholder="Enter a prompt here"
 				right={[
-					<Button
-						type="main"
-						caption="Input from voice"
-						icon={<MicIcon />}
-						size="40 40 50%"
-					/>
+					!data.allowForceStop ? (
+						<Button
+							type="main"
+							caption="Input from voice"
+							icon={<MicIcon />}
+							size="40 40 50%"
+						/>
+					) : (
+						<Button
+							type="main"
+							caption="Cancel"
+							icon={<StopCircleIcon />}
+							size="40 40 50%"
+							onClick={() => {
+								set(createRequest(GEMINI_STOP_RESPONSING));
+							}}
+						/>
+					)
 				]}
 				onKeyDown={sendReq}
 			/>
