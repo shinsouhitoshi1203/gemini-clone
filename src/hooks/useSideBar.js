@@ -1,7 +1,8 @@
 import { useContext } from "react";
-import { SideBarControl } from "../App";
+import { SideBarContext } from "../contexts/SideBarProvider";
+
 
 function useSideBar() {
-    return useContext(SideBarControl);
+    return useContext(SideBarContext);
 }
 export default useSideBar;

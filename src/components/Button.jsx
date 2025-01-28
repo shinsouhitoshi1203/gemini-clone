@@ -5,7 +5,7 @@ function setSize(size) {
 	const styles = {};
 	if (size) {
 		const [w, h, rs] = size.trim().split(" ");
-		// styles.width = parseInt(w);
+		// styles.width =  parseInt(w);
 		if (h == "+") {
 			styles.minWidth = parseInt(w);
 			styles.height = parseInt(w);
