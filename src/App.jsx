@@ -4,14 +4,16 @@ import Topbar from "./layout/Topbar";
 import Home from "./pages/Home/Home";
 import HomeProvider from "./contexts/HomeProvider";
 import SideBarProvider from "./contexts/SideBarProvider";
+import { memo } from "react";
 
+const TopBar = memo(Topbar);
 function App() {
 	return (
 		<SideBarProvider>
 			<div className="App" data-theme="light">
 				<Sidebar></Sidebar>
 				<div className="rest">
-					<Topbar />
+					{<TopBar />}
 					<Routes>
 						<Route
 							path="/"

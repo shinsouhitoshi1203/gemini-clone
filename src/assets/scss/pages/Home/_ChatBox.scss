@@ -30,7 +30,12 @@
         font-size: 2.2rem;
         line-height: 1.28;color: var(--main);
     }
-    &__answer {min-height: 50px;font: {size: 2.2rem; weight: 400; } line-height: 1.28;}
+    &__answer {
+        min-height: 50px;font: {size: 2.2rem; weight: 400; } line-height: 1.28;
+        &-raw {
+            font: inherit;
+        }
+    }
     &__tts-btn {
         margin-left: auto;
     }

@@ -17,6 +17,8 @@ function Input() {
 					set(createRequest(GEMINI_PREPARE, input));
 					setInput("");
 					const response = await send(tempInput);
+					console.log(response);
+
 					set(createRequest(GEMINI_READY, response));
 				} catch (error) {}
 			}
