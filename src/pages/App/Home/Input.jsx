@@ -1,17 +1,16 @@
-import Button from "../../components/Button";
-import HyperLink from "../../components/Hyperlink";
-import TextBox from "../../components/TextBox";
+import { memo, useCallback } from "react";
 import MicIcon from "@mui/icons-material/Mic";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import { memo, useCallback, useEffect, useRef } from "react";
-import useHome from "../../hooks/useHome";
+import Button from "../../../components/Button";
+import TextBox from "../../../components/TextBox";
+import useHome from "../../../hooks/useHome";
 import {
 	GEMINI_PREPARE,
 	GEMINI_READY,
 	GEMINI_STOP_RESPONSING
-} from "../../reducers/chat/actions";
-import createRequest from "../../reducers/createRequest";
+} from "../../../reducers/chat/actions";
+import createRequest from "../../../reducers/createRequest";
 function Input() {
 	const { input, setInput, set, send, data } = useHome();
 	const sendReq = useCallback(
