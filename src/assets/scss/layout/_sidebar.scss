@@ -1,33 +1,21 @@
 .sidebar {
-    width: 90px; padding: 10px; min-height: 450px; z-index: 11;
+    width: 90px; padding: 10px; min-height: 450px;
     transition: background .3s, color .3s;
     background: var(--sidebar);
     display: flex; flex-direction: column; justify-content: space-between;
     @media all and (max-width: 900px) {
         display: none;
     }
-
     &--extend {
         width: max-content;
         @media all and (max-width: 900px) {
             display: flex; position: fixed; top: 0;left: 0; bottom: 0;
-            z-index: 13;
-        }
-    }
-    &__wrap {
-        position: fixed;
-        visibility: hidden;
-        inset: 0;
-        background-color: #00000057;
-        z-index: 11;
-        @media all and (max-width: 900px) {
-            visibility: visible;
         }
     }
     &__top, &__bottom {
         display: flex; flex-direction: column; align-items: center; 
     }
-    &__top { 
+    &__top {
         gap: 40px;
         &--extend {
             padding: 0 16px;

@@ -4,7 +4,6 @@ import {
 	GEMINI_READY,
 	//GEMINI_ERROR,
 	GEMINI_FINISH,
-    GEMINI_STOP_RESPONSING,
 	// GEMINI_APPEAR_EACH
 } from "./actions";
 
@@ -18,8 +17,7 @@ function reducer(data, action) {
                     ...data,
                     response: payload,
                     allowLoading: false,
-                    allowAnimation: true,
-                    allowForceStop: true
+                    allowAnimation: true
                 };
             } else {
                 throw new Error ("breh")
@@ -34,39 +32,15 @@ function reducer(data, action) {
 				allowChat: true,
 				response: "",
 				allowLoading: true,
-				allowAnimation: false,
-                mustStop: false,
-                allowForceStop: false,
+				allowAnimation: false
 			};
 		}
 		case GEMINI_FINISH: {
-            if (!data.mustStop) {
-                return {
-                    ...data,
-                    allowAnimation: false,
-                    allowForceStop: false,
-                    mustStop: false,
-                };
-            } else {
-                return {...data}
-            }
-			
+			return {
+				...data,
+				allowAnimation: false
+			};
 		}
-        case GEMINI_STOP_RESPONSING: {
-            if (data.allowAnimation) {
-                return {
-                    ...data,
-                    allowForceStop: false,
-                    allowAnimation: false,
-                    mustStop: true,
-                    response: ""
-                };
-            
-            } else {
-                return {...data}
-            }
-		}	
-        
 		default:
 			return data;
 	}

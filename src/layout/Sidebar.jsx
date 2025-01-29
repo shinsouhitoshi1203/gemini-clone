@@ -12,14 +12,6 @@ function Sidebar() {
 	const [extend, setExtend] = useSideBar();
 	return (
 		<>
-			{extend && (
-				<div
-					className="sidebar__wrap"
-					onClick={() => {
-						setExtend(false);
-					}}
-				></div>
-			)}
 			<nav className={`sidebar${extend ? " sidebar--extend" : ""}`}>
 				<div
 					className={`sidebar__top ${

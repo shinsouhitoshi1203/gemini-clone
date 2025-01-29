@@ -3,7 +3,7 @@
 @use "./light" as l;
 $themeContainer: (
     "light": (
-        main: #1d192b,
+        main: l.$main,
         main2: l.$main2, // for main and routers
         secondary: l.$secondary,
         third: l.$third,

@@ -1,6 +1,6 @@
-import { memo } from "react";
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
-import CardBase from "../../../components/CardBase";
+import CardBase from "../../components/CardBase";
+import { memo } from "react";
 const dataSample = [
 	"Generate unit tests for the following C# function",
 	"Help write SQL to generate a report",

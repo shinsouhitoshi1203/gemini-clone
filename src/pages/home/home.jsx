@@ -1,13 +1,12 @@
 import Welcome from "./Welcome";
 import Input from "./Input";
-import Hyperlink from "../../../components/Hyperlink";
-
-// sub-page
-import Chatbox from "./Chatbox";
+import HyperLink from "../../components/Hyperlink";
+// contexts
+import HomeProvider from "../../contexts/HomeProvider";
 // styling
-import "./../../../assets/scss/pages/Home/Home.scss";
-// hooks
-import useHome from "../../../hooks/useHome";
+import "./../../assets/scss/pages/Home/Home.scss";
+import useHome from "../../hooks/useHome";
+import Chatbox from "./Chatbox";
 
 function Home() {
 	const { data } = useHome();
@@ -25,7 +24,7 @@ function Home() {
 					<p className="pageHome__disclaimer font-4">
 						Gemini may display inaccurate info, including about
 						people, so double-check its responses.
-						<Hyperlink
+						<HyperLink
 							href="/privacy"
 							text="Your privacy & Gemini Apps"
 							cls="pageHome__privacy"
