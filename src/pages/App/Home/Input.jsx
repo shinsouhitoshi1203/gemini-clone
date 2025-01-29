@@ -12,18 +12,12 @@ import {
 } from "../../../reducers/chat/actions";
 import createRequest from "../../../reducers/createRequest";
 function Input() {
-	const { input, setInput, set, send, data } = useHome();
+	const { input, data, send } = useHome();
 	const sendReq = useCallback(
 		async (e) => {
 			if (e.key == "Enter" && input) {
 				try {
-					const tempInput = input;
-					set(createRequest(GEMINI_PREPARE, input));
-					setInput("");
-					const response = await send(tempInput);
-					console.log(response);
-
-					set(createRequest(GEMINI_READY, response));
+					await send(input);
 				} catch (error) {}
 			}
 		},
