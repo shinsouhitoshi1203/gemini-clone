@@ -1,7 +1,16 @@
 import Options from "./Options";
 import RawAnswer from "./RawAnswer";
-
+import useHome from "../../../hooks/useHome";
+import { useMemo } from "react";
 function DataAnswer({ msg, req }) {
+	const { data } = useHome();
+	const allowShowingOption = useMemo(() => {
+		if (req) {
+			return !data.allowAnimation;
+		} else {
+			return true;
+		}
+	}, [data]);
 	return (
 		<>
 			<div className="ChatBox__answer">
@@ -12,7 +21,7 @@ function DataAnswer({ msg, req }) {
 				)}
 			</div>
 			<div className="ChatBox__Options">
-				<Options />
+				{allowShowingOption && <Options />}
 			</div>
 		</>
 	);
