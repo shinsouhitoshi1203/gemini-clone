@@ -70,4 +70,12 @@
     h6 {
         font: {weight: 500; size: 1.8rem}
     }
+
+    table {width: 100%; margin-top: 40px;}
+    tr > *  {text-align: left;}
+    tr:has(th) {background: var(--fab);}
+    tr {display: grid;padding-top: 10px;padding-bottom: 10px; grid-template-columns: repeat(auto-fit,minmax(10px,1fr)); grid-gap: 0 20px; width: 100%;}
+    table tr:nth-of-type(even):not(:has(th)) {background: var(--input);}
+    th {font-weight: 700;}
+    th,td{padding-left: 10px; padding-right: 10px; line-height: 1.3;}
 }
