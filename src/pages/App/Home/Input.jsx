@@ -12,7 +12,7 @@ import {
 } from "../../../reducers/chat/actions";
 import createRequest from "../../../reducers/createRequest";
 function Input() {
-	const { input, data, send } = useHome();
+	const { input, data, send, set } = useHome();
 	const sendReq = useCallback(
 		async (e) => {
 			if (e.key == "Enter" && input) {

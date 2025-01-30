@@ -26,9 +26,6 @@ function manageBG(bg, cls) {
 		if (bg == "default") {
 			x += " cardBase__default ";
 		}
-		// } else {
-		//     styles.current = { ...styles.current, backgroundColor: bg };
-		// }
 	} else {
 		x += " cardBase__default ";
 	}

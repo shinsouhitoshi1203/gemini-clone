@@ -12,6 +12,7 @@ import Markdown from "markdown-to-jsx";
 // import "@mdxeditor/editor/style.css";
 function RawAnswer({ needDelay, text }) {
 	const { set } = useHome();
+	const answerField = useRef();
 	const [displayText, setDisplayText] = useState("");
 	const wordList = useMemo(() => {
 		try {
@@ -19,6 +20,7 @@ function RawAnswer({ needDelay, text }) {
 		} catch (error) {}
 	}, []);
 
+	useEffect(() => {}, []);
 	useEffect(() => {
 		if (needDelay) {
 			async function fn() {
@@ -40,7 +42,7 @@ function RawAnswer({ needDelay, text }) {
 	}, []);
 
 	return (
-		<div className="ChatBox__answer-raw MarkDown">
+		<div className="ChatBox__answer-raw MarkDown" ref={answerField}>
 			<Markdown
 				children={needDelay ? displayText : text}
 				plugins={[RemarkMathPlugin]}
