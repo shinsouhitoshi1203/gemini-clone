@@ -20,7 +20,28 @@ function RawAnswer({ needDelay, text }) {
 		} catch (error) {}
 	}, []);
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		const md = answerField.current;
+		function copy(e) {
+			const t = e.target;
+			if (t.matches("pre") || t.matches("code")) {
+				const code = t.innerText;
+				navigator.clipboard.writeText(code);
+			}
+		}
+		function tooltip(e) {
+			const t = e.target;
+			if (t.matches("pre") || t.matches("code")) {
+				t.setAttribute("title", "Click to copy this code");
+			}
+		}
+		md.addEventListener("click", copy);
+		md.addEventListener("mouseover", tooltip);
+		return () => {
+			md.removeEventListener("click", copy);
+			md.removeEventListener("mouseover", tooltip);
+		};
+	}, []);
 	useEffect(() => {
 		if (needDelay) {
 			async function fn() {
