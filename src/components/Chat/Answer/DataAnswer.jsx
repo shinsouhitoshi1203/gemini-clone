@@ -1,9 +1,11 @@
 import Options from "./Options";
 import RawAnswer from "./RawAnswer";
 import useHome from "../../../hooks/useHome";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 function DataAnswer({ msg, req }) {
 	const { data } = useHome();
+	const answerNoAnimation = useRef(msg);
+	console.log(answerNoAnimation.current);
 	const allowShowingOption = useMemo(() => {
 		if (req) {
 			return !data.allowAnimation;
