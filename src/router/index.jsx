@@ -2,6 +2,7 @@ import { createBrowserRouter, Link } from "react-router-dom";
 import RootPage from "../pages";
 import Main from "../pages/App";
 import Home from "../pages/App/Home";
+import Test from "../pages/Test";
 
 const router = createBrowserRouter([
 	{ path: "*", element: <div>FUCK</div> },
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
 						)
 					}
 				]
+			},
+			{
+				path: "test",
+				element: <Test />
 			}
 		]
 	}
