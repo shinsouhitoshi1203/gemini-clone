@@ -1,6 +1,5 @@
 import { lazy, memo, Suspense } from "react";
 import useGlobal from "../../../hooks/useGlobal";
-import LazyLoading from "../../../utils/LazyLoading";
 import { Skeleton } from "@mui/material";
 const Suggestion = lazy(() => import("./Suggestion"));
 const dataSample = [
