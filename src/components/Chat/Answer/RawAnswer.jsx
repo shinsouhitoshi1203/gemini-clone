@@ -43,6 +43,7 @@ function RawAnswer({ needDelay, text }) {
 		};
 	}, []);
 	useEffect(() => {
+		let isMounted = true;
 		if (needDelay) {
 			async function fn() {
 				for (let i = 0; i < wordList.length; ++i) {
@@ -52,7 +53,7 @@ function RawAnswer({ needDelay, text }) {
 						}, 60);
 					});
 					// console.log(reset.current);
-
+					if (!isMounted) return;
 					if (i == wordList.length - 1)
 						set(createRequest(GEMINI_FINISH));
 					setDisplayText((x) => x + " " + wordList[i]);
@@ -60,6 +61,9 @@ function RawAnswer({ needDelay, text }) {
 			}
 			fn();
 		}
+		return () => {
+			isMounted = false;
+		};
 	}, []);
 
 	return (

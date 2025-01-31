@@ -22,13 +22,19 @@
         &:hover {
             background-color: var(--fab__hover);//rgba(var(--fab), 10%);
         }
+        
         svg {font-size: 24px;}
     }
     &__user {
-        svg {font-size: 32px; color: var(--main)}
+        overflow: hidden; transition: outline .3s;outline: 4px solid transparent;
+        svg {font-size: 32px; color: var(--main);    }
         &:hover {
-            background-color: var(--main__hover);
+            outline-color: var(--main__hover);
         }
+        &:active, &:focus {
+            outline-color: var(--fab);
+        }
+        
     }
     &__bg-tran {
         background: transparent;

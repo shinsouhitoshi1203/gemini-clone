@@ -2,7 +2,10 @@ import Button from "../components/Button";
 import Select from "../components/Select";
 import MenuIcon from "@mui/icons-material/Menu";
 import useSideBar from "../hooks/useSideBar";
+import useGlobal from "../hooks/useGlobal";
 function Topbar() {
+	const { global } = useGlobal();
+
 	const [, setExtend] = useSideBar();
 	return (
 		<>
@@ -22,7 +25,7 @@ function Topbar() {
 				<Select caption="Gemini" data={[]} />
 				<Button
 					type="user"
-					avatar={"./sample/3e19.png"}
+					avatar={global.user.avatar}
 					tooltip="Your account"
 					size=" 32 32 "
 					cls="topbar__avatar"

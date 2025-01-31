@@ -11,9 +11,9 @@ const $ = document.querySelector.bind(document);
 const root = ReactDOM.createRoot($("#root"));
 
 root.render(
-	// <StrictMode>
-	<GlobalProvider>
-		<App />
-	</GlobalProvider>
-	// </StrictMode>
+	<StrictMode>
+		<GlobalProvider>
+			<App />
+		</GlobalProvider>
+	</StrictMode>
 );

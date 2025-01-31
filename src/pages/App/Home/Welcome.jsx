@@ -1,6 +1,8 @@
-import { memo } from "react";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
-import CardBase from "../../../components/CardBase";
+import { lazy, memo, Suspense } from "react";
+import useGlobal from "../../../hooks/useGlobal";
+import LazyLoading from "../../../utils/LazyLoading";
+import { Skeleton } from "@mui/material";
+const Suggestion = lazy(() => import("./Suggestion"));
 const dataSample = [
 	"Generate unit tests for the following C# function",
 	"Help write SQL to generate a report",
@@ -9,13 +11,16 @@ const dataSample = [
 ];
 
 function Welcome() {
+	const { global } = useGlobal();
+	const { userName, history } = global?.user;
+
 	return (
 		<>
 			<div className="welcome">
 				<header className="welcome__head">
 					<h1>
 						<span className="welcome__head-greeting">
-							Hello, {"shinsouhitoshi1203"}
+							Hello, {userName}
 						</span>
 						<span className="welcome__head-asking">
 							How can I help you today?
@@ -23,28 +28,18 @@ function Welcome() {
 					</h1>
 				</header>
 				<div className="welcome__suggestion">
-					{dataSample.map((txt, i) => (
-						<CardBase
-							cls="welcome__suggestion-card"
-							size="254 226 12 16"
-							key={i}
-						>
-							<div className="welcome__suggestion-card-wrapper">
-								<div className="welcome__suggestion-grow">
-									<div>
-										<p className="welcome__suggestion-text font-4">
-											{txt}
-										</p>
-									</div>
-								</div>
-								<div className="welcome__suggestion-icon">
-									<span className="welcome__suggestion-icon-main">
-										<LanguageOutlinedIcon />
-									</span>
-								</div>
-							</div>
-						</CardBase>
-					))}
+					<Suspense
+						fallback={
+							<Skeleton
+								variant="rounded"
+								width={"100%"}
+								sx={{ maxHeight: 500, minHeight: 20 }}
+								height={60}
+							/>
+						}
+					>
+						<Suggestion />
+					</Suspense>
 				</div>
 			</div>
 		</>
