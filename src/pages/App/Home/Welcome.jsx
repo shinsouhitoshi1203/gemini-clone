@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense } from "react";
-import useGlobal from "../../../hooks/useGlobal";
+import useGlobal from "../../../hooks/zustand/global";
 import { Skeleton } from "@mui/material";
 const Suggestion = lazy(() => import("./Suggestion"));
 const dataSample = [
@@ -10,20 +10,24 @@ const dataSample = [
 ];
 
 function Welcome() {
-	const { global } = useGlobal();
-	const { userName, history } = global?.user;
+	const { nickname } = useGlobal((x) => x.user?.info);
+	// const { userName, history } = global?.user;
 
 	return (
 		<>
 			<div className="welcome">
 				<header className="welcome__head">
 					<h1>
-						<span className="welcome__head-greeting">
-							Hello, {userName}
-						</span>
-						<span className="welcome__head-asking">
-							How can I help you today?
-						</span>
+						{nickname && (
+							<>
+								<span className="welcome__head-greeting">
+									Hello, {nickname}
+								</span>
+								<span className="welcome__head-asking">
+									How can I help you today?
+								</span>
+							</>
+						)}
 					</h1>
 				</header>
 				<div className="welcome__suggestion">

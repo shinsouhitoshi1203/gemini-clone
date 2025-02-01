@@ -1,22 +1,17 @@
-import Welcome from "./Welcome";
 import Input from "./Input";
 import Hyperlink from "../../../components/Hyperlink";
 
-// sub-page
-import Chatbox from "./Chatbox";
 // styling
 import "./../../../assets/scss/pages/Home/Home.scss";
 // hooks
-import useHome from "../../../hooks/useHome";
+import { Outlet } from "react-router-dom";
 
 function Home() {
-	const { data } = useHome();
-
 	return (
 		<div className="pageHome router">
 			<div className="pageHome__display">
 				<div className="page__wrapper">
-					{data.allowChat ? <Chatbox /> : <Welcome />}
+					<Outlet />
 				</div>
 			</div>
 			<div className="pageHome__input">

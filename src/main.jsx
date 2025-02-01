@@ -1,19 +1,16 @@
 import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-
 // styles
 import "./assets/scss/main.scss";
-import { BrowserRouter } from "react-router-dom";
 import GlobalProvider from "./contexts/GlobalProvider";
-const $ = document.querySelector.bind(document);
+import { RouterProvider } from "react-router-dom";
+import router from "./router";
 
+const $ = document.querySelector.bind(document);
 const root = ReactDOM.createRoot($("#root"));
 
 root.render(
 	<StrictMode>
-		<GlobalProvider>
-			<App />
-		</GlobalProvider>
+		<RouterProvider router={router} />
 	</StrictMode>
 );

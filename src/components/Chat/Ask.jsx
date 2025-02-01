@@ -2,15 +2,15 @@ import { useMemo } from "react";
 import useHome from "../../hooks/useHome";
 import Button from "../Button";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import useGlobal from "../../hooks/useGlobal";
+import useGlobal from "../../hooks/zustand/global";
 function Ask({ chatData }) {
 	const { data } = useHome();
-	const { global } = useGlobal();
+	const { avatar } = useGlobal((x) => x.user.info);
 	return (
 		<>
 			<div className="ChatBox__Chat-Ask">
 				<div className="ChatBox__user">
-					<img src={global.user.avatar} alt="" />
+					<img src={avatar} alt="" />
 				</div>
 				<div className="ChatBox__message">
 					<h2 className="ChatBox__question font-6">

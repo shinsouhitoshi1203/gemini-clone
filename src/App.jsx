@@ -1,19 +1,8 @@
-import { Route, RouterProvider, Routes } from "react-router-dom";
-import Main from "./pages/App";
-import Home from "./pages/App/Home";
-import RootPage from "./pages";
+import { Outlet } from "react-router-dom";
 import router from "./router";
+import GlobalProvider from "./contexts/GlobalProvider";
 
 function App() {
-	return <RouterProvider router={router} />;
+	return <Outlet />;
 }
 export default App;
-/* 
-<Routes>
-    <Route path="*" element={<div> FUCK </div>} />
-    <Route path="/" element={<RootPage />} />
-    <Route path="/app" element={<Main />}>
-        <Route index element={<Home />} />
-    </Route>
-</Routes> 
-*/

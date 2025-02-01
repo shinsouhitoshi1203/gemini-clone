@@ -1,10 +1,10 @@
 import CardBase from "../../../components/CardBase";
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
-import useGlobal from "../../../hooks/useGlobal";
+import useGlobal from "../../../hooks/zustand/global";
 
 function Suggestion() {
-	const { global } = useGlobal();
-	const { history } = global?.user;
+	const { user } = useGlobal();
+	const { history } = user;
 	return (
 		<>
 			{history.length > 0 &&
