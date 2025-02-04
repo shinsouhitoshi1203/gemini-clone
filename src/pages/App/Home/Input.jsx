@@ -33,10 +33,10 @@ function Input() {
 						const ID = window.crypto.randomUUID();
 						newChat(ID, userID, () => {
 							navigate("/app/" + ID, {
-								state: { newQuestion: true }
+								state: { newQuestion: true, question: input }
 							});
 							pushHistory(ID);
-
+							prepare(input);
 							setInput("");
 						});
 					} else {

@@ -1,19 +1,21 @@
 import { useEffect, useRef } from "react";
-import Chat from "../../../components/Chat";
-// styling
-import useGlobal from "../../../hooks/zustand/global";
-import "./../../../assets/scss/pages/Home/_ChatBox.scss";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+// styling
+import "./../../../assets/scss/pages/Home/_ChatBox.scss";
+// database
 import { checkExistance, loadChat } from "../../../db";
-import useUserChat from "../../../hooks/zustand/userChat";
+// components
 import ChatHistory from "../../../components/Chat/List";
-import Ask from "../../../components/Chat/Ask";
-import Answer from "../../../components/Chat/Answer";
+// hooks
+import useUserChat from "../../../hooks/zustand/userChat";
+import useGlobal from "../../../hooks/zustand/global";
 
 function Chatbox() {
+	const chatBoxRef = useRef(false);
+	const chatBoxRef2 = useRef(false);
+
 	const { state } = useLocation();
 	const userID = useGlobal((state) => state.currentUser);
-	const chatBoxRef = useRef(false);
 	const navigate = useNavigate(); // incase of invalid conversation id, we will go to /
 	const { conversation: chatID } = useParams();
 	const chatList = useGlobal((state) => state.user.history);
@@ -55,7 +57,12 @@ function Chatbox() {
 		}
 		chatBoxRef.current = true;
 	}, []);
+	useEffect(() => {
+		if (chatBoxRef2.current) return;
+		console.log(111);
 
+		chatBoxRef2.current = true;
+	}, []);
 	return (
 		<div className="ChatBox">
 			<ChatHistory />

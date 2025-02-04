@@ -27,6 +27,7 @@ const GEMINI_STOP_RESPONSING = {
 };
 const useChat = create((set, get) => {
 	return {
+		loadingChatID: "",
 		recent: "",
 		response: "",
 		allowChat: false,

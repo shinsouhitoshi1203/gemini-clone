@@ -6,6 +6,14 @@ const DEFAULT = {
 	chats: [],
 	currentConversation: ""
 };
+function renderMessage(id, data, role) {
+	// will change when having implemeted user auth + image
+	return {
+		id,
+		role,
+		parts: [{ text: data }]
+	};
+}
 const useUserChat = create(
 	subscribeWithSelector((set, get) => {
 		return {
@@ -24,7 +32,14 @@ const useUserChat = create(
 					chats: list
 				});
 			},
-			pushChat() {}
+			pushChat(id, data, role) {
+				set((state) => {
+					const messageObject = renderMessage(id, data, role);
+					const newChat = state.chats.slice();
+					newChat.push(messageObject);
+					return { chats: newChat };
+				});
+			}
 		};
 	})
 );
