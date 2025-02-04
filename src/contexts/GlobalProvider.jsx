@@ -39,17 +39,15 @@ function GlobalProvider({ children }) {
 	const { info, settings, history } = useLoaderData();
 	const checkVar = useRef(false);
 
-	const fetchUserData = useCallback(
-		async function () {
-			if (loggedIn) return;
+	const fetchUserData = useCallback(async function () {
+		if (loggedIn) return;
 
-			if (checkVar.current) return;
-			loadUser(info, settings, history);
-			checkVar.current = true;
-			return "";
-		},
-		[loadUser]
-	);
+		if (checkVar.current) return;
+
+		loadUser(info, settings, history.list);
+		checkVar.current = true;
+		return "";
+	}, []);
 
 	useEffect(() => {
 		if (checkVar.current) return;

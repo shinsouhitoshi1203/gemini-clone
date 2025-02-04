@@ -14,7 +14,7 @@ function Ask({ chatData }) {
 				</div>
 				<div className="ChatBox__message">
 					<h2 className="ChatBox__question font-6">
-						{chatData ? chatData.question : data.recent}
+						{chatData ? chatData : data.recent}
 					</h2>
 					<div className="ChatBox__tts">
 						<Button

@@ -1,31 +1,61 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 import MicIcon from "@mui/icons-material/Mic";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import Button from "../../../components/Button";
 import TextBox from "../../../components/TextBox";
-import useHome from "../../../hooks/useHome";
-import {
-	GEMINI_PREPARE,
-	GEMINI_READY,
-	GEMINI_STOP_RESPONSING
-} from "../../../reducers/chat/actions";
-import createRequest from "../../../reducers/createRequest";
+
+import useChat from "../../../hooks/zustand/chat";
+
+import { useNavigate, useParams } from "react-router-dom";
+import useGlobal from "../../../hooks/zustand/global";
+import { newChat } from "../../../db";
 function Input() {
-	const { input, data, send, set } = useHome();
+	const navigate = useNavigate();
+	// get actions
+	const { prepare, stop } = useChat((state) => state.actions);
+	// get states
+	const allowForceStop = useChat((state) => state.allowForceStop);
+	// check var URL
+	const { conversation: chatID } = useParams();
+	const pushHistory = useGlobal((state) => state.pushHistory);
+	const userID = useGlobal((state) => state.currentUser);
+	// local state
+	const [input, setInput] = useState("");
+	// send request from this input
 	const sendReq = useCallback(
 		async (e) => {
 			if (e.key == "Enter" && input) {
 				try {
-					await send(input);
-				} catch (error) {}
+					// logic check co req
+					// ----------------------- //
+					if (!chatID) {
+						const ID = window.crypto.randomUUID();
+						newChat(ID, userID, () => {
+							navigate("/app/" + ID, {
+								state: { newQuestion: true }
+							});
+							pushHistory(ID);
+
+							setInput("");
+						});
+					} else {
+						// already have the data, just push it to history
+					}
+					// -----------------------
+				} catch (error) {
+					console.error(error);
+				}
 			}
 		},
 		[input]
 	);
+	// return
 	return (
 		<>
 			<TextBox
+				input={input}
+				setInput={setInput}
 				cls="pageHome__input-real GEMINI__input"
 				left={[
 					<Button
@@ -37,7 +67,7 @@ function Input() {
 				]}
 				placeholder="Enter a prompt here"
 				right={[
-					!data.allowForceStop ? (
+					!allowForceStop ? (
 						<Button
 							type="main"
 							caption="Input from voice"
@@ -51,7 +81,7 @@ function Input() {
 							icon={<StopCircleIcon />}
 							size="40 40 50%"
 							onClick={() => {
-								set(createRequest(GEMINI_STOP_RESPONSING));
+								stop();
 							}}
 						/>
 					)

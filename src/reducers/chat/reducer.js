@@ -4,7 +4,7 @@ import {
 	GEMINI_READY,
 	//GEMINI_ERROR,
 	GEMINI_FINISH,
-    GEMINI_STOP_RESPONSING,
+	GEMINI_STOP_RESPONSING
 	// GEMINI_APPEAR_EACH
 } from "./actions";
 
@@ -13,60 +13,57 @@ function reducer(data, action) {
 	switch (type) {
 		case GEMINI_READY: {
 			// payload is the message
-            if (payload) {
-                return {
-                    ...data,
-                    response: payload,
-                    allowLoading: false,
-                    allowAnimation: true,
-                    allowForceStop: true
-                };
-            } else {
-                throw new Error ("breh")
-            }
-            
+			if (payload) {
+				return {
+					...data,
+					response: payload,
+					allowLoading: false,
+					allowAnimation: true,
+					allowForceStop: true
+				};
+			} else {
+				throw new Error("breh");
+			}
 		}
 		case GEMINI_PREPARE: {
 			// prepare for sending request
 			return {
 				...data,
-                recent: payload,
+				recent: payload,
 				allowChat: true,
 				response: "",
 				allowLoading: true,
 				allowAnimation: false,
-                mustStop: false,
-                allowForceStop: false,
+				mustStop: false,
+				allowForceStop: false
 			};
 		}
 		case GEMINI_FINISH: {
-            if (!data.mustStop) {
-                return {
-                    ...data,
-                    allowAnimation: false,
-                    allowForceStop: false,
-                    mustStop: false,
-                };
-            } else {
-                return {...data}
-            }
-			
+			if (!data.mustStop) {
+				return {
+					...data,
+					allowAnimation: false,
+					allowForceStop: false,
+					mustStop: false
+				};
+			} else {
+				return { ...data };
+			}
 		}
-        case GEMINI_STOP_RESPONSING: {
-            if (data.allowAnimation) {
-                return {
-                    ...data,
-                    allowForceStop: false,
-                    allowAnimation: false,
-                    mustStop: true,
-                    response: ""
-                };
-            
-            } else {
-                return {...data}
-            }
-		}	
-        
+		case GEMINI_STOP_RESPONSING: {
+			if (data.allowAnimation) {
+				return {
+					...data,
+					allowForceStop: false,
+					allowAnimation: false,
+					mustStop: true,
+					response: ""
+				};
+			} else {
+				return { ...data };
+			}
+		}
+
 		default:
 			return data;
 	}

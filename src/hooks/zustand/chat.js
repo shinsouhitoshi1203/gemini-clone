@@ -1,0 +1,69 @@
+import { create } from "zustand";
+const GEMINI_PREPARE = (input) => ({
+	recent: input,
+	allowChat: true,
+	response: "",
+	allowLoading: true,
+	allowAnimation: false,
+	mustStop: false,
+	allowForceStop: false
+});
+const GEMINI_READY = (message) => ({
+	response: message,
+	allowLoading: false,
+	allowAnimation: true,
+	allowForceStop: true
+});
+const GEMINI_FINISH = {
+	allowAnimation: false,
+	allowForceStop: false,
+	mustStop: false
+};
+const GEMINI_STOP_RESPONSING = {
+	allowForceStop: false,
+	allowAnimation: false,
+	mustStop: true,
+	response: ""
+};
+const useChat = create((set, get) => {
+	return {
+		recent: "",
+		response: "",
+		allowChat: false,
+		allowAnimation: true,
+		allowLoading: false,
+		mustStop: false,
+		allowForceStop: false,
+		actions: {
+			prepare(input) {
+				set(GEMINI_PREPARE(input));
+			},
+			ready(message) {
+				if (message) {
+					set(GEMINI_READY(message));
+				} else {
+					throw new Error("breh");
+				}
+			},
+			finish() {
+				set((state) => {
+					if (!state.mustStop) {
+						return GEMINI_FINISH;
+					} else {
+						return {};
+					}
+				});
+			},
+			stop() {
+				set((state) => {
+					if (state.allowAnimation) {
+						return GEMINI_STOP_RESPONSING;
+					} else {
+						return {};
+					}
+				});
+			}
+		}
+	};
+});
+export default useChat;

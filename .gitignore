@@ -27,3 +27,4 @@ src/sample
 .env.local
 _test.js
 docs
+secret

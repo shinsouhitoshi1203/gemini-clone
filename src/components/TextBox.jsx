@@ -11,9 +11,18 @@ import useHome from "../hooks/useHome";
 function mergeClass(cls) {
 	return cls + " " + "TextBox";
 }
-function TextBox({ cls, children, right, left, placeholder, ...rest }) {
+function TextBox({
+	cls,
+	children,
+	right,
+	left,
+	placeholder,
+	input,
+	setInput,
+	...rest
+}) {
 	const id = useRef(window.crypto.randomUUID());
-	const { input, setInput } = useHome();
+	//const {  } = useHome();
 	const changeText = useCallback(
 		(e) => {
 			setInput(e.target.value);

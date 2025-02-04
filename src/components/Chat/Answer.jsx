@@ -12,7 +12,7 @@ function Answer({ chatData }) {
 				</div>
 				<div className="ChatBox__message">
 					{chatData ? (
-						<DataAnswer msg={chatData.answer} />
+						<DataAnswer msg={chatData} />
 					) : (
 						<WaitForAnswer />
 					)}

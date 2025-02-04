@@ -43,7 +43,7 @@ const router = createBrowserRouter([
 						children: [
 							{ path: "", element: <Welcome /> },
 							//{ path: "*", element: <Welcome /> },
-							{ path: ":conversation-id", element: <Chatbox /> }
+							{ path: ":conversation", element: <Chatbox /> }
 						]
 					}
 					// privacy

@@ -3,8 +3,7 @@ import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import useGlobal from "../../../hooks/zustand/global";
 
 function Suggestion() {
-	const { user } = useGlobal();
-	const { history } = user;
+	const history = useGlobal((state) => state.user.history);
 	return (
 		<>
 			{history.length > 0 &&
@@ -18,7 +17,7 @@ function Suggestion() {
 							<div className="welcome__suggestion-grow">
 								<div>
 									<p className="welcome__suggestion-text font-4">
-										{txt}
+										{11111}
 									</p>
 								</div>
 							</div>
