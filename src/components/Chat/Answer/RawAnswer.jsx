@@ -3,31 +3,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useHome from "../../../hooks/useHome";
 import createRequest from "../../../reducers/createRequest";
 import { GEMINI_FINISH } from "../../../reducers/chat/actions";
-
 import RemarkMathPlugin from "remark-math";
 import Markdown from "markdown-to-jsx";
 
-import { MDXEditor } from "@mdxeditor/editor";
-function parse(text) {
-	const lines = text.split("\n");
-
-	return lines
-		.map((line, index) => {
-			// Check if the line is part of a list
-			const isListItem = /^\s*[*\-+]\s+|^\s*\d+\.\s+/.test(line);
-			const isNextLineListItem =
-				index < lines.length - 1 &&
-				/^\s*[*\-+]\s+|^\s*\d+\.\s+/.test(lines[index + 1]);
-
-			if (isListItem || isNextLineListItem) return line;
-
-			if (line.trim() === "\\") return line.replace("\\", "\n");
-
-			return line + "\n";
-		})
-		.join("\n");
-}
-// import "@mdxeditor/editor/style.css";
 function RawAnswer({ needDelay, text }) {
 	const { set } = useHome();
 	const answerField = useRef();
@@ -60,6 +38,7 @@ function RawAnswer({ needDelay, text }) {
 			md.removeEventListener("mouseover", tooltip);
 		};
 	}, []);
+
 	useEffect(() => {
 		let isMounted = true;
 		if (needDelay) {
@@ -83,7 +62,6 @@ function RawAnswer({ needDelay, text }) {
 			isMounted = false;
 		};
 	}, []);
-	// console.log(parse(text));
 
 	return (
 		<div className="ChatBox__answer-raw MarkDown" ref={answerField}>
@@ -92,4 +70,3 @@ function RawAnswer({ needDelay, text }) {
 	);
 }
 export default RawAnswer;
-// needDelay ? displayText : text

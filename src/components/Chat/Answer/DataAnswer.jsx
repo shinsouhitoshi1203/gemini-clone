@@ -4,8 +4,6 @@ import useHome from "../../../hooks/useHome";
 import { useMemo, useRef } from "react";
 function DataAnswer({ msg, req }) {
 	const { data } = useHome();
-
-	// console.log(answerNoAnimation.current);
 	const allowShowingOption = useMemo(() => {
 		if (req) {
 			return !data.allowAnimation;
