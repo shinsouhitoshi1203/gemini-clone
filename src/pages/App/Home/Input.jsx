@@ -10,6 +10,7 @@ import useChat from "../../../hooks/zustand/chat";
 import { useNavigate, useParams } from "react-router-dom";
 import useGlobal from "../../../hooks/zustand/global";
 import { newChat } from "../../../db";
+import useUserChat from "../../../hooks/zustand/userChat";
 function Input() {
 	const navigate = useNavigate();
 	// get actions
@@ -22,6 +23,7 @@ function Input() {
 	const userID = useGlobal((state) => state.currentUser);
 	// local state
 	const [input, setInput] = useState("");
+	const chats = useUserChat((state) => state.chats);
 	// send request from this input
 	const sendReq = useCallback(
 		async (e) => {
@@ -36,10 +38,11 @@ function Input() {
 								state: { newQuestion: true, question: input }
 							});
 							pushHistory(ID);
-							prepare(input);
+
 							setInput("");
 						});
 					} else {
+						//console.log(chats);
 						// already have the data, just push it to history
 					}
 					// -----------------------

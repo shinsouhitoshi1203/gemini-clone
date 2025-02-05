@@ -49,7 +49,7 @@ const useGlobal = create(
 			setHistory() {},
 			pushHistory(ID) {
 				set((state) => {
-					console.log(state.user.history);
+					//console.log(state.user.history);
 
 					const history = state.user.history.slice();
 					history.push(ID);

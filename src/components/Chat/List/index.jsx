@@ -5,6 +5,8 @@ import Answer from "../Answer";
 
 const parse = (test) => {
 	const k = test.split("\\n");
+	console.log(test);
+
 	let res = "";
 	k.forEach((e, i) => {
 		if (e.slice(-1) == "\\") {
@@ -28,24 +30,35 @@ const parse = (test) => {
 			res += e + "\\n";
 		} else if (e.trim() == "") {
 			if (i == 0) {
-				res += "\n &nbsp;<br /> \n";
+				res += "\n &nbsp; \n";
 			} else {
-				res += "\n &nbsp;<br /><br /> \n";
+				res += "\n &nbsp;<br />\n";
 			}
 		} else {
-			res += "\n" + e;
+			res += e + (i != 0 ? "<br />" : "");
 		}
 	});
 	return res;
 };
 function ChatHistory() {
 	const historyRef = useRef(false);
-	const chats = useUserChat((state) => state.chats);
+	const [chat, setChat] = useState([]);
+	//const chats = useUserChat((state) => state.chats);
+	useUserChat.subscribe(
+		(state) => state.chats,
+		(chats) => {
+			setChat(chats);
+		}
+	);
+	useEffect(() => {
+		//console.log("Data fr");
+		//console.log(chat);
+	}, [chat]);
 	return (
 		<>
-			{chats &&
+			{chat &&
 				// will use the id as a key later
-				chats.map((chat, i) => {
+				chat.map((chat, i) => {
 					const msg = chat.parts[0].text.toString();
 					return chat.role == "user" ? (
 						<Ask chatData={parse(msg)} key={i} />

@@ -24,8 +24,10 @@ const useUserChat = create(
 				set(DEFAULT);
 			},
 			setChat(id, data) {
-				const { context, list, user } = data;
-
+				let { context, list, user } = data;
+				if (typeof list == "string") {
+					list = [];
+				}
 				set({
 					current: id,
 					context,
@@ -33,10 +35,11 @@ const useUserChat = create(
 				});
 			},
 			pushChat(id, data, role) {
+				const messageObject = renderMessage(id, data, role);
 				set((state) => {
-					const messageObject = renderMessage(id, data, role);
-					const newChat = state.chats.slice();
-					newChat.push(messageObject);
+					const newChat = [...state.chats, messageObject];
+					console.log("Old store:\n", state.chats);
+					console.log("New store:\n", newChat);
 					return { chats: newChat };
 				});
 			}

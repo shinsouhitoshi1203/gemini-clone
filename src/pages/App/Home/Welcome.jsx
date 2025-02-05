@@ -1,6 +1,7 @@
-import { lazy, memo, Suspense } from "react";
+import { lazy, memo, Suspense, useEffect } from "react";
 import useGlobal from "../../../hooks/zustand/global";
 import { Skeleton } from "@mui/material";
+import useUserChat from "../../../hooks/zustand/userChat";
 const Suggestion = lazy(() => import("./Suggestion"));
 const dataSample = [
 	"Generate unit tests for the following C# function",
@@ -11,7 +12,10 @@ const dataSample = [
 
 function Welcome() {
 	const { nickname } = useGlobal((x) => x.user?.info);
-	// const { userName, history } = global?.user;
+	const reset = useUserChat((x) => x.reset);
+	useEffect(() => {
+		reset();
+	}, []);
 
 	return (
 		<>

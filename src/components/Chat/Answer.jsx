@@ -11,11 +11,12 @@ function Answer({ chatData }) {
 					<img src={avatar} alt="" />
 				</div>
 				<div className="ChatBox__message">
-					{chatData ? (
+					<DataAnswer msg={chatData} />
+					{/* {chatData ? (
 						<DataAnswer msg={chatData} />
 					) : (
 						<WaitForAnswer />
-					)}
+					)} */}
 				</div>
 			</div>
 		</>

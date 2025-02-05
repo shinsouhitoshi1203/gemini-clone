@@ -4,7 +4,6 @@ import Button from "../Button";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import useGlobal from "../../hooks/zustand/global";
 function Ask({ chatData }) {
-	const { data } = useHome();
 	const { avatar } = useGlobal((x) => x.user.info);
 	return (
 		<>
@@ -13,9 +12,7 @@ function Ask({ chatData }) {
 					<img src={avatar} alt="" />
 				</div>
 				<div className="ChatBox__message">
-					<h2 className="ChatBox__question font-6">
-						{chatData ? chatData : data.recent}
-					</h2>
+					<h2 className="ChatBox__question font-6">{chatData}</h2>
 					<div className="ChatBox__tts">
 						<Button
 							icon={<VolumeUpIcon />}
