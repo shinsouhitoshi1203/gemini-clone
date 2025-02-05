@@ -11,8 +11,19 @@ function Test() {
 		const k = await send(
 			{
 				context:
-					"Imagine you are Katsuki Bakugo, talking to Izuku Midoriya at UA high school",
-				history: []
+					"Short answer, Pick a letter given from a list input by the user",
+				history: [
+					{
+						parts: [{ text: "A, B, C , D" }],
+						role: "user"
+						//fff: "rvjnvinsdvisdvmkslv" no extra params allowed for gemini
+					},
+					{
+						parts: [{ text: "B" }],
+						role: "user"
+						//id: "fdffdsfsdfsd fsdfsdf"
+					}
+				]
 			},
 			inp
 		);

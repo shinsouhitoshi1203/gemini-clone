@@ -7,7 +7,8 @@ export async function gpt(config, message) {
 	try {
 		const chatSession = model.startChat({
 			generationConfig,
-			history
+			//cachedContent: true,
+			contents: history
 		});
 
 		const result = await chatSession.sendMessage(message);

@@ -3,23 +3,26 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 // styling
 import "./../../../assets/scss/pages/Home/_ChatBox.scss";
 // database
-import { checkExistance, loadChat } from "../../../db";
+import { checkExistance, loadChat, sendMessage } from "../../../db";
 // components
 import ChatHistory from "../../../components/Chat/List";
 // hooks
-import useUserChat from "../../../hooks/zustand/userChat";
+import useUserChat, { forceRender } from "../../../hooks/zustand/userChat";
 import useGlobal from "../../../hooks/zustand/global";
 import send, { gpt } from "../../../config";
 import useChat from "../../../hooks/zustand/chat";
+import subscribe from "../../../hooks/subscribe";
 
 function Chatbox() {
 	const chatBoxRef = useRef(false);
 	const chatBoxRef2 = useRef(false);
 
-	const { state } = useLocation();
+	// for navigation in case of error
+	const navigate = useNavigate();
+
 	const userID = useGlobal((state) => state.currentUser);
-	const navigate = useNavigate(); // incase of invalid conversation id, we will go to /
 	const { conversation: chatID } = useParams();
+
 	const chatList = useGlobal((state) => state.user.history);
 
 	//////////////////////////////////////////////////
@@ -29,112 +32,136 @@ function Chatbox() {
 	const { prepare, stop } = useChat((state) => state.actions);
 	/////////////////////////////////////////////////
 
-	const [needQuestion, setNeedQuestion] = useState(() => {
-		return state.newQuestion;
-	});
-
+	// this useEffect will be called when the chatbox is first loaded
 	useEffect(() => {
 		if (chatBoxRef.current) return;
 
-		// If this hasnt been in the local state, well check the db.
-		// app real
+		// If this hasnt been in the local state, well check the db
 		async function retrieve(userID) {
 			if (await checkExistance(chatID, chatList, userID)) {
-				// set current chat id
-				// get content from id
 				await loadChat(chatID, userID, (chatData) => {
+					// console.log(JSON.stringify(chatData));
 					if (chatData == "") chatData = [];
+					// console.log(chatData);
+
 					setChat(chatID, chatData);
 				});
-
-				//console.log(state);
 			} else {
 				navigate("/app");
 			}
 		}
-
-		if (!needQuestion) {
-			if (userID != "") {
-				retrieve(userID);
-			} else {
-				const sub1 = useGlobal.subscribe(
-					(state) => state.currentUser,
-					(userID) => {
-						if (userID != "") {
-							retrieve(userID);
-							sub1();
-						}
+		useChat.subscribe(
+			(state) => state.live,
+			async ({ needQuestion }) => {
+				// console.log("sexchat", needQuestion);
+				if (!needQuestion) {
+					if (userID != "") {
+						retrieve(userID);
+					} else {
+						const sub1 = useGlobal.subscribe(
+							(state) => state.currentUser,
+							(userID) => {
+								if (userID != "") {
+									// console.log("needQuestion", userID);
+									retrieve(userID);
+									sub1();
+								}
+							}
+						);
 					}
-				);
-			}
-		}
+				}
+			},
+			{ fireImmediately: true }
+		);
+
 		chatBoxRef.current = true;
-	}, [needQuestion]);
-	/* 
-        useEffect(() => {
-            if (chatBoxRef2.current) return;
+	}, []);
 
-            async function sendReq(configChat) {
-                const response = await gpt(configChat, state.question);
-
-            }
-            if (state.newQuestion) {
-                // set the new question;
-                const messageID = window.crypto.randomUUID();
-                pushChat(messageID, state.question, "user");
-                //prepare(state.question);
-                // generate request to the server
-                const configChat = {
-                    context: "",
-                    history: chats
-                };
-                // send request
-                try {
-                    console.log("prepare", chats);
-                    
-                    pushChat(messageID, response, "model");
-                    state.newQuestion = false;
-                    state.question = "";
-                    const messageID = window.crypto.randomUUID();
-                    console.log("done", chats);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-            chatBoxRef2.current = true;
-        }, []);
-    */
-	// only need question to be true
+	useUserChat.subscribe(
+		(state) => state.chats,
+		(chats) => {
+			// console.log(chats);
+			//console.log(forceRender(chats));
+		}
+	);
+	// this useEffect will be called when there is a new requested question
 	useEffect(() => {
 		if (chatBoxRef2.current) return;
-		async function sendReq(configChat) {
+		//console.log("paramssss >>>>>     ", chatID);
+
+		async function sendReq(configChat, questionQuery, chatID) {
 			try {
-				//console.log("prepare", chats);
-				const messageID = window.crypto.randomUUID();
-				const response = await gpt(configChat, state.question);
-				pushChat(messageID, response, "model");
-				//console.log("done", chats);
+				// console.log(configChat.history);
+				const response = await gpt(configChat, questionQuery);
+				// pushChat(messageID, response, "model");
+				sendMessage(pushChat, chatID, userID, response, "model");
 			} catch (error) {
 				console.error(error);
 			}
 		}
+		// console.log("Im over here");
 
-		if (needQuestion) {
-			// set the new question;
-			const messageID = window.crypto.randomUUID();
-			pushChat(messageID, state.question, "user");
-			// generate request to the server
-			const configChat = {
-				context: "",
-				history: chats
-			};
-			sendReq(configChat);
-			setNeedQuestion(false);
-			state.question = "";
-			// send request
-		}
+		useChat.subscribe(
+			(state) => state.live,
+			async ({
+				needQuestion,
+				resetQuestion,
+				questionQuery,
+				newID: chatID
+			}) => {
+				if (needQuestion && questionQuery) {
+					console.log(">>>", chatID);
+
+					if (chatID != "") {
+						sendMessage(
+							pushChat,
+							chatID,
+							userID,
+							questionQuery,
+							"user"
+						);
+
+						const configChat = {
+							context: "",
+							history: forceRender(chats)
+						};
+
+						// view the request that will be sent to gemini
+						sendReq(configChat, questionQuery, chatID);
+						resetQuestion();
+						//sub1();
+					}
+
+					// send request
+				}
+			},
+			{ fireImmediately: true }
+		);
+		/*
+            if (needQuestion) {
+                const messageID = window.crypto.randomUUID();
+                //pushChat(messageID, state.question, "user");
+                sendMessage(pushChat, chatID, userID, state.question, "user");
+
+                // generate request to the server
+                const configChat = {
+                    context: "",
+                    history: forceRender(chats)
+                };
+                // view the request that will be sent to gemini
+
+                sendReq(configChat);
+                setNeedQuestion(false);
+                window.history.replaceState({}, "");
+                // send request
+            } 
+        */
+
 		chatBoxRef2.current = true;
-	}, [needQuestion]);
+	}, []);
+
+	// this useEffect will be called for updating the state in navigate();
+
 	return (
 		<div className="ChatBox">
 			<ChatHistory />

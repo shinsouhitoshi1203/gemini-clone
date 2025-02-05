@@ -6,7 +6,7 @@ import useGlobal from "../hooks/zustand/global";
 function Topbar() {
 	const { user } = useGlobal();
 
-	const [, setExtend] = useSideBar();
+	const { setExtend } = useSideBar();
 	return (
 		<>
 			<div className="topbar">

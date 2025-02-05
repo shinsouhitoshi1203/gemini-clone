@@ -1,4 +1,6 @@
 import { memo, useCallback, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
 import MicIcon from "@mui/icons-material/Mic";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
@@ -6,12 +8,13 @@ import Button from "../../../components/Button";
 import TextBox from "../../../components/TextBox";
 
 import useChat from "../../../hooks/zustand/chat";
-
-import { useNavigate, useParams } from "react-router-dom";
 import useGlobal from "../../../hooks/zustand/global";
+
 import { newChat } from "../../../db";
 import useUserChat from "../../../hooks/zustand/userChat";
+
 function Input() {
+	// navigator
 	const navigate = useNavigate();
 	// get actions
 	const { prepare, stop } = useChat((state) => state.actions);
@@ -21,9 +24,11 @@ function Input() {
 	const { conversation: chatID } = useParams();
 	const pushHistory = useGlobal((state) => state.pushHistory);
 	const userID = useGlobal((state) => state.currentUser);
+	const setConversationID = useUserChat((state) => state.setConversationID);
 	// local state
 	const [input, setInput] = useState("");
-	const chats = useUserChat((state) => state.chats);
+	// send new question
+	const { resetQuestion, setQuestion } = useChat((state) => state.live);
 	// send request from this input
 	const sendReq = useCallback(
 		async (e) => {
@@ -31,20 +36,22 @@ function Input() {
 				try {
 					// logic check co req
 					// ----------------------- //
+					// this is where the magic happen
+					// console.log("magic", chatID);
+
 					if (!chatID) {
 						const ID = window.crypto.randomUUID();
 						newChat(ID, userID, () => {
-							navigate("/app/" + ID, {
-								state: { newQuestion: true, question: input }
-							});
+							navigate("/app/" + ID, { replace: true });
+							setQuestion(input, ID);
 							pushHistory(ID);
-
-							setInput("");
+							setConversationID(ID);
 						});
 					} else {
-						//console.log(chats);
-						// already have the data, just push it to history
+						// already have the data, just push it to chatList
+						setQuestion(input, chatID);
 					}
+					setInput("");
 					// -----------------------
 				} catch (error) {
 					console.error(error);

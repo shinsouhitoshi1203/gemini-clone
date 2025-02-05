@@ -1,4 +1,4 @@
-import { child, get, onValue, set } from "firebase/database";
+import { child, get, onValue, push, set, update } from "firebase/database";
 import root, { db } from "./config";
 import initChat from "./initChat";
 
@@ -18,10 +18,11 @@ async function checkExistance(chatID, chatList, userID) {
 		return checkFromDatabase(chatID, userID);
 	}
 }
-// push new Chat
+// push new Chat (conversation)
 async function newChat(chatID, userID, callback) {
 	const user = "users/" + userID + "/chat/" + chatID;
 	const chat = "chats/" + chatID;
+	// console.log("Where had we done:\n", user, "\n", chat);
 
 	const userRef = child(root, user);
 	const chatRef = child(root, chat);
@@ -59,5 +60,33 @@ async function loadChat(chatID, userID, callback = () => {}) {
 		throw new Error(error);
 	}
 }
+// send message to both zustand and database
+async function sendMessage(zustandCallback, chatID, userID, message, role) {
+	// ---------------------------------
+	// 1. chatID: conversation id
+	// 2. messageID: message id
+	// 3. userID: user id
+	// 4. message: message content
+	// 5. role: user or bot
+	// ---------------------------------
+	const list = "chats/" + chatID + "/list";
+	// console.log(list);
 
-export { checkExistance, newChat, loadChat };
+	const listRef = child(root, list);
+	const messageID = push(listRef).key;
+	zustandCallback(messageID, message, role);
+	try {
+		//console.log(messageID);
+		const changes = {};
+		changes["/" + messageID] = {
+			role,
+			id: messageID,
+			parts: [{ text: message }]
+		};
+		return update(listRef, changes);
+	} catch (error) {
+		throw new Error(error);
+	}
+}
+
+export { checkExistance, newChat, loadChat, sendMessage };

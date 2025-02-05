@@ -5,11 +5,11 @@ import WatchLaterOutlinedIcon from "@mui/icons-material/WatchLaterOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useState } from "react";
-import Button from "../components/button";
+import Button from "../components/Button";
 import useSideBar from "../hooks/useSideBar";
 
 function Sidebar() {
-	const [extend, setExtend] = useSideBar();
+	const { newChatOpen, extend, setExtend } = useSideBar();
 	return (
 		<>
 			{extend && (
@@ -43,6 +43,7 @@ function Sidebar() {
 						tooltip="New chat"
 						icon={<AddIcon />}
 						reqExtend={extend}
+						onClick={newChatOpen}
 					/>
 				</div>
 				<div

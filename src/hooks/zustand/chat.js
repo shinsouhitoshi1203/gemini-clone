@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
 const GEMINI_PREPARE = (input) => ({
 	recent: input,
 	allowChat: true,
@@ -25,46 +26,79 @@ const GEMINI_STOP_RESPONSING = {
 	mustStop: true,
 	response: ""
 };
-const useChat = create((set, get) => {
-	return {
-		loadingChatID: "",
-		recent: "",
-		response: "",
-		allowChat: false,
-		allowAnimation: true,
-		allowLoading: false,
-		mustStop: false,
-		allowForceStop: false,
-		actions: {
-			prepare(input) {
-				set(GEMINI_PREPARE(input));
-			},
-			ready(message) {
-				if (message) {
-					set(GEMINI_READY(message));
-				} else {
-					throw new Error("breh");
+const useChat = create(
+	subscribeWithSelector((set, get) => {
+		return {
+			// 24/7 state bruh
+			live: {
+				newID: "",
+				needQuestion: false,
+				questionQuery: "",
+				resetQuestion() {
+					set((state) => ({
+						live: {
+							...state.live,
+							needQuestion: false,
+							questionQuery: ""
+						}
+					}));
+				},
+				setQuestion(questionQuery, ID) {
+					set((state) => {
+						if (ID) {
+							return {
+								live: {
+									...state.live,
+									needQuestion: true,
+									questionQuery,
+									newID: ID
+								}
+							};
+						}
+					});
 				}
 			},
-			finish() {
-				set((state) => {
-					if (!state.mustStop) {
-						return GEMINI_FINISH;
+			// temporarily keep them to avoid bugs
+			loadingChatID: "",
+			recent: "",
+			response: "",
+			allowChat: false,
+			allowAnimation: true,
+			allowLoading: false,
+			mustStop: false,
+			allowForceStop: false,
+			actions: {
+				prepare(input) {
+					set(GEMINI_PREPARE(input));
+				},
+				ready(message) {
+					if (message) {
+						set(GEMINI_READY(message));
 					} else {
-						return {};
+						throw new Error("breh");
 					}
-				});
-			},
-			stop() {
-				set((state) => {
-					if (state.allowAnimation) {
-						return GEMINI_STOP_RESPONSING;
-					} else {
-						return {};
-					}
-				});
+				},
+				finish() {
+					set((state) => {
+						if (!state.mustStop) {
+							return GEMINI_FINISH;
+						} else {
+							return {};
+						}
+					});
+				},
+				stop() {
+					set((state) => {
+						if (state.allowAnimation) {
+							return GEMINI_STOP_RESPONSING;
+						} else {
+							return {};
+						}
+					});
+				}
 			}
-		}
-	};
-});
+		};
+	})
+);
+
 export default useChat;

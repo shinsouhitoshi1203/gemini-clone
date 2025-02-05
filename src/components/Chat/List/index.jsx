@@ -1,11 +1,10 @@
 import { memo, useEffect, useRef, useState } from "react";
-import useUserChat from "../../../hooks/zustand/userChat";
+import useUserChat, { renderUI } from "../../../hooks/zustand/userChat";
 import Ask from "../Ask";
 import Answer from "../Answer";
 
 const parse = (test) => {
 	const k = test.split("\\n");
-	console.log(test);
 
 	let res = "";
 	k.forEach((e, i) => {
@@ -47,23 +46,23 @@ function ChatHistory() {
 	useUserChat.subscribe(
 		(state) => state.chats,
 		(chats) => {
-			setChat(chats);
+			setChat(() => {
+				return renderUI(chats);
+			});
 		}
 	);
-	useEffect(() => {
-		//console.log("Data fr");
-		//console.log(chat);
-	}, [chat]);
+	// useEffect(() => {}, [chat]);
 	return (
 		<>
 			{chat &&
 				// will use the id as a key later
-				chat.map((chat, i) => {
-					const msg = chat.parts[0].text.toString();
+				chat.map((chat) => {
+					const msg = chat.parts[0].text;
+					const messageID = chat.id;
 					return chat.role == "user" ? (
-						<Ask chatData={parse(msg)} key={i} />
+						<Ask chatData={parse(msg)} key={messageID} />
 					) : (
-						<Answer chatData={parse(msg)} key={i} />
+						<Answer chatData={parse(msg)} key={messageID} />
 					);
 				})}
 		</>
