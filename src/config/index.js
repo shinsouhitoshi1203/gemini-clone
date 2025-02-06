@@ -3,14 +3,17 @@ import { generateModel, generationConfig } from "./gemini";
 // main file for the gemini-clone app
 export async function gpt(config, message) {
 	const { context, history } = config;
+
+	const historyNew = Array.from(history).slice();
+	historyNew.pop();
 	const model = generateModel(context);
 	try {
-		const chatSession = model.startChat({
+		const sessionConfig = {
 			generationConfig,
-			//cachedContent: true,
-			contents: history
-		});
-
+			history: [...historyNew]
+		};
+		const chatSession = model.startChat(sessionConfig);
+		//console.log(sessionConfig.history);
 		const result = await chatSession.sendMessage(message);
 
 		return result.response.text();

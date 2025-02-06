@@ -14,14 +14,18 @@ function SideBarProvider({ children }) {
 			setSearchParams(searchParams);
 		}
 	};
-	const reset = useUserChat((state) => state.reset);
+	//const reset = useUserChat((state) => state.reset);
 	const { resetQuestion } = useChat((state) => state.live);
 	const navigate = useNavigate();
 	const newChatOpen = useCallback(() => {
+		//reset();
+		// console.log(useUserChat.getState().chats);
+		// console.log("After :");
+
+		useUserChat.setState(() => ({ chats: new Map([]) }));
 		removeChatIDParam("conversation");
 		navigate("/app", { replace: true });
 		resetQuestion();
-		reset();
 	}, []);
 	return (
 		<SideBarContext.Provider value={{ extend, setExtend, newChatOpen }}>

@@ -1,12 +1,10 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import useGlobal from "./global";
-const DEFAULT = () => {
-	return {
-		context: "",
-		chats: new Map(),
-		current: ""
-	};
+const DEFAULT = {
+	context: "",
+	chats: {},
+	current: ""
 };
 function renderMessage(id, data, role) {
 	// will change when having implemeted user auth + image
@@ -16,11 +14,59 @@ function renderMessage(id, data, role) {
 		parts: [{ text: data }]
 	};
 }
-function forceRender(chats) {
+
+export const convert = {
+	toGemini(listInput) {
+		// list input is from firebase;
+		// secret/dataStructure.js
+		const entries = Object.entries(listInput);
+		return entries.map(([, { parts, role }]) => {
+			return { parts, role };
+		});
+	},
+	toUI(listInput) {
+		// list input is from zustand
+		const entries = Object.entries(listInput);
+		return entries.map(([, content]) => {
+			return { ...content };
+		});
+	},
+	toSee(listInput) {
+		// list input is from zustand
+		// for debugging FROM CHATS STORE
+		// secret/dataStructure.js
+		const entries = Object.entries(listInput);
+		return entries.map(([, { parts, role }]) => {
+			const [text] = parts;
+			return { ...text, role };
+		});
+	},
+	toPlain(listInput) {
+		// list input is from zustand
+		const entries = Object.entries(listInput);
+		return entries.map(([, { parts, role }]) => {
+			const [text] = parts;
+			return text.text;
+		});
+	},
+	toPlainMsg(listGemini) {
+		return listGemini.map(({ parts }) => {
+			return parts[0].text;
+		});
+	}
+};
+
+function forceRender2(chats) {
 	// render into a list of chat objects for gemini.
-	const iterableList = Array.from(chats.keys());
+	const chatsCurrent = new Map(chats);
+	const iterableList = Array.from(chatsCurrent.keys());
+	//console.log(iterableList);
+	//console.log(chats.entries());
+
 	// get the value from key
-	const child = (key) => chats.get(key);
+	console.log();
+
+	const child = (key) => chatsCurrent.get(key);
 	return iterableList.map((key) => {
 		return {
 			role: child(key).role,
@@ -28,10 +74,41 @@ function forceRender(chats) {
 		};
 	});
 }
+
+function forceRender(chats) {
+	return convert.toGemini(chats);
+	/////////////////////////////////////////////////
+	const iterableList = forceRenderWithID(chats);
+	return iterableList.map(({ id, msg, role }) => {
+		return {
+			role,
+			parts: [{ text: msg }]
+		};
+	});
+}
+function forceRenderWithID(chats) {
+	// render into a list of chat objects for gemini.
+	const chatsCurrent = new Map(chats);
+	const iterableList = Array.from(chatsCurrent.keys());
+	//console.log(iterableList);
+	//console.log(chats.entries());
+
+	// get the value from key
+	const child = (key) => chatsCurrent.get(key);
+	return iterableList.map((key) => {
+		return {
+			id: key,
+			role: child(key).role,
+			msg: child(key).parts[0].text
+			//parts: [{ text: child(key).}]
+		};
+	});
+}
 function renderUI(chats) {
 	// render into a list of chat objects for gemini.
 	// console.log(chats);
-
+	return convert.toUI(chats);
+	////////////////////////////////
 	const iterableList = Array.from(chats.keys());
 	// get the value from key
 	const child = (key) => chats.get(key);
@@ -53,43 +130,34 @@ function entryMap(databaseList) {
 	});
 	return map;
 }
+
 const useUserChat = create(
 	subscribeWithSelector((set, get) => {
-		const chats = new Map();
 		return {
 			current: "",
 			context: "",
-			chats,
+			chats: {},
 			reset() {
-				set(DEFAULT());
+				set(DEFAULT);
 			},
 			setChat(id, data) {
 				let { context, list, user } = data;
 				if (typeof list == "string") {
-					list = new Map();
+					list = {};
 				}
-				// console.log(entryMap(list));
-
-				// console.log(
-				// 	new Map(Object.entries(list)).get("-OIK_HQVgKGYPqUGT9dH")
-				// );
+				JSON.parse(JSON.stringify(list));
 				set({
 					current: id,
 					context,
-					chats: entryMap(list)
+					chats: JSON.parse(JSON.stringify(list))
 				});
 			},
 			pushChat(id, data, role) {
-				// ---------------------------------
-				// {messageID:..., role:..., parts: [{text: ...}]}
-
 				const messageObject = renderMessage(id, data, role);
 				set((state) => {
-					//const newChat = { ...state.chats, messageObject };
-					//console.log("Old store:\n", state.chats);
-					//console.log("New store:\n", newChat);
 					return {
-						chats: new Map(state.chats).set(id, messageObject)
+						chats: { ...state.chats, [id]: messageObject }
+						//new Map(state.chats).set(id, messageObject)
 					};
 				});
 			},
@@ -99,5 +167,13 @@ const useUserChat = create(
 		};
 	})
 );
+
+const get = {
+	gemini() {
+		const chats = useUserChat.getState().chats;
+		return convert.toGemini(chats);
+	}
+};
+
 export default useUserChat;
-export { forceRender, renderUI, entryMap };
+export { forceRender, renderUI, entryMap, forceRenderWithID, get };

@@ -42,8 +42,8 @@ function Input() {
 					if (!chatID) {
 						const ID = window.crypto.randomUUID();
 						newChat(ID, userID, () => {
-							navigate("/app/" + ID, { replace: true });
 							setQuestion(input, ID);
+							navigate("/app/" + ID, { replace: true });
 							pushHistory(ID);
 							setConversationID(ID);
 						});

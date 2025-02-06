@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
+import useUserChat from "./userChat";
 const GEMINI_PREPARE = (input) => ({
 	recent: input,
 	allowChat: true,
@@ -56,6 +57,9 @@ const useChat = create(
 							};
 						}
 					});
+				},
+				getContent() {
+					return useUserChat.getState().chats;
 				}
 			},
 			// temporarily keep them to avoid bugs

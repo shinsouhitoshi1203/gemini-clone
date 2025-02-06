@@ -7,11 +7,40 @@ import { checkExistance, loadChat, sendMessage } from "../../../db";
 // components
 import ChatHistory from "../../../components/Chat/List";
 // hooks
-import useUserChat, { forceRender } from "../../../hooks/zustand/userChat";
+import useUserChat, { convert, get } from "../../../hooks/zustand/userChat";
 import useGlobal from "../../../hooks/zustand/global";
 import send, { gpt } from "../../../config";
 import useChat from "../../../hooks/zustand/chat";
-import subscribe from "../../../hooks/subscribe";
+//forceRender,
+//forceRenderWithID
+
+function forceRender(chats) {
+	const iterableList = forceRenderWithID(chats);
+	return iterableList.map(({ id, msg, role }) => {
+		return {
+			role,
+			parts: [{ text: msg }]
+		};
+	});
+}
+function forceRenderWithID(chats) {
+	// render into a list of chat objects for gemini.
+	const chatsCurrent = new Map(chats);
+	const iterableList = Array.from(chatsCurrent.keys());
+	//console.log(iterableList);
+	//console.log(chats.entries());
+
+	// get the value from key
+	const child = (key) => chatsCurrent.get(key);
+	return iterableList.map((key) => {
+		return {
+			id: key,
+			role: child(key).role,
+			msg: child(key).parts[0].text
+			//parts: [{ text: child(key).}]
+		};
+	});
+}
 
 function Chatbox() {
 	const chatBoxRef = useRef(false);
@@ -39,13 +68,19 @@ function Chatbox() {
 		// If this hasnt been in the local state, well check the db
 		async function retrieve(userID) {
 			if (await checkExistance(chatID, chatList, userID)) {
-				await loadChat(chatID, userID, (chatData) => {
-					// console.log(JSON.stringify(chatData));
-					if (chatData == "") chatData = [];
-					// console.log(chatData);
+				try {
+					await loadChat(chatID, userID, (chatData) => {
+						// console.log(JSON.stringify(chatData));
+						if (chatData == "") chatData = {};
+						// console.log(chatData);
 
-					setChat(chatID, chatData);
-				});
+						setChat(chatID, chatData);
+					});
+				} catch (error) {
+					console.log(error);
+
+					navigate("/app");
+				}
 			} else {
 				navigate("/app");
 			}
@@ -90,28 +125,50 @@ function Chatbox() {
 		//console.log("paramssss >>>>>     ", chatID);
 
 		async function sendReq(configChat, questionQuery, chatID) {
+			//console.log(configChat.history);
 			try {
 				// console.log(configChat.history);
-				const response = await gpt(configChat, questionQuery);
-				// pushChat(messageID, response, "model");
-				sendMessage(pushChat, chatID, userID, response, "model");
+				new Promise((resolve) => {
+					console.log("What would they send to Gemini");
+					console.log(convert.toPlainMsg(configChat.history));
+					// toPlain
+					resolve();
+				})
+					.then(() => {
+						return new Promise((resolve) => {
+							const response = gpt(configChat, questionQuery);
+							resolve(response);
+						});
+					})
+					.then((response) => {
+						sendMessage(
+							pushChat,
+							chatID,
+							userID,
+							response,
+							"model"
+						);
+					})
+					.catch((error) => {
+						throw new Error(error);
+					});
+				//sendMessage(pushChat, chatID, userID, response, "model");
 			} catch (error) {
 				console.error(error);
 			}
 		}
 		// console.log("Im over here");
 
-		useChat.subscribe(
+		const sub = useChat.subscribe(
 			(state) => state.live,
 			async ({
 				needQuestion,
 				resetQuestion,
 				questionQuery,
+				getContent,
 				newID: chatID
 			}) => {
 				if (needQuestion && questionQuery) {
-					console.log(">>>", chatID);
-
 					if (chatID != "") {
 						sendMessage(
 							pushChat,
@@ -120,14 +177,18 @@ function Chatbox() {
 							questionQuery,
 							"user"
 						);
+						const currentChats = get.gemini();
 
 						const configChat = {
 							context: "",
-							history: forceRender(chats)
+							history: [...currentChats]
 						};
-
+						// console.log("What to send to Gemini :: ID > real");
+						// console.log(currentContextWithID);
+						// // console.log(currentContext);
+						// console.log();
 						// view the request that will be sent to gemini
-						sendReq(configChat, questionQuery, chatID);
+						await sendReq(configChat, questionQuery, chatID);
 						resetQuestion();
 						//sub1();
 					}
@@ -158,6 +219,9 @@ function Chatbox() {
         */
 
 		chatBoxRef2.current = true;
+		return () => {
+			sub();
+		};
 	}, []);
 
 	// this useEffect will be called for updating the state in navigate();

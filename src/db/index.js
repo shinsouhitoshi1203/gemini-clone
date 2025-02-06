@@ -50,8 +50,10 @@ async function loadChat(chatID, userID, callback = () => {}) {
 		onValue(
 			chatRef,
 			(snapshot) => {
-				if (!snapshot.exists()) throw new Error(error);
+				if (!snapshot.exists())
+					throw new Error("The chat does not exist");
 				const list = snapshot.val();
+
 				callback(list);
 			},
 			{ onlyOnce: true }
