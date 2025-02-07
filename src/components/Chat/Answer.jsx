@@ -6,7 +6,7 @@ function Answer({ chatData }) {
 
 	return (
 		<>
-			<div className="ChatBox__Chat-Answer">
+			<div className="ChatBox__Chat-Answer ChatBox__Chat">
 				<div className="ChatBox__user">
 					<img src={avatar} alt="" />
 				</div>

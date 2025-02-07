@@ -4,16 +4,44 @@ import Hyperlink from "../../../components/Hyperlink";
 // styling
 import "./../../../assets/scss/pages/Home/Home.scss";
 // hooks
-import { Outlet } from "react-router-dom";
-
+import { Outlet, useLocation } from "react-router-dom";
+import { createContext, useEffect, useLayoutEffect, useRef } from "react";
+import useInteract from "../../../hooks/zustand/interact";
+import useUserChat from "../../../hooks/zustand/userChat";
+const ScrollProvider = createContext();
 function Home() {
+	const displayRef = useRef();
+	const { pathname } = useLocation();
+	useEffect(() => {
+		const scrollHandler = () => {
+			const asking =
+				displayRef?.current?.querySelector(
+					"div.ChatBox__Chat-Ask:last-child"
+				) ?? document.querySelector("div.ChatBox__Chat-Ask:last-child");
+			asking?.scrollIntoView({ block: "start", inline: "nearest" });
+		};
+		useInteract.subscribe(
+			(state) => state.scroll,
+			({ need, padding }) => {
+				if (need && padding) {
+					scrollHandler();
+				}
+			}
+		);
+
+		return () => {};
+	}, []);
+
 	return (
 		<div className="pageHome router">
-			<div className="pageHome__display">
-				<div className="page__wrapper">
-					<Outlet />
-				</div>
+			<div className="pageHome__display" ref={displayRef}>
+				<ScrollProvider.Provider value={displayRef}>
+					<div className="page__wrapper">
+						<Outlet />
+					</div>
+				</ScrollProvider.Provider>
 			</div>
+
 			<div className="pageHome__input">
 				<div className="page__wrapper">
 					<Input />
@@ -32,3 +60,4 @@ function Home() {
 	);
 }
 export default Home;
+export { ScrollProvider };

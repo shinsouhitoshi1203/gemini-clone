@@ -1,6 +1,9 @@
 .MarkDown {
     word-wrap: break-word;
     word-break: break-all;
+    * {
+        color: var(--secondary);
+    }
     & > *:first-child, & > div > *:first-child {
         margin-top: 0;
     }

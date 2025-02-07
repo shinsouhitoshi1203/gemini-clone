@@ -7,7 +7,7 @@ function Ask({ chatData }) {
 	const { avatar } = useGlobal((x) => x.user.info);
 	return (
 		<>
-			<div className="ChatBox__Chat-Ask">
+			<div className="ChatBox__Chat-Ask ChatBox__Chat">
 				<div className="ChatBox__user">
 					<img src={avatar} alt="" />
 				</div>

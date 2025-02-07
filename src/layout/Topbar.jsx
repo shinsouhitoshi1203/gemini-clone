@@ -1,12 +1,15 @@
 import Button from "../components/Button";
 import Select from "../components/Select";
 import MenuIcon from "@mui/icons-material/Menu";
-// import useSideBar from "../hooks/useSideBar";
 import useGlobal from "../hooks/zustand/global";
+import { useCallback } from "react";
+import interact from "../code/interact";
 function Topbar() {
 	const { user } = useGlobal();
 
-	// const { setExtend } = useSideBar();
+	const shutup = useCallback(() => {
+		interact.sidebar.toggle();
+	}, []);
 	return (
 		<>
 			<div className="topbar">
@@ -18,9 +21,7 @@ function Topbar() {
 					size="30 + "
 					cls="topbar__nav"
 					tran={true}
-					onClick={() => {
-						// setExtend((x) => !x);
-					}}
+					onClick={shutup}
 				/>
 				<Select caption="Gemini" data={[]} />
 				<Button

@@ -2,7 +2,6 @@ import { memo } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../layout/Sidebar";
 import Topbar from "../../layout/Topbar";
-import SideBarProvider from "../../contexts/SideBarProvider";
 import HomeProvider from "../../contexts/HomeProvider";
 import GlobalProvider from "../../contexts/GlobalProvider";
 
@@ -21,7 +20,7 @@ function Main() {
 	return (
 		<GlobalProvider>
 			<HomeProvider>
-				<div className="App" data-theme="light">
+				<div className="App" data-theme="dark">
 					<SideBar></SideBar>
 					<div className="rest">
 						<TopBar />

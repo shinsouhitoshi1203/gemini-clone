@@ -1,30 +1,44 @@
 @use "./Welcome";
+@use "./../../abstracts" as a;
 .pageHome {
-    display: flex; flex-direction: column; 
-    & > * {flex-shrink: 0;}
-    &__display {
-        flex-grow: 1; padding-top: 10px;flex-basis: 10px; overflow: auto;
-        &::-webkit-scrollbar {display: none;}
-    }
-    &__input {
-        box-shadow: 0px -25px 20px var(--bgRouter);
-        z-index: 10;
-        padding: 10px; 
-        &-real {
-            margin: 5px 0;
-        }
-    }
-    &__disclaimer {
-        font-size: 1.4rem;
-        line-height: 1.42;
-        letter-spacing: 0.25px;
-        text-align: center;
-    }
-    &__privacy {
-        transition: font-weight .3s;
-        display: inline-block; margin-left: 4px;
-        &:hover {
-            font-weight: 600;
-        }
-    }
+	display: flex;
+	flex-direction: column;
+	& > * {
+		flex-shrink: 0;
+	}
+	&__display {
+		flex-grow: 1;
+		padding-top: 10px;
+		flex-basis: 10px;
+		overflow: auto;
+		scroll-behavior: smooth;
+		@include a.scroll();
+		// &::-webkit-scrollbar {display: none;}
+	}
+	&__input {
+		box-shadow: 0px -25px 20px var(--bgRouter);
+		z-index: 10;
+		padding: 10px;
+		&-real {
+			margin: 5px 0;
+		}
+	}
+	&__disclaimer {
+		font-size: 1.4rem;
+		line-height: 1.42;
+		letter-spacing: 0.25px;
+		text-align: center;
+		color: var(--third);
+		a {
+			color: var(--main);
+		}
+	}
+	&__privacy {
+		transition: font-weight 0.3s;
+		display: inline-block;
+		margin-left: 4px;
+		&:hover {
+			font-weight: 600;
+		}
+	}
 }

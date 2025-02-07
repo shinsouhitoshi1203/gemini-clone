@@ -1,15 +1,28 @@
 @mixin sq($size, $bdrs) {
-    width: $size; height: $size;
-    @if ($bdrs != null) {
-        border-radius: $bdrs;
-    }
+	width: $size;
+	height: $size;
+	@if ($bdrs != null) {
+		border-radius: $bdrs;
+	}
 }
 @mixin themed($map) {
-    @each $theme-name, $data in $map {
-        .App[data-theme="#{$theme-name}"] {
-            @each $prop, $value in $data {
-                --#{$prop}: #{$value};
-            }
-        }
+	@each $theme-name, $data in $map {
+		.App[data-theme="#{$theme-name}"] {
+			@each $prop, $value in $data {
+				--#{$prop}: #{$value};
+			}
+		}
+	}
+}
+
+@mixin scroll() {
+	&::-webkit-scrollbar {
+        width: 50px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: rgba(122, 98, 98,40%); border-radius: 30px;
+        background-clip: content-box;
+        border: 21px solid transparent;
     }
 }

@@ -1,55 +1,30 @@
-import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+// scripts
+import { gpt } from "../../../config";
+import actions, { status } from "../../../code/controls";
 // styling
 import "./../../../assets/scss/pages/Home/_ChatBox.scss";
 // database
 import { checkExistance, loadChat, sendMessage } from "../../../db";
 // components
 import ChatHistory from "../../../components/Chat/List";
-// hooks
-import useUserChat, { convert, get } from "../../../hooks/zustand/userChat";
+// stores
+import useUserChat, { get } from "../../../hooks/zustand/userChat";
 import useGlobal from "../../../hooks/zustand/global";
-import send, { gpt } from "../../../config";
 import useChat from "../../../hooks/zustand/chat";
-import actions, { status } from "../../../code/controls";
-//forceRender,
-//forceRenderWithID
-
-function forceRender(chats) {
-	const iterableList = forceRenderWithID(chats);
-	return iterableList.map(({ id, msg, role }) => {
-		return {
-			role,
-			parts: [{ text: msg }]
-		};
-	});
-}
-function forceRenderWithID(chats) {
-	// render into a list of chat objects for gemini.
-	const chatsCurrent = new Map(chats);
-	const iterableList = Array.from(chatsCurrent.keys());
-	//console.log(iterableList);
-	//console.log(chats.entries());
-
-	// get the value from key
-	const child = (key) => chatsCurrent.get(key);
-	return iterableList.map((key) => {
-		return {
-			id: key,
-			role: child(key).role,
-			msg: child(key).parts[0].text
-			//parts: [{ text: child(key).}]
-		};
-	});
-}
+import interact from "../../../code/interact";
+import useInteract from "../../../hooks/zustand/interact";
+import { ScrollProvider } from "./index";
 
 function Chatbox() {
+	const displayRef = useContext(ScrollProvider);
 	const chatBoxRef = useRef(false);
 	const chatBoxRef2 = useRef(false);
-
+	const chatBoxRef3 = useRef(false);
+	const divRef = useRef();
 	// for navigation in case of error
 	const navigate = useNavigate();
-
 	const userID = useGlobal((state) => state.currentUser);
 	const { conversation: chatID } = useParams();
 
@@ -58,9 +33,8 @@ function Chatbox() {
 	//////////////////////////////////////////////////
 	const setChat = useUserChat((state) => state.setChat);
 	const pushChat = useUserChat((state) => state.pushChat);
-	// const chats = useUserChat((state) => state.chats);
-	// const { prepare, stop } = useChat((state) => state.actions);
 	/////////////////////////////////////////////////
+	const padding = useInteract((state) => state.scroll.padding);
 
 	// this useEffect will be called when the chatbox is first loaded
 	useEffect(() => {
@@ -86,7 +60,6 @@ function Chatbox() {
 		useChat.subscribe(
 			(state) => state.live,
 			async ({ needQuestion }) => {
-				// console.log("sexchat", needQuestion);
 				if (!needQuestion) {
 					if (userID != "") {
 						retrieve(userID);
@@ -95,7 +68,6 @@ function Chatbox() {
 							(state) => state.currentUser,
 							(userID) => {
 								if (userID != "") {
-									// console.log("needQuestion", userID);
 									retrieve(userID);
 									sub1();
 								}
@@ -118,7 +90,6 @@ function Chatbox() {
 			return;
 		}
 		async function sendReq(configChat, questionQuery, chatID) {
-			//console.log(configChat.history);
 			try {
 				new Promise((resolve) => {
 					const response = gpt(configChat, questionQuery);
@@ -126,22 +97,27 @@ function Chatbox() {
 				})
 					.then((response) => {
 						sendMessage(pushChat, chatID, response, "model");
+						return "siuuu";
 					})
 					.catch((error) => {
 						throw new Error(error);
+					})
+					.then((response) => {
+						interact.scroll.trigger(false);
 					});
 			} catch (error) {
 				console.error(error);
 			}
 		}
-		const sub = useChat.subscribe(
+		useChat.subscribe(
 			(state) => state.live,
 			async ({ needQuestion, questionQuery, newID: chatID }) => {
 				if (needQuestion && questionQuery) {
 					if (chatID != "" && !status.chat.ask) {
 						sendMessage(pushChat, chatID, questionQuery, "user");
+						// once the message has been sent, we will trigger the scroll
+						interact.scroll.trigger(true);
 						const currentChats = get.gemini();
-
 						const configChat = {
 							context: "",
 							history: [...currentChats]
@@ -162,9 +138,41 @@ function Chatbox() {
 	}, []);
 
 	// this useEffect will be called for updating the state in navigate();
+	useEffect(() => {
+		if (chatBoxRef3.current) return;
+		useInteract.subscribe(
+			(state) => state.scroll.need,
+			() => {
+				const container = displayRef.current;
+				const latest = divRef.current.querySelector(
+					"div.ChatBox__Chat:last-child"
+				);
+				const second = divRef.current.querySelector(
+					"div.ChatBox__Chat:nth-last-child(2)"
+				);
+				latest.scrollIntoView({ behavior: "smooth" });
+				// interact.scroll.padding
+				let newPadding =
+					container.offsetHeight - latest.offsetHeight + 200;
+				if (latest.matches(".ChatBox__Chat-Answer")) {
+					newPadding = newPadding - second.offsetHeight - 25 + 200;
+				}
+
+				interact.scroll.padding = newPadding;
+
+				//scrollHandler();
+			}
+		);
+		chatBoxRef3.current = true;
+		return () => {};
+	}, []);
 
 	return (
-		<div className="ChatBox">
+		<div
+			className="ChatBox"
+			style={{ paddingBottom: padding }}
+			ref={divRef}
+		>
 			<ChatHistory />
 		</div>
 	);

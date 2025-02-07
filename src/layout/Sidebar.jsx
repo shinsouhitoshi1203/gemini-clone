@@ -6,12 +6,13 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import CircleIcon from "@mui/icons-material/Circle";
 import { memo, useCallback, useState } from "react";
 import Button from "../components/Button";
-import useSideBar from "../hooks/useSideBar";
 import actions from "../code/controls";
 import { useNavigate, useSearchParams } from "react-router-dom";
-const extend = false;
+import useInteract from "../hooks/zustand/interact";
+import interact from "../code/interact";
+
 function Sidebar() {
-	// const { extend, setExtend } = useSideBar();
+	const { extend } = useInteract((state) => state.sidebar);
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const removeChatIDParam = (id) => {
@@ -25,18 +26,18 @@ function Sidebar() {
 		actions.reset(navigate, removeChatIDParam);
 	}, []);
 
-	// const toggleExtend = useCallback(() => {
-	// 	setExtend((x) => !x);
-	// });
-	// const toggleExtend__Wrap = useCallback(() => {
-	// 	setExtend(false);
-	// });
+	const toggleExtend = useCallback(() => {
+		interact.sidebar.toggle();
+	});
+	const toggleExtend__Wrap = useCallback(() => {
+		interact.sidebar.toggle(false);
+	});
 	return (
 		<>
 			{extend && (
 				<div
 					className="sidebar__wrap"
-					// onClick={toggleExtend__Wrap}
+					onClick={toggleExtend__Wrap}
 				></div>
 			)}
 			<nav className={`sidebar${extend ? " sidebar--extend" : ""}`}>
@@ -52,7 +53,7 @@ function Sidebar() {
 						caption=""
 						tooltip="Open sidebar"
 						icon={<MenuIcon />}
-						// onClick={toggleExtend}
+						onClick={toggleExtend}
 					/>
 					<Button
 						type="fab"

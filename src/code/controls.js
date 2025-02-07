@@ -3,6 +3,7 @@ import { newChat } from "../db";
 import useChat from "../hooks/zustand/chat";
 import useGlobal from "../hooks/zustand/global";
 import useUserChat from "../hooks/zustand/userChat";
+import interact from "./interact";
 
 let userID = "";
 
@@ -59,12 +60,13 @@ const chats = {
 
 const actions = {
 	reset(navigate, prune) {
-		status.set(false, "", "");
 		prune("conversation");
-		navigate("/app", { replace: true });
+		status.set(false, "", "");
+		status.chat.reset();
 		chats.clear();
 		chats.current.setID("");
-		status.chat.reset();
+		interact.sidebar.toggle(false);
+		navigate("/app", { replace: true });
 	},
 	push: {
 		historyID() {},
@@ -76,6 +78,7 @@ const actions = {
 		},
 		request(input, navigate, chatID = "") {
 			status.chat.reset();
+			// trigger scrolling
 			try {
 				if (!chatID) {
 					const ID = window.crypto.randomUUID();
