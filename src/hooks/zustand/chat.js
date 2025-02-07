@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import useUserChat from "./userChat";
+
+// useChat :: chat status
+
 const GEMINI_PREPARE = (input) => ({
 	recent: input,
 	allowChat: true,
@@ -35,33 +38,14 @@ const useChat = create(
 				newID: "",
 				needQuestion: false,
 				questionQuery: "",
-				resetQuestion() {
-					set((state) => ({
-						live: {
-							...state.live,
-							needQuestion: false,
-							questionQuery: ""
-						}
-					}));
-				},
-				setQuestion(questionQuery, ID) {
-					set((state) => {
-						if (ID) {
-							return {
-								live: {
-									...state.live,
-									needQuestion: true,
-									questionQuery,
-									newID: ID
-								}
-							};
-						}
-					});
-				},
 				getContent() {
 					return useUserChat.getState().chats;
 				}
 			},
+
+			hasAsked: false,
+			hasAnswered: false,
+
 			// temporarily keep them to avoid bugs
 			loadingChatID: "",
 			recent: "",

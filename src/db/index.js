@@ -12,6 +12,7 @@ async function checkFromDatabase(chatID, userID) {
 }
 async function checkExistance(chatID, chatList, userID) {
 	if (chatList.findIndex((x) => x == chatID) >= 0) {
+		// Check the permission of the user to access the chat
 		return true;
 	} else {
 		// console.log("check from database");
@@ -34,7 +35,6 @@ async function newChat(chatID, userID, callback) {
 				callback();
 			})
 			.catch((e) => {
-				//console.log(e);
 				throw new Error(e);
 			});
 	} catch (error) {
@@ -63,22 +63,19 @@ async function loadChat(chatID, userID, callback = () => {}) {
 	}
 }
 // send message to both zustand and database
-async function sendMessage(zustandCallback, chatID, userID, message, role) {
+async function sendMessage(zustandCallback, chatID, message, role) {
 	// ---------------------------------
 	// 1. chatID: conversation id
 	// 2. messageID: message id
-	// 3. userID: user id
+	// 3. userID: user id --deleted
 	// 4. message: message content
 	// 5. role: user or bot
 	// ---------------------------------
 	const list = "chats/" + chatID + "/list";
-	// console.log(list);
-
 	const listRef = child(root, list);
 	const messageID = push(listRef).key;
 	zustandCallback(messageID, message, role);
 	try {
-		//console.log(messageID);
 		const changes = {};
 		changes["/" + messageID] = {
 			role,

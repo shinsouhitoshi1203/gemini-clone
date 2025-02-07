@@ -3,6 +3,7 @@ import { useState } from "react";
 import testFunction from "../../db/test";
 import Markdown from "react-markdown";
 import send from "../../config";
+import { parse } from "../../components/Chat/List";
 
 function Test() {
 	const [inp, setInp] = useState("");
@@ -29,11 +30,22 @@ function Test() {
 		);
 		console.log(k);
 	}, [inp]);
+	const msg = parse(
+		'As of my knowledge cutoff date in early 2023, the J-pop music video with the most views on YouTube is "Lemon" by Kenshi Yonezu.'
+	);
+	const componentTransforms = {
+		React: (props) => <>{props.children}</>
+	};
 
+	const renderers = {
+		html: (props) => (
+			<JsxParser jsx={props.value} components={componentTransforms} />
+		)
+	};
 	return (
 		<>
 			<h1>Test Gemini</h1>
-
+			<Markdown children={msg} renderers={renderers} />
 			<textarea
 				type="text"
 				value={inp}

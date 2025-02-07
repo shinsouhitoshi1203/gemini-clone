@@ -7,6 +7,7 @@ import HomeProvider from "../../contexts/HomeProvider";
 import GlobalProvider from "../../contexts/GlobalProvider";
 
 const TopBar = memo(Topbar); // prevent from re-rendering
+const SideBar = memo(Sidebar); // prevent from re-rendering
 export async function loadUI() {
 	let info, history, settings;
 	const ID = await req("", "", "ERROR");
@@ -20,15 +21,13 @@ function Main() {
 	return (
 		<GlobalProvider>
 			<HomeProvider>
-				<SideBarProvider>
-					<div className="App" data-theme="light">
-						<Sidebar></Sidebar>
-						<div className="rest">
-							<TopBar />
-							<Outlet />
-						</div>
+				<div className="App" data-theme="light">
+					<SideBar></SideBar>
+					<div className="rest">
+						<TopBar />
+						<Outlet />
 					</div>
-				</SideBarProvider>
+				</div>
 			</HomeProvider>
 		</GlobalProvider>
 	);

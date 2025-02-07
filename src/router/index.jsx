@@ -42,7 +42,6 @@ const router = createBrowserRouter([
 						element: <Home />,
 						children: [
 							{ path: "", element: <Welcome /> },
-							//{ path: "*", element: <Welcome /> },
 							{ path: ":conversation", element: <Chatbox /> }
 						]
 					}

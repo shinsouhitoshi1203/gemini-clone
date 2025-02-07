@@ -3,7 +3,7 @@ import useUserChat, { renderUI } from "../../../hooks/zustand/userChat";
 import Ask from "../Ask";
 import Answer from "../Answer";
 
-const parse = (test) => {
+export const parse = (test) => {
 	const k = test.split("\\n");
 
 	let res = "";

@@ -1,12 +1,12 @@
 import Button from "../components/Button";
 import Select from "../components/Select";
 import MenuIcon from "@mui/icons-material/Menu";
-import useSideBar from "../hooks/useSideBar";
+// import useSideBar from "../hooks/useSideBar";
 import useGlobal from "../hooks/zustand/global";
 function Topbar() {
 	const { user } = useGlobal();
 
-	const { setExtend } = useSideBar();
+	// const { setExtend } = useSideBar();
 	return (
 		<>
 			<div className="topbar">
@@ -19,7 +19,7 @@ function Topbar() {
 					cls="topbar__nav"
 					tran={true}
 					onClick={() => {
-						setExtend((x) => !x);
+						// setExtend((x) => !x);
 					}}
 				/>
 				<Select caption="Gemini" data={[]} />
