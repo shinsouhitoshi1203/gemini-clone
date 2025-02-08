@@ -2,7 +2,12 @@ import { child, get, onValue, push, set, update } from "firebase/database";
 import root, { db } from "./config";
 import initChat from "./initChat";
 import { status } from "../code/controls";
-
+const create = {
+	path(...args) {
+		return args.join("/");
+	}
+};
+console.log(create.path("users", "1", "chat", "2"));
 // checkDatabase existanse
 async function checkFromDatabase(chatID, userID) {
 	const path = "users/" + userID + "/chat/" + chatID;
@@ -21,7 +26,7 @@ async function checkExistance(chatID, chatList, userID) {
 	}
 }
 // push new Chat (conversation)
-async function newChat(chatID, userID, callback) {
+async function newChat(chatID, userID, input, callback) {
 	const user = "users/" + userID + "/chat/" + chatID;
 	const chat = "chats/" + chatID;
 	// console.log("Where had we done:\n", user, "\n", chat);
@@ -29,7 +34,7 @@ async function newChat(chatID, userID, callback) {
 	const userRef = child(root, user);
 	const chatRef = child(root, chat);
 	try {
-		const setFromUser = set(userRef, true);
+		const setFromUser = set(userRef, input);
 		const setFromChat = set(chatRef, initChat(userID));
 		Promise.all([setFromChat, setFromUser])
 			.then(() => {
@@ -38,6 +43,28 @@ async function newChat(chatID, userID, callback) {
 			.catch((e) => {
 				throw new Error(e);
 			});
+	} catch (error) {
+		throw new Error(error);
+	}
+}
+async function setTopic(chatID, userID, topic) {
+	const userChat = "users/" + userID + "/chat/" + chatID;
+	const userChatRef = child(root, userChat);
+	const snapshot = await get(userChatRef);
+	if (!snapshot.exists()) {
+		console.log("The chat does not exist");
+
+		return;
+	}
+	console.log("HIHI");
+	const path = "chats/" + chatID + "/";
+	const chatRef = child(root, path);
+	const topicRef = child(chatRef, "topic");
+	console.log(userChat);
+	console.log(path + "/topic");
+	try {
+		await set(topicRef, topic);
+		await set(userChatRef, topic);
 	} catch (error) {
 		throw new Error(error);
 	}
@@ -99,4 +126,4 @@ async function sendMessage(zustandCallback, chatID, message, role) {
 	}
 }
 
-export { checkExistance, newChat, loadChat, sendMessage };
+export { checkExistance, newChat, loadChat, sendMessage, setTopic };

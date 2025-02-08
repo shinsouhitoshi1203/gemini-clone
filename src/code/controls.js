@@ -1,5 +1,6 @@
 "use strict";
-import { newChat } from "../db";
+import { topic } from "../config";
+import { newChat, setTopic } from "../db";
 import useChat from "../hooks/zustand/chat";
 import useGlobal from "../hooks/zustand/global";
 import useUserChat from "../hooks/zustand/userChat";
@@ -41,11 +42,48 @@ const status = {
 		}
 	}
 };
+
+function generateTopic(question, answer) {
+	const chatQuery = { question, answer };
+	console.log(JSON.stringify(chatQuery));
+}
+
 const chats = {
+	topic: {
+		get(question) {
+			let chatTopic = "";
+			topic(question)
+				.then((answer) => {
+					const db = JSON.parse(answer);
+					const { topic } = db;
+					chatTopic = topic;
+				})
+				.catch((error) => {
+					chatTopic = question[0].toUpperCase() + question.slice(1);
+					console.error(error);
+				})
+				.finally(() => {
+					chats.chatTopic = chatTopic;
+				});
+			return chatTopic;
+		},
+		stop() {
+			useUserChat.setState((state) => ({
+				topic: { ...state.topic, newTopic: false }
+			}));
+		}
+	},
+	get chatTopic() {
+		return useUserChat.getState().topic;
+	},
 	clear() {
 		useUserChat.setState(() => ({ chats: {} }));
 	},
-	get current() {},
+	set chatTopic(topic) {
+		useUserChat.setState(() => ({
+			topic: { newTopic: true, name: topic }
+		}));
+	},
 	current: {
 		setID(ID) {
 			if (!ID) return;
@@ -53,6 +91,9 @@ const chats = {
 				return { current: ID };
 			});
 		}
+	},
+	reset() {
+		useUserChat.getState().reset();
 	}
 };
 
@@ -64,6 +105,7 @@ const actions = {
 		status.set(false, "", "");
 		status.chat.reset();
 		chats.clear();
+		chats.reset();
 		chats.current.setID("");
 		interact.sidebar.toggle(false);
 		status.chat.reset();
@@ -71,6 +113,9 @@ const actions = {
 	},
 	push: {
 		historyID() {},
+		answer(response) {
+			useChat.setState(() => ({ responseForTopic: response }));
+		},
 		conversation(input, ID, fromExisted = false) {
 			if (ID) {
 				status.set(true, input, ID);
@@ -83,10 +128,11 @@ const actions = {
 			try {
 				if (!chatID) {
 					const ID = window.crypto.randomUUID();
-					newChat(ID, userID, () => {
+					newChat(ID, userID, input, () => {
 						this.conversation(input, ID);
 						navigate("/app/" + ID, { replace: true });
-						pushHistory(ID);
+						const topic = chats.topic.get(input);
+						pushHistory(ID, topic);
 					});
 				} else {
 					this.conversation(input, chatID, true);

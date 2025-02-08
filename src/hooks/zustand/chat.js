@@ -45,6 +45,7 @@ const useChat = create(
 
 			hasAsked: false,
 			hasAnswered: false,
+			responseForTopic: "",
 
 			// temporarily keep them to avoid bugs
 			loadingChatID: "",

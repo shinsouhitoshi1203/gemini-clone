@@ -9,7 +9,7 @@ const $ = document.querySelector.bind(document);
 const root = ReactDOM.createRoot($("#root"));
 
 root.render(
-	<StrictMode>
-		<RouterProvider router={router} />
-	</StrictMode>
+	// <StrictMode>
+	<RouterProvider router={router} />
+	/* </StrictMode> */
 );

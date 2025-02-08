@@ -47,7 +47,7 @@ const useGlobal = create(
 				});
 			},
 			setHistory() {},
-			pushHistory(ID) {
+			pushHistory(ID, topic) {
 				set((state) => {
 					//console.log(state.user.history);
 

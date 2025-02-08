@@ -1,8 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { memo, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // scripts
 import { gpt } from "../../../config";
-import actions, { status } from "../../../code/controls";
+import actions, { status, chats } from "../../../code/controls";
+
 // styling
 import "./../../../assets/scss/pages/Home/_ChatBox.scss";
 // database
@@ -16,7 +17,7 @@ import useChat from "../../../hooks/zustand/chat";
 import interact from "../../../code/interact";
 import useInteract from "../../../hooks/zustand/interact";
 import { ScrollProvider } from "./index";
-
+import { setTopic } from "../../../db";
 function Chatbox() {
 	const displayRef = useContext(ScrollProvider);
 	const chatBoxRef = useRef(false);
@@ -91,6 +92,7 @@ function Chatbox() {
 			return;
 		}
 		async function sendReq(configChat, questionQuery, chatID) {
+			if (status.chat.answer) return;
 			try {
 				new Promise((resolve) => {
 					const response = gpt(configChat, questionQuery);
@@ -98,13 +100,22 @@ function Chatbox() {
 				})
 					.then((response) => {
 						sendMessage(pushChat, chatID, response, "model");
+
 						return "siuuu";
+					})
+
+					.then((response) => {
+						interact.scroll.trigger(false);
+						const chatTopic = chats.chatTopic;
+
+						if (chatTopic.newTopic) {
+							console.log("wtf");
+							setTopic(chatID, userID, chatTopic.name);
+							chats.topic.stop();
+						}
 					})
 					.catch((error) => {
 						throw new Error(error);
-					})
-					.then((response) => {
-						interact.scroll.trigger(false);
 					});
 			} catch (error) {
 				console.error(error);
@@ -178,4 +189,4 @@ function Chatbox() {
 		</div>
 	);
 }
-export default Chatbox;
+export default memo(Chatbox);

@@ -21,7 +21,22 @@ export const generationConfig = {
 	maxOutputTokens: 8192,
 	responseMimeType: "text/plain"
 };
-
+export const generationConfig_Topic = {
+	temperature: 1,
+	topP: 0.95,
+	topK: 40,
+	maxOutputTokens: 8192,
+	responseMimeType: "application/json",
+	responseSchema: {
+		type: "object",
+		properties: {
+			topic: {
+				type: "string"
+			}
+		},
+		required: ["topic"]
+	}
+};
 const model = generateModel("");
 
 async function processGPT(historydataRequest) {

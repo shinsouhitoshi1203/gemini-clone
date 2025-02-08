@@ -5,7 +5,7 @@ import Hyperlink from "../../../components/Hyperlink";
 import "./../../../assets/scss/pages/Home/Home.scss";
 // hooks
 import { Outlet, useLocation } from "react-router-dom";
-import { createContext, useEffect, useLayoutEffect, useRef } from "react";
+import { createContext, memo, useEffect, useLayoutEffect, useRef } from "react";
 import useInteract from "../../../hooks/zustand/interact";
 import useUserChat from "../../../hooks/zustand/userChat";
 const ScrollProvider = createContext();
@@ -59,5 +59,5 @@ function Home() {
 		</div>
 	);
 }
-export default Home;
+export default memo(Home);
 export { ScrollProvider };

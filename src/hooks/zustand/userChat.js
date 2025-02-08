@@ -2,9 +2,13 @@ import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 const DEFAULT = {
+	current: "",
 	context: "",
 	chats: {},
-	current: ""
+	topic: {
+		newTopic: false,
+		name: ""
+	}
 };
 
 function renderMessage(id, data, role) {
@@ -75,6 +79,10 @@ const useUserChat = create(
 			current: "",
 			context: "",
 			chats: {},
+			topic: {
+				newTopic: false,
+				name: ""
+			},
 			reset() {
 				set(DEFAULT);
 			},
