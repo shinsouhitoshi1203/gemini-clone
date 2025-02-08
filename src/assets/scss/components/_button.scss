@@ -1,42 +1,89 @@
 @use "./../abstracts" as a;
+
+$buttonContainer: (
+	"light": (
+		// this is the floating action button color
+		button__fab: #e6e0e9,
+		button__fab--hover: rgba(#49454f, 20%),
+		button__fab--text: #1d192b,
+		// this is the main button color
+		button__main--hover: rgba(#49454f, 7.5%),
+		// this is the user button color
+		button__user--svg: #1d192b,
+		button__user--focus: #e6e0e9,
+		button__user--hover: rgba(#49454f, 10%)
+	),
+	"dark": (
+		// this is the floating action button color
+		button__fab: #787182,
+		button__fab--hover: #948ca1,
+		button__fab--text: #ffffff,
+		// this is the main button color
+		button__main--hover: rgba(#c7c7c7, 10%),
+		//  this is the user button color
+		button__user--svg: #ffffff,
+		button__user--focus: #787182,
+		button__user--hover: rgba(#c7c7c7, 10%)
+	)
+);
+
+@include a.themed($buttonContainer);
+
 %button-default {
-    border-radius: 24px; display: flex; align-items: center; justify-content: center; gap: 10px;
+	border-radius: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
 }
 
-
 .button {
-    transition: background .3s, color .3s;
-    &[extended='true'] {
-        justify-content: flex-start; padding: 16px;
-    }
-    &__main {
-        @extend %button-default; 
-        svg {font-size: 24px;}
-        &:hover {
-            background-color: var(--main__hover);//rgba(var(--secondary), 5%);
-        }
-    }
-    &__fab {
-        color: var(--main);
-        background-color: var(--fab); padding: 16px;border-radius: 16px; @extend %button-default; 
-        &:hover {
-            background-color: var(--fab__hover);//rgba(var(--fab), 10%);
-        }
-        
-        svg {font-size: 24px;}
-    }
-    &__user {
-        overflow: hidden; transition: outline .3s;outline: 4px solid transparent;
-        svg {font-size: 32px; color: var(--main);    }
-        &:hover {
-            outline-color: var(--main__hover);
-        }
-        &:active, &:focus {
-            outline-color: var(--fab);
-        }
-        
-    }
-    &__bg-tran {
-        background: transparent;
-    }
+	transition: background 0.3s, color 0.3s;
+	&[extended="true"] {
+		justify-content: flex-start;
+		padding: 16px;
+	}
+	&__main {
+		@extend %button-default;
+		svg {
+			font-size: 24px;
+		}
+		&:hover {
+			background-color: var(--button__main--hover);
+		}
+	}
+	&__fab {
+		// fab is a floating action button
+		color: var(--button__fab--text);
+		background-color: var(--button__fab);
+		padding: 16px;
+		border-radius: 16px;
+		@extend %button-default;
+		&:hover {
+			background-color: var(--button__fab--hover);
+		}
+
+		svg {
+			font-size: 24px;
+		}
+	}
+	&__user {
+		overflow: hidden;
+		transition: outline 0.3s;
+		outline: 4px solid transparent;
+		svg {
+			font-size: 32px;
+			color: var(--button__user--svg);
+		}
+		&:hover {
+			outline-color: var(--button__user--hover);
+		}
+		&:active,
+		&:focus {
+			outline-color: var(--button__user--focus);
+		}
+	}
+	&__bg-tran {
+		background: transparent;
+	}
 }
