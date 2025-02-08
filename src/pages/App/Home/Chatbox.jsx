@@ -50,7 +50,8 @@ function Chatbox() {
 					});
 				} catch (error) {
 					console.log(error);
-					navigate("/app");
+					actions.reset(navigate);
+					// navigate("/app");
 				}
 			} else {
 				navigate("/app");
@@ -113,8 +114,9 @@ function Chatbox() {
 			(state) => state.live,
 			async ({ needQuestion, questionQuery, newID: chatID }) => {
 				if (needQuestion && questionQuery) {
-					if (chatID != "" && !status.chat.ask) {
+					if (chatID != "") {
 						sendMessage(pushChat, chatID, questionQuery, "user");
+
 						// once the message has been sent, we will trigger the scroll
 						interact.scroll.trigger(true);
 						const currentChats = get.gemini();
@@ -122,7 +124,6 @@ function Chatbox() {
 							context: "",
 							history: [...currentChats]
 						};
-						status.chat.ask = true;
 						if (!status.chat.answer) {
 							await sendReq(configChat, questionQuery, chatID);
 							actions.finish.asking();

@@ -59,13 +59,14 @@ const chats = {
 // actions
 
 const actions = {
-	reset(navigate, prune) {
+	reset(navigate, prune = () => {}) {
 		prune("conversation");
 		status.set(false, "", "");
 		status.chat.reset();
 		chats.clear();
 		chats.current.setID("");
 		interact.sidebar.toggle(false);
+		status.chat.reset();
 		navigate("/app", { replace: true });
 	},
 	push: {

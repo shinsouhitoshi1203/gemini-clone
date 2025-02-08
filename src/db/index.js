@@ -1,6 +1,7 @@
 import { child, get, onValue, push, set, update } from "firebase/database";
 import root, { db } from "./config";
 import initChat from "./initChat";
+import { status } from "../code/controls";
 
 // checkDatabase existanse
 async function checkFromDatabase(chatID, userID) {
@@ -73,8 +74,18 @@ async function sendMessage(zustandCallback, chatID, message, role) {
 	// ---------------------------------
 	const list = "chats/" + chatID + "/list";
 	const listRef = child(root, list);
-	const messageID = push(listRef).key;
-	zustandCallback(messageID, message, role);
+	let messageID = "";
+
+	if (role == "user") {
+		if (status.chat.ask) return;
+		messageID = push(listRef).key;
+		zustandCallback(messageID, message, role);
+		status.chat.ask = true;
+	} else {
+		messageID = push(listRef).key;
+		zustandCallback(messageID, message, role);
+	}
+
 	try {
 		const changes = {};
 		changes["/" + messageID] = {
