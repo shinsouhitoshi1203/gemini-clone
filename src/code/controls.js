@@ -28,25 +28,28 @@ const status = {
 		reset() {
 			useChat.setState(() => ({ hasAsked: false, hasAnswered: false }));
 		},
+		// gettings
 		get ask() {
 			return useChat.getState().hasAsked;
 		},
 		get answer() {
 			return useChat.getState().hasAnswered;
 		},
+		get wait() {
+			return useChat.getState().process;
+		},
+		// settings
 		set ask(hasAsked = false) {
 			useChat.setState(() => ({ hasAsked }));
 		},
 		set answer(hasAnswered = false) {
 			useChat.setState(() => ({ hasAnswered }));
+		},
+		set wait(value = true) {
+			return useChat.setState(() => ({ process: value }));
 		}
 	}
 };
-
-function generateTopic(question, answer) {
-	const chatQuery = { question, answer };
-	console.log(JSON.stringify(chatQuery));
-}
 
 const chats = {
 	topic: {
@@ -127,12 +130,19 @@ const actions = {
 			// trigger scrolling
 			try {
 				if (!chatID) {
+					// press wait
+
+					// generate a random ID
 					const ID = window.crypto.randomUUID();
 					newChat(ID, userID, input, () => {
 						this.conversation(input, ID);
 						navigate("/app/" + ID, { replace: true });
-						const topic = chats.topic.get(input);
-						pushHistory(ID, topic);
+						new Promise((resolve) => {
+							const topic = chats.topic.get(input);
+							resolve(topic);
+						}).then((topic) => {
+							pushHistory(ID, topic);
+						});
 					});
 				} else {
 					this.conversation(input, chatID, true);
@@ -146,7 +156,6 @@ const actions = {
 	finish: {
 		asking() {
 			status.set(false, "", "");
-			// reset the received state
 		}
 	},
 	check: {

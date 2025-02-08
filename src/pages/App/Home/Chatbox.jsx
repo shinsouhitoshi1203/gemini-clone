@@ -92,7 +92,7 @@ function Chatbox() {
 			return;
 		}
 		async function sendReq(configChat, questionQuery, chatID) {
-			if (status.chat.answer) return;
+			// if (status.chat.answer) return;
 			try {
 				new Promise((resolve) => {
 					const response = gpt(configChat, questionQuery);
@@ -100,22 +100,22 @@ function Chatbox() {
 				})
 					.then((response) => {
 						sendMessage(pushChat, chatID, response, "model");
-
-						return "siuuu";
+						return;
 					})
-
-					.then((response) => {
+					.then(() => {
 						interact.scroll.trigger(false);
 						const chatTopic = chats.chatTopic;
-
 						if (chatTopic.newTopic) {
-							console.log("wtf");
 							setTopic(chatID, userID, chatTopic.name);
 							chats.topic.stop();
 						}
 					})
 					.catch((error) => {
 						throw new Error(error);
+					})
+					.finally(() => {
+						// set any state once the final message has been sent
+						status.chat.wait = false;
 					});
 			} catch (error) {
 				console.error(error);
@@ -136,9 +136,11 @@ function Chatbox() {
 							history: [...currentChats]
 						};
 						if (!status.chat.answer) {
-							await sendReq(configChat, questionQuery, chatID);
-							actions.finish.asking();
+							// console.log("You are here");
 							status.chat.answer = true;
+							await sendReq(configChat, questionQuery, chatID);
+							// status.chat.wait = false;
+							actions.finish.asking();
 						}
 					}
 				}

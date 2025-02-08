@@ -7,24 +7,30 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import Button from "../../../components/Button";
 import TextBox from "../../../components/TextBox";
 
-import actions from "../../../code/controls";
+import actions, { status } from "../../../code/controls";
+import useChat from "../../../hooks/zustand/chat";
 
 function Input() {
 	// navigator
 	const navigate = useNavigate();
 	// check var URL
 	const { conversation: chatID } = useParams();
+	// input
 	const [input, setInput] = useState("");
+	// wait
+	const process = useChat((state) => state.process);
 	// send request from this input
 	const sendReq = useCallback(
 		async (e) => {
 			if (e.key == "Enter" && input) {
 				try {
+					status.chat.wait = true;
 					actions.push.request(input, navigate, chatID);
 				} catch (error) {
 					console.error(error);
 				} finally {
 					setInput("");
+					status.chat.wait = true;
 				}
 			}
 		},
@@ -34,6 +40,7 @@ function Input() {
 	return (
 		<>
 			<TextBox
+				disabled={process}
 				input={input}
 				setInput={setInput}
 				cls="pageHome__input-real GEMINI__input"

@@ -43,6 +43,7 @@ const useChat = create(
 				}
 			},
 
+			process: false,
 			hasAsked: false,
 			hasAnswered: false,
 			responseForTopic: "",

@@ -52,16 +52,12 @@ async function setTopic(chatID, userID, topic) {
 	const userChatRef = child(root, userChat);
 	const snapshot = await get(userChatRef);
 	if (!snapshot.exists()) {
-		console.log("The chat does not exist");
-
+		console.error("The chat does not exist");
 		return;
 	}
-	console.log("HIHI");
 	const path = "chats/" + chatID + "/";
 	const chatRef = child(root, path);
 	const topicRef = child(chatRef, "topic");
-	console.log(userChat);
-	console.log(path + "/topic");
 	try {
 		await set(topicRef, topic);
 		await set(userChatRef, topic);
@@ -73,7 +69,6 @@ async function setTopic(chatID, userID, topic) {
 async function loadChat(chatID, userID, callback = () => {}) {
 	const path = "chats/" + chatID;
 	const chatRef = child(root, path);
-
 	try {
 		onValue(
 			chatRef,
@@ -81,7 +76,6 @@ async function loadChat(chatID, userID, callback = () => {}) {
 				if (!snapshot.exists())
 					throw new Error("The chat does not exist");
 				const list = snapshot.val();
-
 				callback(list);
 			},
 			{ onlyOnce: true }
