@@ -1,6 +1,6 @@
 "use strict";
 import { topic } from "../config";
-import { newChat, setTopic } from "../db";
+import { newChat, setTopic, tickle } from "../db";
 import useChat, {
 	GEMINI_FINISH,
 	GEMINI_PREPARE,
@@ -49,6 +49,16 @@ const status = {
 		get wait() {
 			return useChat.getState().process;
 		},
+		get needStop() {
+			return useChat.getState().mustStop;
+		},
+		get answerID() {
+			return useChat.getState().animationID;
+		},
+		get animate() {
+			return useChat.getState().allowAnimation;
+		},
+
 		// settings
 		set ask(hasAsked = false) {
 			useChat.setState(() => ({ hasAsked }));
@@ -130,10 +140,14 @@ const chats = {
 			useUserChat.setState(() => {
 				return { current: ID };
 			});
+		},
+		get() {
+			return useUserChat.getState().current;
 		}
 	},
 	reset() {
 		useUserChat.getState().reset();
+		// tickle the database
 	}
 };
 
@@ -168,7 +182,6 @@ const actions = {
 			try {
 				if (!chatID) {
 					// press wait
-					status.chat.prepare();
 					// generate a random ID
 					const ID = window.crypto.randomUUID();
 					newChat(ID, userID, input, () => {
@@ -203,7 +216,19 @@ const actions = {
 			return useChat.getState().hasAnswered;
 		}
 	},
-	stop() {}
+
+	stop() {
+		status.chat.stop();
+		tickle(
+			chats.current.get(),
+			status.chat.answerID,
+			userID,
+			"cancelled",
+			true
+		);
+		status.chat.wait = false;
+		// reset from id
+	}
 };
 
 export default actions;

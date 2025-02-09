@@ -3,11 +3,11 @@ import useGlobal from "../../../hooks/zustand/global";
 import Loading from "./Loading";
 
 function WaitForAnswer() {
-	const { allowLoading } = useChat();
+	const { allowLoading, mustStop } = useChat();
 	const avatar = useGlobal((x) => x.app.avatar);
 	return (
 		<>
-			{allowLoading && (
+			{allowLoading && !mustStop && (
 				<div className="ChatBox__Chat-Answer ChatBox__Chat">
 					<div className="ChatBox__user">
 						<img src={avatar} alt="" />

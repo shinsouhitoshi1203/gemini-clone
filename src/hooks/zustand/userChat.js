@@ -24,7 +24,9 @@ export const convert = {
 	toGemini(listInput) {
 		// list input is from firebase;
 		// secret/dataStructure.js
-		const entries = Object.entries(listInput);
+		let entries = Object.entries(listInput);
+		// removed all cancelled messages
+		entries = entries.filter(([, { cancelled }]) => !cancelled);
 		return entries.map(([, { parts, role }]) => {
 			return { parts, role };
 		});

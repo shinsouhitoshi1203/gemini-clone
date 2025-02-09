@@ -45,14 +45,18 @@ function RawAnswer({ nope, text }) {
 				await new Promise((ok) => {
 					setTimeout(() => {
 						ok();
-					}, 60);
+					}, 25);
 				});
-				if (!isMounted) return;
+				if (status.chat.needStop || !isMounted) return;
+				if (i === wordList.length - 1) {
+					status.chat.wait = false;
+				}
 				setDisplayText((x) => x + " " + wordList[i]);
 			}
 			status.chat.finish();
 		}
 		fn();
+
 		//}
 		return () => {
 			isMounted = false;

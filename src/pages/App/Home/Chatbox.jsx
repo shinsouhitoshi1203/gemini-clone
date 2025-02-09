@@ -121,10 +121,7 @@ function Chatbox() {
 					.catch((error) => {
 						throw new Error(error);
 					})
-					.finally(() => {
-						// set any state once the final message has been sent
-						status.chat.wait = false;
-					});
+					.finally(() => {});
 			} catch (error) {
 				console.error(error);
 			}

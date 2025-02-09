@@ -65,10 +65,12 @@ function ChatHistory() {
 				chat.map((chat) => {
 					const msg = chat.parts[0].text;
 					const messageID = chat.id;
+					const cancelled = chat.cancelled;
 					return chat.role == "user" ? (
 						<Ask chatData={parse(msg)} key={messageID} />
 					) : (
 						<Answer
+							cancelled={cancelled}
 							answerID={messageID}
 							chatData={parse(msg)}
 							key={messageID}

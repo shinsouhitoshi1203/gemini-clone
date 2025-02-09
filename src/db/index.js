@@ -65,6 +65,21 @@ async function setTopic(chatID, userID, topic) {
 		throw new Error(error);
 	}
 }
+async function tickle(chatID, messageID, userID, field, value) {
+	const userChat = "users/" + userID + "/chat/" + chatID;
+	const userChatRef = child(root, userChat);
+	const snapshot = await get(userChatRef);
+	if (!snapshot.exists()) {
+		console.error("The chat does not exist");
+		return;
+	}
+	// ////////////////////////////////////////////////
+	const path = "/chats/" + chatID + "/list/" + messageID;
+	const userRef = child(root, path);
+	const changes = {};
+	changes["/" + field] = value;
+	await update(userRef, changes);
+}
 // load previous messages in a chat
 async function loadChat(chatID, userID, callback = () => {}) {
 	const path = "chats/" + chatID;
@@ -119,7 +134,8 @@ async function sendMessage(
 		changes["/" + messageID] = {
 			role,
 			id: messageID,
-			parts: [{ text: message }]
+			parts: [{ text: message }],
+			cancelled: false
 		};
 		await update(listRef, changes);
 		return messageID;
@@ -128,4 +144,4 @@ async function sendMessage(
 	}
 }
 
-export { checkExistance, newChat, loadChat, sendMessage, setTopic };
+export { checkExistance, newChat, loadChat, sendMessage, setTopic, tickle };

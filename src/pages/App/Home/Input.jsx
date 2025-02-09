@@ -19,23 +19,29 @@ function Input() {
 	const [input, setInput] = useState("");
 	// wait
 	const process = useChat((state) => state.process);
+	const allowForceStop = useChat((state) => state.allowForceStop);
+	const allowLoading = useChat((state) => state.allowLoading);
 	// send request from this input
 	const sendReq = useCallback(
 		async (e) => {
 			if (e.key == "Enter" && input) {
 				try {
+					status.chat.prepare();
 					status.chat.wait = true;
 					actions.push.request(input, navigate, chatID);
 				} catch (error) {
 					console.error(error);
 				} finally {
 					setInput("");
-					status.chat.wait = true;
+					status.chat.wait = false;
 				}
 			}
 		},
 		[input]
 	);
+	const handleStopRequest = useCallback(() => {
+		actions.stop();
+	}, []);
 	// return
 	return (
 		<>
@@ -50,11 +56,15 @@ function Input() {
 						caption="Attach an image"
 						icon={<ImageOutlinedIcon />}
 						size="40 40 50%"
+						onClick={() => {
+							status.chat.finish();
+						}}
 					/>
 				]}
 				placeholder="Enter a prompt here"
 				right={[
-					true ? (
+					!allowForceStop && !allowLoading ? (
+						// true
 						<Button
 							type="main"
 							caption="Input from voice"
@@ -62,14 +72,13 @@ function Input() {
 							size="40 40 50%"
 						/>
 					) : (
+						// false
 						<Button
 							type="main"
 							caption="Cancel"
 							icon={<StopCircleIcon />}
 							size="40 40 50%"
-							onClick={() => {
-								actions.stop();
-							}}
+							onClick={handleStopRequest}
 						/>
 					)
 				]}

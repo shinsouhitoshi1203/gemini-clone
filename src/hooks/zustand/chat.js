@@ -8,7 +8,7 @@ const GEMINI_PREPARE = {
 	allowLoading: true,
 	allowAnimation: false,
 	mustStop: false,
-	allowForceStop: false
+	allowForceStop: true
 };
 const GEMINI_READY = {
 	allowLoading: false,
@@ -57,36 +57,6 @@ const useChat = create(
 			recent: "",
 			response: "",
 			allowChat: false
-			/* actions: {
-				prepare(input) {
-					set(GEMINI_PREPARE(input));
-				},
-				ready(message) {
-					if (message) {
-						set(GEMINI_READY(message));
-					} else {
-						throw new Error("breh");
-					}
-				},
-				finish() {
-					set((state) => {
-						if (!state.mustStop) {
-							return GEMINI_FINISH;
-						} else {
-							return {};
-						}
-					});
-				},
-				stop() {
-					set((state) => {
-						if (state.allowAnimation) {
-							return GEMINI_STOP_RESPONSING;
-						} else {
-							return {};
-						}
-					});
-				}
-			} */
 		};
 	})
 );
