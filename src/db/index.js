@@ -152,19 +152,27 @@ async function sendMessage(
 // load quickly the chat history
 async function quickLoad(userID, callback = () => {}) {
 	if (!userID) throw new Error("userID is missing");
-	const path = "/users/" + userID;
+	const path = "/users/" + userID + "/chat";
 	const chatRef = child(root, path);
+
+	function fun(list) {}
+
 	try {
-		onValue(
-			chatRef,
-			(snapshot) => {
-				if (!snapshot.exists())
-					throw new Error("The chat does not exist");
-				const list = snapshot.val();
-				callback(list);
-			},
-			{ onlyOnce: true }
-		);
+		const snapshot = await get(chatRef);
+		if (!snapshot.exists()) throw new Error("The chat does not exist");
+		const list = snapshot.val();
+
+		return callback(list);
+		// onValue(
+		// 	chatRef,
+		// 	(snapshot) => {
+		// 		if (!snapshot.exists())
+		// 			throw new Error("The chat does not exist");
+		// 		const list = snapshot.val();
+		// 		fun(list);; callback(list);
+		// 	},
+		// 	{ onlyOnce: true }
+		// ).;
 	} catch (error) {
 		throw new Error(error);
 	}

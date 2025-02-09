@@ -31,13 +31,17 @@ function manageBG(bg, cls) {
 	}
 	return x;
 }
-function CardBase({ cls, children, size, style, bg }) {
+function CardBase({ cls, children, size, style, bg, ...rest }) {
 	const classList = useRef(manageBG(bg, cls));
 	const styles = useRef({ ...style, ...setSize(bg, size) });
 
 	return (
 		<>
-			<button className={classList.current} style={styles.current}>
+			<button
+				className={classList.current}
+				style={styles.current}
+				{...rest}
+			>
 				{children}
 			</button>
 		</>

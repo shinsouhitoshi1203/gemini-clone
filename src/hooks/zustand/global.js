@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-import req from "./req";
 const idVersion = import.meta.env.VITE_APP_VERSION;
 const useGlobal = create(
 	subscribeWithSelector((set, get) => {
@@ -21,6 +20,14 @@ const useGlobal = create(
 				info: {},
 				settings: {},
 				history: [] // contain list of history only!
+				/* 
+                    history: [
+                        {
+                            id: "123456",
+                            topic: "math"
+                        }
+                    ]
+                */
 			},
 			// settings
 			loadUser: (info, settings, history) => {
@@ -49,10 +56,8 @@ const useGlobal = create(
 			setHistory() {},
 			pushHistory(ID, topic) {
 				set((state) => {
-					//console.log(state.user.history);
-
 					const history = state.user.history.slice();
-					history.push(ID);
+					history.push({ chatID: ID, topic: topic });
 					return {
 						user: { ...state.user, history }
 					};

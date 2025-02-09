@@ -11,6 +11,7 @@ import useGlobal from "../hooks/zustand/global";
 import req from "../hooks/zustand/req";
 import { useLoaderData } from "react-router-dom";
 import FakeChat from "../pages/Fallback";
+import { quickLoad } from "../db";
 
 const GlobalContext = createContext();
 const idVersion = import.meta.env.VITE_APP_VERSION;
@@ -23,7 +24,13 @@ export async function loadUI() {
 	info = await req("user", ID);
 	if (info == "ERROR") throw new Error("Error occured");
 
-	history = await req("history", ID);
+	history = await quickLoad(ID, (list) => {
+		return () => {
+			return Object.keys(list).map((key) => {
+				return { chatID: key, topic: list[key] };
+			});
+		};
+	});
 	if (history == "ERROR") throw new Error("Error occured");
 
 	settings = await req("settings", ID);
@@ -43,8 +50,9 @@ function GlobalProvider({ children }) {
 		if (loggedIn) return;
 
 		if (checkVar.current) return;
+		// console.log(history());
 
-		loadUser(info, settings, history.list);
+		loadUser(info, settings, history());
 		checkVar.current = true;
 		return "";
 	}, []);
