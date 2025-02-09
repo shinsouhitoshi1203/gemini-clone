@@ -8,7 +8,8 @@ const GEMINI_PREPARE = {
 	allowLoading: true,
 	allowAnimation: false,
 	mustStop: false,
-	allowForceStop: true
+	allowForceStop: true,
+	process: true
 };
 const GEMINI_READY = {
 	allowLoading: false,
@@ -20,7 +21,8 @@ const GEMINI_FINISH = {
 	allowLoading: false,
 	allowAnimation: false,
 	allowForceStop: false,
-	mustStop: false
+	mustStop: false,
+	process: false
 };
 const GEMINI_STOP_RESPONSING = {
 	allowForceStop: false,
@@ -34,10 +36,7 @@ const useChat = create(
 			live: {
 				newID: "",
 				needQuestion: false,
-				questionQuery: "",
-				getContent() {
-					return useUserChat.getState().chats;
-				}
+				questionQuery: ""
 			},
 
 			process: false,

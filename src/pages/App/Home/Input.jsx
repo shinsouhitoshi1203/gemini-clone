@@ -27,13 +27,12 @@ function Input() {
 			if (e.key == "Enter" && input) {
 				try {
 					status.chat.prepare();
-					status.chat.wait = true;
 					actions.push.request(input, navigate, chatID);
+					status.chat.wait = true;
 				} catch (error) {
 					console.error(error);
 				} finally {
 					setInput("");
-					status.chat.wait = false;
 				}
 			}
 		},
@@ -43,6 +42,8 @@ function Input() {
 		actions.stop();
 	}, []);
 	// return
+	console.log(process);
+
 	return (
 		<>
 			<TextBox
@@ -56,9 +57,7 @@ function Input() {
 						caption="Attach an image"
 						icon={<ImageOutlinedIcon />}
 						size="40 40 50%"
-						onClick={() => {
-							status.chat.finish();
-						}}
+						onClick={() => {}}
 					/>
 				]}
 				placeholder="Enter a prompt here"

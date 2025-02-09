@@ -58,12 +58,14 @@ function ChatHistory() {
 
 		historyRef.current = true;
 	}, []);
+
 	return (
 		<>
 			{chat &&
 				// will use the id as a key later
 				chat.map((chat) => {
 					const msg = chat.parts[0].text;
+
 					const messageID = chat.id;
 					const cancelled = chat.cancelled;
 					return chat.role == "user" ? (

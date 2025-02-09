@@ -49,13 +49,13 @@ function RawAnswer({ nope, text }) {
 				});
 				if (status.chat.needStop || !isMounted) return;
 				if (i === wordList.length - 1) {
-					status.chat.wait = false;
 				}
 				setDisplayText((x) => x + " " + wordList[i]);
 			}
 			status.chat.finish();
 		}
 		fn();
+		// status.chat.wait = false;
 
 		//}
 		return () => {

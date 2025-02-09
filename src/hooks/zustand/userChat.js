@@ -34,6 +34,7 @@ export const convert = {
 	toUI(listInput) {
 		// list input is from zustand
 		const entries = Object.entries(listInput);
+
 		return entries.map(([, content]) => {
 			return { ...content };
 		});

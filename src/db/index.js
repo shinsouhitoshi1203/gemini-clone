@@ -27,6 +27,7 @@ async function checkExistance(chatID, chatList, userID) {
 }
 // push new Chat (conversation)
 async function newChat(chatID, userID, input, callback) {
+	if (!chatID || !userID) throw new Error("chatID or userID is missing");
 	const user = "users/" + userID + "/chat/" + chatID;
 	const chat = "chats/" + chatID;
 	// console.log("Where had we done:\n", user, "\n", chat);
@@ -48,6 +49,7 @@ async function newChat(chatID, userID, input, callback) {
 	}
 }
 async function setTopic(chatID, userID, topic) {
+	if (!chatID || !userID) return;
 	const userChat = "users/" + userID + "/chat/" + chatID;
 	const userChatRef = child(root, userChat);
 	const snapshot = await get(userChatRef);
@@ -66,6 +68,7 @@ async function setTopic(chatID, userID, topic) {
 	}
 }
 async function tickle(chatID, messageID, userID, field, value) {
+	if (!chatID || !messageID || !userID) return;
 	const userChat = "users/" + userID + "/chat/" + chatID;
 	const userChatRef = child(root, userChat);
 	const snapshot = await get(userChatRef);
@@ -82,6 +85,7 @@ async function tickle(chatID, messageID, userID, field, value) {
 }
 // load previous messages in a chat
 async function loadChat(chatID, userID, callback = () => {}) {
+	if (!chatID) return;
 	const path = "chats/" + chatID;
 	const chatRef = child(root, path);
 	try {
@@ -114,6 +118,7 @@ async function sendMessage(
 	// 4. message: message content
 	// 5. role: user or bot
 	// ---------------------------------
+	if (!chatID) return;
 	const list = "chats/" + chatID + "/list";
 	const listRef = child(root, list);
 	let messageID = "";
@@ -144,4 +149,33 @@ async function sendMessage(
 	}
 }
 
-export { checkExistance, newChat, loadChat, sendMessage, setTopic, tickle };
+// load quickly the chat history
+async function quickLoad(userID, callback = () => {}) {
+	if (!userID) throw new Error("userID is missing");
+	const path = "/users/" + userID;
+	const chatRef = child(root, path);
+	try {
+		onValue(
+			chatRef,
+			(snapshot) => {
+				if (!snapshot.exists())
+					throw new Error("The chat does not exist");
+				const list = snapshot.val();
+				callback(list);
+			},
+			{ onlyOnce: true }
+		);
+	} catch (error) {
+		throw new Error(error);
+	}
+}
+
+export {
+	checkExistance,
+	newChat,
+	loadChat,
+	sendMessage,
+	setTopic,
+	tickle,
+	quickLoad
+};

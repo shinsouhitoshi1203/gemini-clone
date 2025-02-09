@@ -131,6 +131,7 @@ function Chatbox() {
 			async ({ needQuestion, questionQuery, newID: chatID }) => {
 				if (needQuestion && questionQuery) {
 					if (chatID != "") {
+						status.chat.wait = true;
 						sendMessage(pushChat, chatID, questionQuery, "user");
 
 						// once the message has been sent, we will trigger the scroll
