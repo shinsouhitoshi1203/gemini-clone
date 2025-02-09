@@ -4,22 +4,20 @@ import useUserChat from "./userChat";
 
 // useChat :: chat status
 
-const GEMINI_PREPARE = (input) => ({
-	recent: input,
-	allowChat: true,
-	response: "",
+const GEMINI_PREPARE = {
 	allowLoading: true,
 	allowAnimation: false,
 	mustStop: false,
 	allowForceStop: false
-});
-const GEMINI_READY = (message) => ({
-	response: message,
+};
+const GEMINI_READY = {
 	allowLoading: false,
 	allowAnimation: true,
-	allowForceStop: true
-});
+	allowForceStop: true,
+	mustStop: false
+};
 const GEMINI_FINISH = {
+	allowLoading: false,
 	allowAnimation: false,
 	allowForceStop: false,
 	mustStop: false
@@ -27,8 +25,7 @@ const GEMINI_FINISH = {
 const GEMINI_STOP_RESPONSING = {
 	allowForceStop: false,
 	allowAnimation: false,
-	mustStop: true,
-	response: ""
+	mustStop: true
 };
 const useChat = create(
 	subscribeWithSelector((set, get) => {
@@ -48,16 +45,19 @@ const useChat = create(
 			hasAnswered: false,
 			responseForTopic: "",
 
-			// temporarily keep them to avoid bugs
-			loadingChatID: "",
-			recent: "",
-			response: "",
-			allowChat: false,
+			animationID: "",
+
 			allowAnimation: true,
 			allowLoading: false,
 			mustStop: false,
 			allowForceStop: false,
-			actions: {
+
+			// temporarily keep them to avoid bugs
+			loadingChatID: "",
+			recent: "",
+			response: "",
+			allowChat: false
+			/* actions: {
 				prepare(input) {
 					set(GEMINI_PREPARE(input));
 				},
@@ -86,9 +86,10 @@ const useChat = create(
 						}
 					});
 				}
-			}
+			} */
 		};
 	})
 );
 
 export default useChat;
+export { GEMINI_PREPARE, GEMINI_READY, GEMINI_FINISH, GEMINI_STOP_RESPONSING };

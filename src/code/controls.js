@@ -1,7 +1,12 @@
 "use strict";
 import { topic } from "../config";
 import { newChat, setTopic } from "../db";
-import useChat from "../hooks/zustand/chat";
+import useChat, {
+	GEMINI_FINISH,
+	GEMINI_PREPARE,
+	GEMINI_READY,
+	GEMINI_STOP_RESPONSING
+} from "../hooks/zustand/chat";
 import useGlobal from "../hooks/zustand/global";
 import useUserChat from "../hooks/zustand/userChat";
 import interact from "./interact";
@@ -26,7 +31,13 @@ const status = {
 	},
 	chat: {
 		reset() {
-			useChat.setState(() => ({ hasAsked: false, hasAnswered: false }));
+			useChat.setState(() => ({
+				hasAsked: false,
+				hasAnswered: false,
+				responseForTopic: "",
+				process: false,
+				animationID: ""
+			}));
 		},
 		// gettings
 		get ask() {
@@ -46,7 +57,33 @@ const status = {
 			useChat.setState(() => ({ hasAnswered }));
 		},
 		set wait(value = true) {
-			return useChat.setState(() => ({ process: value }));
+			useChat.setState(() => ({ process: value }));
+		},
+		// actions
+		push(answerID) {
+			useChat.setState(() => ({ animationID: answerID }));
+		},
+		prepare() {
+			useChat.setState(() => GEMINI_PREPARE);
+		},
+		ready() {
+			return (answerID) => {
+				useChat.setState(() => ({
+					...GEMINI_READY,
+					animationID: answerID
+				}));
+			};
+		},
+		finish() {
+			useChat.setState(() => GEMINI_FINISH);
+		},
+		stop() {
+			useChat.setState(() => GEMINI_STOP_RESPONSING);
+		},
+		get state() {
+			const { allowAnimation, allowLoading, mustStop, allowForceStop } =
+				useChat.getState();
+			return { allowAnimation, allowLoading, mustStop, allowForceStop };
 		}
 	}
 };
@@ -131,7 +168,7 @@ const actions = {
 			try {
 				if (!chatID) {
 					// press wait
-
+					status.chat.prepare();
 					// generate a random ID
 					const ID = window.crypto.randomUUID();
 					newChat(ID, userID, input, () => {

@@ -1,8 +1,22 @@
+import { memo } from "react";
+import useChat from "../../hooks/zustand/chat";
 import useGlobal from "../../hooks/zustand/global";
 import DataAnswer from "./Answer/DataAnswer";
 import WaitForAnswer from "./Answer/WaitForAnswer";
-function Answer({ chatData }) {
+function Answer({ chatData, answerID }) {
 	const { avatar } = useGlobal((x) => x.app);
+	const mustStop = useChat((state) => state.mustStop);
+	// useEffect(() => {
+	// 	if (historyRef.current) return;
+
+	// 	useChat.subscribe(
+	// 		(state) => state.animationID,
+	// 		(id) => {}
+	// 	);
+
+	// 	historyRef.current = true;
+	// }, []);
+	// console.log(animationID, answerID);
 
 	return (
 		<>
@@ -11,15 +25,17 @@ function Answer({ chatData }) {
 					<img src={avatar} alt="" />
 				</div>
 				<div className="ChatBox__message">
-					<DataAnswer msg={chatData} />
-					{/* {chatData ? (
-						<DataAnswer msg={chatData} />
+					{!mustStop ? (
+						<DataAnswer text={chatData} answerID={answerID} />
 					) : (
-						<WaitForAnswer />
-					)} */}
+						<div className="ChatBox__cancelled">
+							The response display is suspended as the user
+							pressed to stop receiving the message
+						</div>
+					)}
 				</div>
 			</div>
 		</>
 	);
 }
-export default Answer;
+export default memo(Answer);

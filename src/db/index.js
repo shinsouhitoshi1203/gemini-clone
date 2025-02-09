@@ -85,7 +85,13 @@ async function loadChat(chatID, userID, callback = () => {}) {
 	}
 }
 // send message to both zustand and database
-async function sendMessage(zustandCallback, chatID, message, role) {
+async function sendMessage(
+	zustandCallback,
+	chatID,
+	message,
+	role,
+	callback = () => {}
+) {
 	// ---------------------------------
 	// 1. chatID: conversation id
 	// 2. messageID: message id
@@ -104,6 +110,7 @@ async function sendMessage(zustandCallback, chatID, message, role) {
 		status.chat.ask = true;
 	} else {
 		messageID = push(listRef).key;
+		callback(messageID); // avoid glitch
 		zustandCallback(messageID, message, role);
 	}
 
@@ -114,7 +121,8 @@ async function sendMessage(zustandCallback, chatID, message, role) {
 			id: messageID,
 			parts: [{ text: message }]
 		};
-		return update(listRef, changes);
+		await update(listRef, changes);
+		return messageID;
 	} catch (error) {
 		throw new Error(error);
 	}

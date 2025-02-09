@@ -1,13 +1,10 @@
 // raw answer, it is seperated to prevent mass rerendering
 import { useEffect, useMemo, useRef, useState } from "react";
-import useHome from "../../../hooks/useHome";
-import createRequest from "../../../reducers/createRequest";
-import { GEMINI_FINISH } from "../../../reducers/chat/actions";
 import RemarkMathPlugin from "remark-math";
 import Markdown from "markdown-to-jsx";
+import { status } from "../../../code/controls";
 
-function RawAnswer({ needDelay, text }) {
-	const { set } = useHome();
+function RawAnswer({ nope, text }) {
 	const answerField = useRef();
 	const [displayText, setDisplayText] = useState("");
 	const wordList = useMemo(() => {
@@ -41,23 +38,22 @@ function RawAnswer({ needDelay, text }) {
 
 	useEffect(() => {
 		let isMounted = true;
-		if (needDelay) {
-			async function fn() {
-				for (let i = 0; i < wordList.length; ++i) {
-					await new Promise((ok, nope) => {
-						setTimeout(() => {
-							ok();
-						}, 60);
-					});
-					// console.log(reset.current);
-					if (!isMounted) return;
-					if (i == wordList.length - 1)
-						set(createRequest(GEMINI_FINISH));
-					setDisplayText((x) => x + " " + wordList[i]);
-				}
+		console.log(nope, "< Khong can delay");
+		if (nope) return;
+		async function fn() {
+			for (let i = 0; i < wordList.length; ++i) {
+				await new Promise((ok) => {
+					setTimeout(() => {
+						ok();
+					}, 60);
+				});
+				if (!isMounted) return;
+				setDisplayText((x) => x + " " + wordList[i]);
 			}
-			fn();
+			status.chat.finish();
 		}
+		fn();
+		//}
 		return () => {
 			isMounted = false;
 		};
@@ -65,7 +61,7 @@ function RawAnswer({ needDelay, text }) {
 
 	return (
 		<div className="ChatBox__answer-raw MarkDown" ref={answerField}>
-			<Markdown children={text}></Markdown>
+			<Markdown children={!nope ? displayText : text}></Markdown>
 		</div>
 	);
 }

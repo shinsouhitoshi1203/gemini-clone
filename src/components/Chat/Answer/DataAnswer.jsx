@@ -1,29 +1,37 @@
 import Options from "./Options";
 import RawAnswer from "./RawAnswer";
 import useHome from "../../../hooks/useHome";
-import { useMemo, useRef } from "react";
-function DataAnswer({ msg, req }) {
-	/* const { data } = useHome();
-	const allowShowingOption = useMemo(() => {
-		if (req) {
-			return !data.allowAnimation;
-		} else {
-			return true;
-		}
-	}, [data]); */
+import { useEffect, useMemo, useRef } from "react";
+import useChat from "../../../hooks/zustand/chat";
+function DataAnswer({ text, answerID, req }) {
+	// console.log(req);
+	const allowAnimation = useChat((state) => state.allowAnimation);
+	const animationID = useChat((state) => state.animationID);
 	return (
 		<>
 			<div className="ChatBox__answer">
-				<RawAnswer text={msg} />
-				{/* {req ? (
-					<RawAnswer needDelay={true} text={msg} />
+				{animationID == answerID ? (
+					allowAnimation ? (
+						<>
+							<RawAnswer text={text} nope={false} />
+						</>
+					) : (
+						<>
+							<RawAnswer nope={true} text={text} />
+						</>
+					)
 				) : (
-					<RawAnswer text={msg} />
-				)} */}
+					<>
+						<RawAnswer text={text} nope={true} />
+					</>
+				)}
 			</div>
 			<div className="ChatBox__Options">
-				<Options />
-				{/* {allowShowingOption && <Options />} */}
+				{animationID == answerID ? (
+					!allowAnimation && <Options />
+				) : (
+					<Options />
+				)}
 			</div>
 		</>
 	);

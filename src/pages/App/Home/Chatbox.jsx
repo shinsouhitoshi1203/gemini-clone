@@ -18,6 +18,7 @@ import interact from "../../../code/interact";
 import useInteract from "../../../hooks/zustand/interact";
 import { ScrollProvider } from "./index";
 import { setTopic } from "../../../db";
+import WaitForAnswer from "../../../components/Chat/Answer/WaitForAnswer";
 function Chatbox() {
 	const displayRef = useContext(ScrollProvider);
 	const chatBoxRef = useRef(false);
@@ -26,9 +27,11 @@ function Chatbox() {
 	const divRef = useRef();
 	// for navigation in case of error
 	const navigate = useNavigate();
+	// for getting the current user
 	const userID = useGlobal((state) => state.currentUser);
+	// for getting the chatID from the url
 	const { conversation: chatID } = useParams();
-
+	// for getting the chat history from the global state
 	const chatList = useGlobal((state) => state.user.history);
 
 	//////////////////////////////////////////////////
@@ -52,7 +55,6 @@ function Chatbox() {
 				} catch (error) {
 					console.log(error);
 					actions.reset(navigate);
-					// navigate("/app");
 				}
 			} else {
 				navigate("/app");
@@ -80,7 +82,6 @@ function Chatbox() {
 			},
 			{ fireImmediately: true }
 		);
-
 		chatBoxRef.current = true;
 	}, []);
 
@@ -99,16 +100,23 @@ function Chatbox() {
 					resolve(response);
 				})
 					.then((response) => {
-						sendMessage(pushChat, chatID, response, "model");
-						return;
+						const messageID = sendMessage(
+							pushChat,
+							chatID,
+							response,
+							"model",
+							status.chat.ready()
+						);
+						return messageID;
 					})
-					.then(() => {
+					.then((messageID) => {
 						interact.scroll.trigger(false);
 						const chatTopic = chats.chatTopic;
 						if (chatTopic.newTopic) {
 							setTopic(chatID, userID, chatTopic.name);
 							chats.topic.stop();
 						}
+						return messageID;
 					})
 					.catch((error) => {
 						throw new Error(error);
@@ -136,10 +144,8 @@ function Chatbox() {
 							history: [...currentChats]
 						};
 						if (!status.chat.answer) {
-							// console.log("You are here");
 							status.chat.answer = true;
 							await sendReq(configChat, questionQuery, chatID);
-							// status.chat.wait = false;
 							actions.finish.asking();
 						}
 					}
@@ -165,16 +171,12 @@ function Chatbox() {
 					"div.ChatBox__Chat:nth-last-child(2)"
 				);
 				latest.scrollIntoView({ behavior: "smooth" });
-				// interact.scroll.padding
 				let newPadding =
 					container.offsetHeight - latest.offsetHeight + 200;
 				if (latest.matches(".ChatBox__Chat-Answer")) {
 					newPadding = newPadding - second.offsetHeight - 25 + 200;
 				}
-
 				interact.scroll.padding = newPadding;
-
-				//scrollHandler();
 			}
 		);
 		chatBoxRef3.current = true;
@@ -188,6 +190,7 @@ function Chatbox() {
 			ref={divRef}
 		>
 			<ChatHistory />
+			<WaitForAnswer />
 		</div>
 	);
 }

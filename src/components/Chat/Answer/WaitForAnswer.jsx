@@ -1,19 +1,20 @@
-import useHome from "../../../hooks/useHome";
-import DataAnswer from "./DataAnswer";
+import useChat from "../../../hooks/zustand/chat";
+import useGlobal from "../../../hooks/zustand/global";
 import Loading from "./Loading";
 
 function WaitForAnswer() {
-	const { data } = useHome();
+	const { allowLoading } = useChat();
+	const avatar = useGlobal((x) => x.app.avatar);
 	return (
 		<>
-			{data.allowLoading ? (
-				<Loading />
-			) : !data.mustStop ? (
-				<DataAnswer msg={data.response} req={true} />
-			) : (
-				<div className="ChatBox__cancelled">
-					The response display is suspended as the user pressed to
-					stop receiving the message
+			{allowLoading && (
+				<div className="ChatBox__Chat-Answer ChatBox__Chat">
+					<div className="ChatBox__user">
+						<img src={avatar} alt="" />
+					</div>
+					<div className="ChatBox__message">
+						<Loading />
+					</div>
 				</div>
 			)}
 		</>

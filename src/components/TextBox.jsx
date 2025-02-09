@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { memo, useCallback, useRef } from "react";
 
 function mergeClass(cls) {
 	return cls + " " + "TextBox";
@@ -16,7 +16,7 @@ function TextBox({
 	...rest
 }) {
 	const id = useRef(window.crypto.randomUUID());
-	console.log(disabled);
+	// console.log(disabled);
 	const changeText = useCallback(
 		(e) => {
 			setInput(e.target.value);
@@ -63,4 +63,4 @@ function TextBox({
 		</div>
 	);
 }
-export default TextBox;
+export default memo(TextBox);
