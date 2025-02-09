@@ -1,30 +1,22 @@
-import { Route, Routes } from "react-router-dom";
-import Sidebar from "./layout/Sidebar";
-import Topbar from "./layout/Topbar";
-import Home from "./pages/Home/Home";
-import HomeProvider from "./contexts/HomeProvider";
-import SideBarProvider from "./contexts/SideBarProvider";
+import { Outlet } from "react-router-dom";
+import router from "./router";
+import useUserChat, { convert } from "./hooks/zustand/userChat";
+
+// debugging state
 
 function App() {
-	return (
-		<SideBarProvider>
-			<div className="App" data-theme="light">
-				<Sidebar></Sidebar>
-				<div className="rest">
-					<Topbar />
-					<Routes>
-						<Route
-							path="/"
-							element={
-								<HomeProvider>
-									<Home />
-								</HomeProvider>
-							}
-						/>
-					</Routes>
-				</div>
-			</div>
-		</SideBarProvider>
-	);
+	// const chats = useUserChat();
+	// useUserChat.subscribe(
+	// 	(state) => state.chats,
+	// 	(chats) => {
+	// 		console.log("chatState updated:");
+	// 		console.log(chats);
+	// 		console.log("updated with Render:");
+	// 		console.log(convert.toSee(chats));
+	// 		console.log("");
+	// 		console.log("");
+	// 	}
+	// );
+	return <Outlet />;
 }
 export default App;

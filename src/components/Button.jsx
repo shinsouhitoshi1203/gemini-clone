@@ -1,5 +1,5 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 
 function setSize(size) {
 	const styles = {};
@@ -63,4 +63,4 @@ function Button(props) {
 		</>
 	);
 }
-export default Button;
+export default memo(Button);

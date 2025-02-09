@@ -7,12 +7,18 @@
     display: flex; align-items: flex-start; gap: 20px;
 }
 .ChatBox {
-    @extend %stretchMode; grid-gap: 25px; padding-bottom: 40px;
+    @extend %stretchMode; grid-gap: 0; padding-bottom: 40px;
     
     &__Chat {
         @extend %stretchMode; gap: 44px;color: var(--secondary);
         &-Ask, &-Answer {
             @extend %keepTop; 
+        }
+        &-Ask {
+            margin-bottom: 25px;
+        }
+        &-Answer {
+            margin-bottom: 100px;
         }
     }
     &__user {
@@ -24,17 +30,33 @@
     }
     &__message {
         flex: 1 0 10px;
-        display: grid; grid-gap: 20px; align-items: stretch;
+        display: grid; grid-gap: 5px; align-items: stretch;
+        color: var(--third);
     }
     &__question {
         font-size: 2.2rem;
         line-height: 1.28;color: var(--main);
     }
-    &__answer {min-height: 50px;font: {size: 2.2rem; weight: 400; } line-height: 1.28;}
+    &__answer {
+        margin-top: 5px;
+        min-height: 50px;font: {size: 2.2rem; weight: 400; } line-height: 1.28;
+        &-raw {
+            font: inherit;
+        }
+    }
     &__tts-btn {
         margin-left: auto;
     }
     &__Options {
         display: flex; flex-wrap: wrap; align-items: center; gap: 35px;
+    }
+    &__cancelled {
+        font-size: 2.0rem; line-height: 1.7;
+        padding: 10px 20px;
+        background-color: var(--third);
+        color: var(--main2); font-style: italic;
+        max-width: 100%; 
+        width: fit-content;
+        border-radius: 12px 12px 12px 3px;
     }
 }

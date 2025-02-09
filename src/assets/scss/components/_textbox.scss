@@ -1,17 +1,56 @@
+@use "./../abstracts" as a;
+@use "sass:map";
+$themeContainer: (
+	"light": (
+		textbox: #ece6f0,
+		textbox__hover: rgba(#000, 7.5%),
+		textbox__input: rgba(#000, 15%),
+		textbox__disabled: rgba(#ece6f0, 50%),
+		textbox__caption: #49454f,
+		textbox__caption-disabled: #a3a3a3
+	),
+	"dark": (
+		textbox: #38353d,
+		textbox__hover: rgba(#fff, 7.5%),
+		textbox__input: rgba(#fff, 15%),
+		textbox__disabled: rgba(#38353d, 50%),
+		textbox__caption: #c7c7c7,
+		textbox__caption-disabled: #a3a3a3
+	)
+);
+
+@include a.themed($themeContainer);
+
 .TextBox {
-    background: var(--input); color: var(--secondary);border-radius: 300px;
-    
-    &__input {
-        flex: 1 0 10px; background: inherit;
-    }
-    &__wrapper {
-        width: 100%;
-        display: flex; align-items: center; padding: 8px; gap: 8px; 
-    }
-    &__button {
-        flex-shrink: 0;
-        svg {
-            font-size: 24px;
-        }
-    }
+	background: var(--textbox);
+	color: var(--secondary);
+	border-radius: 300px;
+	transition: background 0.3s;
+	&:hover {
+		background: var(--textbox__hover);
+	}
+	&:focus-within {
+		background: var(--textbox__input);
+	}
+	&:has(&__input:disabled) {
+		background: var(--textbox__disabled);
+		color: var(--textbox__caption-disabled);
+	}
+	&__input {
+		flex: 1 0 10px;
+		background: inherit;
+	}
+	&__wrapper {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		padding: 8px;
+		gap: 8px;
+	}
+	&__button {
+		flex-shrink: 0;
+		svg {
+			font-size: 24px;
+		}
+	}
 }

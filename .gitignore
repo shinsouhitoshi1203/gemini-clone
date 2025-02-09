@@ -25,3 +25,7 @@ dist-ssr
 src/sample
 .env
 .env.local
+_test.js
+docs
+secret
+*_Old.*

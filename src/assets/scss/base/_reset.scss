@@ -42,7 +42,7 @@ table {
 	border-spacing: 0;
 }
 
-button, input {margin: 0;padding: 0; outline: none; border: none;font: inherit; min-width: none;}
+button, input {margin: 0;padding: 0; outline: none; border: none;font: inherit; min-width: 0;}
 button {cursor: pointer; background-color: inherit; }
 
 * {margin: 0;padding: 0;box-sizing: border-box; color: unset;}

@@ -1,19 +1,18 @@
+// import Options from "./Options";
+import { useRef } from "react";
+import Message from "./Message";
 import Options from "./Options";
-import RawAnswer from "./RawAnswer";
 
-function DataAnswer({ msg, req }) {
+function DataAnswer({ text, answerID, cancelled }) {
+	const answerIDRef = useRef(answerID);
 	return (
 		<>
-			<div className="ChatBox__answer">
-				{req ? (
-					<RawAnswer needDelay={true} text={msg} />
-				) : (
-					<RawAnswer text={msg} />
-				)}
-			</div>
-			<div className="ChatBox__Options">
-				<Options />
-			</div>
+			<Message
+				answerID={answerIDRef.current}
+				cancelled={cancelled}
+				text={text}
+			/>
+			<Options cancelled={cancelled} answerID={answerIDRef.current} />
 		</>
 	);
 }

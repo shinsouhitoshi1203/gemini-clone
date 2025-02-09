@@ -1,32 +1,38 @@
-import {
-	forwardRef,
-	useCallback,
-	useEffect,
-	useImperativeHandle,
-	useRef,
-	useState
-} from "react";
-import useHome from "../hooks/useHome";
+import { memo, useCallback, useRef } from "react";
 
 function mergeClass(cls) {
 	return cls + " " + "TextBox";
 }
-function TextBox({ cls, children, right, left, placeholder, ...rest }) {
+
+function TextBox({
+	cls,
+	children,
+	right,
+	left,
+	placeholder,
+	input,
+	setInput,
+	disabled,
+	...rest
+}) {
 	const id = useRef(window.crypto.randomUUID());
-	const { input, setInput } = useHome();
+	// console.log(disabled);
 	const changeText = useCallback(
 		(e) => {
 			setInput(e.target.value);
 		},
 		[input]
 	);
-
 	return (
 		<div className={mergeClass(cls)}>
 			<label className="TextBox__wrapper" htmlFor={id.current}>
 				{left &&
 					left.map((component, i) => (
-						<div className="TextBox__button" key={i}>
+						<div
+							className="TextBox__button"
+							key={i}
+							disabled={disabled}
+						>
 							{component}
 						</div>
 					))}
@@ -39,11 +45,16 @@ function TextBox({ cls, children, right, left, placeholder, ...rest }) {
 					className="TextBox__input"
 					placeholder={placeholder}
 					id={id.current}
+					disabled={disabled}
 					{...rest}
 				/>
 				{right &&
 					right.map((component, i) => (
-						<div className="TextBox__button" key={i}>
+						<div
+							className="TextBox__button"
+							key={i}
+							disabled={disabled}
+						>
 							{component}
 						</div>
 					))}
@@ -52,4 +63,4 @@ function TextBox({ cls, children, right, left, placeholder, ...rest }) {
 		</div>
 	);
 }
-export default TextBox;
+export default memo(TextBox);
