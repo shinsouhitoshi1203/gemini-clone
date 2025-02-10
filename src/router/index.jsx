@@ -31,22 +31,22 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "app",
-				element: <Main />, // main structure
+				element: <>Hello world</>, //<Main />, // main structure
 				loader: loadUI,
 				HydrateFallback: FakeChat,
-				ErrorBoundary: Reset,
-				children: [
-					{
-						path: "",
-						element: <Home />,
-						children: [
-							{ path: "", element: <Welcome /> },
-							{ path: ":conversation", element: <Chatbox /> }
-						]
-					}
-					// privacy
-					// settings
-				]
+				ErrorBoundary: Reset
+				// children: [
+				// 	{
+				// 		path: "",
+				// 		element: <Home />,
+				// 		children: [
+				// 			{ path: "", element: <Welcome /> },
+				// 			{ path: ":conversation", element: <Chatbox /> }
+				// 		]
+				// 	}
+				// 	// privacy
+				// 	// settings
+				// ]
 			},
 			{
 				path: "privacy",

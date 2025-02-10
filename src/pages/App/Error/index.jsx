@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import useGlobal from "../../../hooks/zustand/global";
-
 function Error() {
 	return (
 		<>
