@@ -7,15 +7,7 @@ import GlobalProvider from "../../contexts/GlobalProvider";
 
 const TopBar = memo(Topbar); // prevent from re-rendering
 const SideBar = memo(Sidebar); // prevent from re-rendering
-export async function loadUI() {
-	let info, history, settings;
-	const ID = await req("", "", "ERROR");
-	info = await req("user", ID);
-	history = await req("history", ID);
-	settings = await req("settings", ID);
-	console.log(info, history, settings);
-	return { info, history, settings };
-}
+
 function Main() {
 	return (
 		<GlobalProvider>

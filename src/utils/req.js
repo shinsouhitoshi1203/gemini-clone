@@ -1,4 +1,4 @@
-export default async function req(path, id) {
+export async function req(path, id) {
 	const host = import.meta.env.VITE_APP_SERVER;
 	// console.log(host, "is fetching . . . ", path);
 	const reqPath = host + (path == "" ? "current" : path + "/" + id);

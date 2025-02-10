@@ -1,36 +1,9 @@
 import { createContext, useCallback, useEffect, useRef } from "react";
 import useGlobal from "../hooks/zustand/global";
-import req from "../hooks/zustand/req";
 import { useLoaderData } from "react-router-dom";
-import { quickLoad } from "../db";
 
 const GlobalContext = createContext();
 const idVersion = import.meta.env.VITE_APP_VERSION;
-
-export async function loadUI() {
-	let info, history, settings;
-
-	const ID = await req("", "");
-	if (ID == "ERROR") throw new Error("Error occured");
-	info = await req("user", ID);
-	if (info == "ERROR") throw new Error("Error occured");
-
-	history = await quickLoad(ID, (list) => {
-		return () => {
-			if (!list) return [];
-			return Object.keys(list).map((key) => {
-				return { chatID: key, topic: list[key] };
-			});
-		};
-	});
-	if (history == "ERROR") throw new Error("Error occured");
-
-	settings = await req("settings", ID);
-	if (settings == "ERROR") throw new Error("Error occured");
-
-	//console.log(info, history, settings);
-	return { info, history, settings };
-}
 
 function GlobalProvider({ children }) {
 	const loadUser = useGlobal((x) => x.loadUser);

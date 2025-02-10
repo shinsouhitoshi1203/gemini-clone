@@ -1,5 +1,5 @@
 import { createBrowserRouter, Link } from "react-router-dom";
-import { loadUI } from "../contexts/GlobalProvider";
+import { loadUI } from "../users";
 import App from "../App";
 import RootPage from "../pages";
 import Main from "../pages/App";
