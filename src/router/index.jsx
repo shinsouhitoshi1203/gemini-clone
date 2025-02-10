@@ -86,6 +86,21 @@ const router = createBrowserRouter([
 		// HydrateFallback: FakeChat,
 		// ErrorBoundary: Reset,
 		element: <>Hihi</>
+	},
+	{
+		path: "/privacy",
+		element: (
+			<>
+				<h3>Privacy page</h3>
+				<p>
+					Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+					Saepe velit deleniti odit temporibus. Deserunt quam sequi
+					sapiente voluptatibus velit optio recusandae quia. Officia
+					nihil distinctio velit tenetur voluptatem cupiditate
+					eligendi?
+				</p>
+			</>
+		)
 	}
 ]);
 export default router;
