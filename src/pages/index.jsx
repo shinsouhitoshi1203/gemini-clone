@@ -10,7 +10,6 @@ function RootPage() {
 	useEffect(() => {
 		if (r.current) return;
 		navigate("/app", { replace: true });
-		import.meta.env.VITE_F = 111;
 		r.current = true;
 	}, []);
 	return (

@@ -11,14 +11,14 @@ import Error from "../pages/App/Error";
 import FakeChat from "../pages/Fallback";
 import Reset from "../pages/App/Error/Reset";
 
-const router = createBrowserRouter([
+const router2 = createBrowserRouter([
 	{
 		path: "*", // Error page
 		element: <Error />
 	},
 	{
-		path: "/",
-		element: <Outlet />,
+		path: "/app",
+		element: <Main />,
 		children: [
 			// { path: "", element: <RootPage /> }, // landing page
 			{
@@ -70,4 +70,21 @@ const router = createBrowserRouter([
 	}
 ]);
 
+const router = createBrowserRouter([
+	{
+		path: "*", // Error page
+		element: <Error />
+	},
+	{
+		path: "/",
+		element: <RootPage />
+	},
+	{
+		path: "app",
+		loader: loadUI,
+		HydrateFallback: FakeChat,
+		ErrorBoundary: Reset,
+		element: <Main />
+	}
+]);
 export default router;
