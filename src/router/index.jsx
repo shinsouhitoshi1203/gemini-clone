@@ -82,10 +82,10 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/app",
-		loader: loadUI,
-		HydrateFallback: FakeChat,
-		ErrorBoundary: Reset,
-		element: <Main />
+		// loader: loadUI,
+		// HydrateFallback: FakeChat,
+		// ErrorBoundary: Reset,
+		element: <>Hihi</>
 	}
 ]);
 export default router;
