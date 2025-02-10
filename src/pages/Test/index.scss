@@ -1,0 +1,17 @@
+.box {
+	max-width: 300px;
+	width: 100%;
+	background-color: #333;
+	&__header {
+		padding: 16px;
+		font-size: 14px !important;
+	}
+	* {
+		font-size: 18px;
+		font-family: Inter Tight !important;
+		color: #fff;
+	}
+	.aaa {
+		font-size: 18px;
+	}
+}

@@ -54,6 +54,7 @@ function Sidebar() {
 						tooltip="Open sidebar"
 						icon={<MenuIcon />}
 						onClick={toggleExtend}
+						placement={extend.toString()}
 					/>
 					<Button
 						type="fab"
@@ -62,6 +63,7 @@ function Sidebar() {
 						icon={<AddIcon />}
 						reqExtend={extend}
 						onClick={newChatOpen}
+						placement={extend.toString()}
 					/>
 				</div>
 				<div
@@ -77,6 +79,7 @@ function Sidebar() {
 						tooltip="Report"
 						icon={<ErrorIcon />}
 						reqExtend={extend}
+						placement={extend.toString()}
 					/>
 					<Button
 						type="main"
@@ -86,6 +89,7 @@ function Sidebar() {
 						tooltip="Activity"
 						icon={<WatchLaterOutlinedIcon />}
 						reqExtend={extend}
+						placement={extend.toString()}
 					/>
 					<Button
 						type="main"
@@ -95,6 +99,7 @@ function Sidebar() {
 						tooltip="Settings"
 						icon={<SettingsOutlinedIcon />}
 						reqExtend={extend}
+						placement={extend.toString()}
 					/>
 
 					<div className="sidebar__addition ip">

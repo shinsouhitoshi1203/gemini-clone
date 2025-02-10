@@ -1,16 +1,7 @@
-import {
-	createContext,
-	useCallback,
-	useEffect,
-	useReducer,
-	useRef
-} from "react";
-import reducer from "../reducers/global/reducer";
-import initData from "../reducers/global/init";
+import { createContext, useCallback, useEffect, useRef } from "react";
 import useGlobal from "../hooks/zustand/global";
 import req from "../hooks/zustand/req";
 import { useLoaderData } from "react-router-dom";
-import FakeChat from "../pages/Fallback";
 import { quickLoad } from "../db";
 
 const GlobalContext = createContext();

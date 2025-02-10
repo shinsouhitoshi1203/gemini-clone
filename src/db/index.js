@@ -153,7 +153,6 @@ async function sendMessage(
 async function quickLoad(userID, callback = () => {}) {
 	if (!userID) {
 		return callback({});
-		throw new Error("userID is missing");
 	}
 	const path = "/users/" + userID + "/chat";
 	const chatRef = child(root, path);

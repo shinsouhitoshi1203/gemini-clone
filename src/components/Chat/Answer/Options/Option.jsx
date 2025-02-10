@@ -16,25 +16,25 @@ function Options() {
 			></Button>
 			<Button
 				size="36 36 50%"
-				caption="Like this answer"
+				caption="Dislike this answer"
 				icon={<ThumbDownIcon />}
 				type="main"
 			></Button>
 			<Button
 				size="36 36 50%"
-				caption="Like this answer"
+				caption="Share this answer"
 				icon={<ShareIcon />}
 				type="main"
 			></Button>
 			<Button
 				size="36 36 50%"
-				caption="Like this answer"
+				caption="Read the answer"
 				icon={<VolumeUpIcon />}
 				type="main"
 			></Button>
 			<Button
 				size="36 36 50%"
-				caption="Like this answer"
+				caption="More options"
 				icon={<MoreVertIcon />}
 				type="main"
 			></Button>
