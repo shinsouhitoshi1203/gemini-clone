@@ -1,16 +1,7 @@
-import {
-	createContext,
-	useCallback,
-	useEffect,
-	useReducer,
-	useRef
-} from "react";
-import reducer from "../reducers/global/reducer";
-import initData from "../reducers/global/init";
+import { createContext, useCallback, useEffect, useRef } from "react";
 import useGlobal from "../hooks/zustand/global";
 import req from "../hooks/zustand/req";
 import { useLoaderData } from "react-router-dom";
-import FakeChat from "../pages/Fallback";
 import { quickLoad } from "../db";
 
 const GlobalContext = createContext();
@@ -26,6 +17,7 @@ export async function loadUI() {
 
 	history = await quickLoad(ID, (list) => {
 		return () => {
+			if (!list) return [];
 			return Object.keys(list).map((key) => {
 				return { chatID: key, topic: list[key] };
 			});
@@ -65,7 +57,6 @@ function GlobalProvider({ children }) {
 		run();
 		checkVar.current = true;
 	}, []);
-
 	return <>{children}</>;
 }
 export default GlobalProvider;

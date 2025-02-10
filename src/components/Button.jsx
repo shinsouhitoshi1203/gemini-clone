@@ -1,6 +1,7 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { styled, Tooltip, tooltipClasses } from "@mui/material";
 import { memo, useEffect, useRef } from "react";
-
+// import "./../assets/scss/components/_tooltip.scss";
 function setSize(size) {
 	const styles = {};
 	if (size) {
@@ -17,6 +18,16 @@ function setSize(size) {
 	}
 	return styles;
 }
+
+const Tip = styled(({ className, ...props }) => (
+	<Tooltip {...props} classes={{ popper: className }} />
+))(() => ({
+	[`& .${tooltipClasses.tooltip}`]: {
+		fontSize: "1.2rem",
+		fontFamily: "var(--font)"
+	}
+}));
+
 function Button(props) {
 	// destructuring
 	const {
@@ -27,6 +38,7 @@ function Button(props) {
 		icon,
 		avatar,
 		reqExtend,
+		placement,
 		size,
 		style,
 		...rest
@@ -49,17 +61,35 @@ function Button(props) {
 		);
 	}
 	// console.log(styles.current);
+	// console.log(placement);
+
 	return (
 		<>
-			<button
-				style={styles.current}
-				className={`button ${identify} `}
-				extended={reqExtend ? "true" : null}
-				{...events}
-			>
-				{icon ?? avatarImg}
-				{reqExtend && <span className="font-6">{caption}</span>}
-			</button>
+			{placement == "true" ? (
+				<Tip title={tooltip ?? caption} placement="right">
+					<button
+						style={styles.current}
+						className={`button ${identify} `}
+						extended={reqExtend ? "true" : null}
+						{...events}
+					>
+						{icon ?? avatarImg}
+						{reqExtend && <span className="font-6">{caption}</span>}
+					</button>
+				</Tip>
+			) : (
+				<Tip title={tooltip ?? caption}>
+					<button
+						style={styles.current}
+						className={`button ${identify} `}
+						extended={reqExtend ? "true" : null}
+						{...events}
+					>
+						{icon ?? avatarImg}
+						{reqExtend && <span className="font-6">{caption}</span>}
+					</button>
+				</Tip>
+			)}
 		</>
 	);
 }

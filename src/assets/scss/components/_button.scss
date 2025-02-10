@@ -1,5 +1,5 @@
 @use "./../abstracts" as a;
-
+@use "./_tooltip.scss";
 $buttonContainer: (
 	"light": (
 		// this is the floating action button color
