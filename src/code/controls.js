@@ -100,7 +100,7 @@ const status = {
 
 const chats = {
 	topic: {
-		get(question) {
+		get(question, callback) {
 			let chatTopic = "";
 			topic(question)
 				.then((answer) => {
@@ -114,6 +114,7 @@ const chats = {
 				})
 				.finally(() => {
 					chats.chatTopic = chatTopic;
+					callback(chatTopic)();
 				});
 			return chatTopic;
 		},
@@ -188,11 +189,16 @@ const actions = {
 						this.conversation(input, ID);
 						navigate("/app/" + ID, { replace: true });
 						new Promise((resolve) => {
-							const topic = chats.topic.get(input);
+							const topic = chats.topic.get(
+								input,
+								(retrieved) => {
+									return () => {
+										pushHistory(ID, retrieved);
+									};
+								}
+							);
 							resolve(topic);
-						}).then((topic) => {
-							pushHistory(ID, topic);
-						});
+						}).then((topic) => {});
 					});
 				} else {
 					this.conversation(input, chatID, true);

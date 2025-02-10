@@ -26,6 +26,7 @@ export async function loadUI() {
 
 	history = await quickLoad(ID, (list) => {
 		return () => {
+			if (!list) return [];
 			return Object.keys(list).map((key) => {
 				return { chatID: key, topic: list[key] };
 			});
@@ -65,7 +66,6 @@ function GlobalProvider({ children }) {
 		run();
 		checkVar.current = true;
 	}, []);
-
 	return <>{children}</>;
 }
 export default GlobalProvider;
