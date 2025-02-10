@@ -77,10 +77,11 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/",
+		exact: true,
 		element: <RootPage />
 	},
 	{
-		path: "app",
+		path: "/app",
 		loader: loadUI,
 		HydrateFallback: FakeChat,
 		ErrorBoundary: Reset,
