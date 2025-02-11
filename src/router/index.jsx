@@ -82,10 +82,20 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/app",
-		// loader: loadUI,
-		// HydrateFallback: FakeChat,
-		// ErrorBoundary: Reset,
-		element: <>Hihi</>
+		loader: loadUI,
+		HydrateFallback: FakeChat,
+		ErrorBoundary: Reset,
+		element: <Main />,
+		children: [
+			{
+				path: "",
+				element: <Home />,
+				children: [
+					{ path: "", element: <Welcome /> }, // /app
+					{ path: ":conversation", element: <Chatbox /> } // /app/1238fcun-csdcc-dcdcc-cccc
+				]
+			}
+		]
 	},
 	{
 		path: "/privacy",
